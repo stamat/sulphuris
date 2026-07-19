@@ -74,11 +74,11 @@ $color-modes-selector: '[data-color-scheme="VALUE"]' !default;
 $color-modes: (
   dark: (
     colors: (
-      foreground: #ffffff,
+      foreground: #fff,
       background: #1a1a1d,
       black: #1a1a1d,
-      white: #ffffff,
-      primary: #3F00FF
+      white: #fff,
+      primary: #3f00ff
     )
     // palettes: ( ... )
   )
