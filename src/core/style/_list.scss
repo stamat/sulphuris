@@ -1,4 +1,4 @@
-//stylelint-disable-next-line selector-no-qualifying-type
+// stylelint-disable selector-no-qualifying-type
 ul.reset,
 ol.reset {
   list-style: none;
@@ -6,3 +6,4 @@ ol.reset {
   padding: 0;
   text-indent: 0;
 }
+// stylelint-enable selector-no-qualifying-type
