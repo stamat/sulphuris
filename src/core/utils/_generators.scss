@@ -43,7 +43,6 @@ $breakpoints: config.$breakpoints;
     }
 
     @if $explicit {
-      /* stylelint-disable-next-line max-nesting-depth */
       @if list.nth($breakpoint, 2) {
         $query: '#{$query} and (max-width: #{list.nth($breakpoint, 2)})';
       }
