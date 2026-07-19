@@ -73,6 +73,21 @@ In your main SCSS file, import Sulphuris:
 
 Be sure to include the `node_modules` directory in your `sass` include paths. This is usually done in your build tool configuration.
 
+## 📚 Documentation
+
+Full documentation lives in [`site/`](site/) as a Poops-built static site — an
+introduction, a getting-started guide, the full configuration reference, and a
+reference page per utility category (spacing, sizing, display, flexbox, grid,
+position, colours, typography, borders, buttons, effects, and the SCSS
+functions/mixins API).
+
+Build and serve it locally:
+
+```bash
+$ script/docs        # build + serve with live reload
+$ script/docs -b     # build once, no server
+```
+
 ## 💻 Local Development
 
 The build process is powered by [Poops](https://github.com/stamat/poops), a simple and fast build and bundle tool for modern web development.
@@ -108,7 +123,7 @@ If you have any ideas on how to improve Sulphuris, feel free to open an issue or
 - [ ] Inline links
 - [ ] Animations and transitions
 - [ ] Form elements
-- [ ] WRITE DOCS!!!!! (and complete the site)
+- [x] WRITE DOCS!!!!! — docs written in `site/`; wire up deployment to complete the site
 
 ## Name
 

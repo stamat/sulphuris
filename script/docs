@@ -1,0 +1,4 @@
+#!/bin/bash
+# Build & serve the documentation site (site/) with Poops.
+# Pass -b to build once without serving:  script/docs -b
+cd "$(dirname "$0")/../site" && npx 💩 "$@"

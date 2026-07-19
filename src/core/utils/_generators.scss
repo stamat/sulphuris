@@ -1,5 +1,5 @@
-@use "../config";
-@use "helpers";
+@use '../config';
+@use 'helpers';
 
 @use 'sass:map';
 @use 'sass:list';
@@ -7,6 +7,10 @@
 @use 'sass:meta';
 @use 'sass:color';
 @use 'sass:math';
+
+// Generators emit nested rules through @if branches; the sass-guidelines
+// nesting limit doesn't map to generated-CSS depth here.
+// stylelint-disable max-nesting-depth
 
 $breakpoints: config.$breakpoints;
 
@@ -313,7 +317,7 @@ $breakpoints: config.$breakpoints;
     $grade: $count * 100;
     $percentage: $i * $mod * 2;
     $combined-name: #{$color-name}-#{$grade};
-    $color-lightened: color.mix(#000000, $color-value, $percentage);
+    $color-lightened: color.mix(#000, $color-value, $percentage);
 
     $color-map: map.merge($color-map, ($combined-name: $color-lightened));
   }
@@ -322,7 +326,7 @@ $breakpoints: config.$breakpoints;
     $grade: $i * 100;
     $percentage: $i * $mod * 2;
     $combined-name: #{$color-name}-#{$grade};
-    $color-lightened: color.mix($color-value, #ffffff, $percentage);
+    $color-lightened: color.mix($color-value, #fff, $percentage);
 
     $color-map: map.merge($color-map, ($combined-name: $color-lightened));
   }
@@ -542,7 +546,7 @@ $breakpoints: config.$breakpoints;
   @each $key, $value in $map {
     #{$key} {
       @if meta.type-of($value) == 'map' 
-      and not map.has-key($value, font-size) {
+        and not map.has-key($value, font-size) {
         @if map.has-key($value, mobile) or map.has-key($value, base) {
           @include typography-rules-generator(map.get($value, mobile));
         }

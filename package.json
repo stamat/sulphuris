@@ -26,9 +26,21 @@
   "homepage": "http://sulphuris.github.io",
   "private": false,
   "devDependencies": {
-    "poops": "^1.0.18"
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "poops": "^1.0.18",
+    "stylelint": "^16.10.0",
+    "stylelint-config-sass-guidelines": "^12.1.0",
+    "typescript": "^5.6.3"
   },
   "scripts": {
-    "dev": "npx poops"
+    "dev": "npx poops",
+    "build": "npx poops -b",
+    "lint:css": "stylelint \"src/**/*.scss\"",
+    "lint:js": "eslint \"site/src/js/**/*.ts\"",
+    "lint": "npm run lint:css && npm run lint:js",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck && npm run build"
   }
 }

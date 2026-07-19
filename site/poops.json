@@ -1,0 +1,44 @@
+{
+  "styles": [
+    {
+      "in": "../src/index.scss",
+      "out": "dist/css/sulphuris.css",
+      "options": { "minify": true, "justMinified": true }
+    },
+    {
+      "in": "src/scss/docs.scss",
+      "out": "dist/css/docs.css",
+      "options": { "minify": true, "justMinified": true }
+    }
+  ],
+  "scripts": [
+    {
+      "in": "src/js/docs.ts",
+      "out": "dist/js/docs.js",
+      "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
+    }
+  ],
+  "markup": {
+    "in": "src/markup",
+    "out": "dist",
+    "site": {
+      "title": "🜍 Sulphuris",
+      "description": "An adaptable, self-generating CSS utility library.",
+      "url": "https://sulphuris.github.io"
+    },
+    "includePaths": ["_layouts", "_partials"],
+    "searchIndex": "search-index.json",
+    "sitemap": "sitemap.xml",
+    "nav": {
+      "output": "nav.json",
+      "root": "docs",
+      "collections": "index"
+    }
+  },
+  "serve": {
+    "port": 4041,
+    "base": "/dist"
+  },
+  "livereload": true,
+  "watch": ["src", "../src"]
+}

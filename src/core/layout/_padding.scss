@@ -1,5 +1,5 @@
-@use "../config";
-@use "../utils/generators";
+@use '../config';
+@use '../utils/generators';
 
 @include generators.utility-class-generator((
   prefix: 'p',

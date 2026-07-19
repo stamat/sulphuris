@@ -1,4 +1,4 @@
-@use "../utils/generators";
+@use '../utils/generators';
 
 @include generators.utility-class-generator('flex', 'flex-direction', ('row', 'row-reverse', 'column', 'column-reverse'));
 @include generators.utility-class-generator('flex', 'flex-wrap', ('wrap', 'nowrap'));

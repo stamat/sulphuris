@@ -1,5 +1,5 @@
-@use "../config";
-@use "../utils/generators";
+@use '../config';
+@use '../utils/generators';
 
 @include generators.utility-class-generator('t', 'top', config.$sizes, 'px');
 @include generators.utility-class-generator('r', 'right', config.$sizes, 'px');

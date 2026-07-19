@@ -1,4 +1,4 @@
-@use "../config";
+@use '../config';
 
 @use 'sass:math';
 @use 'sass:list';
@@ -16,6 +16,7 @@
  * @param $value (string): e.g. `16px`
  * @return (string): e.g. `1em`
  */
+// stylelint-disable-next-line scss/at-function-pattern -- public API, camelCase is intentional
 @function toEm($value, $unit: 'em') {
   $rm-unit-value: rm-unit($value);
 
@@ -33,6 +34,7 @@
  * @param $value (string): e.g. `16px`
  * @return (string): e.g. `1rem`
  */
+// stylelint-disable-next-line scss/at-function-pattern -- public API, camelCase is intentional
 @function toRem($value) {
   @if ends-with($value + '', 'px') {
     @return toEm($value, 'rem');
@@ -81,6 +83,7 @@
   @return $string;
 }
 
+// stylelint-disable max-nesting-depth -- nested @for/@if is inherent to the sort
 @function bubble-sort($list) {
   $length: list.length($list);
   $temp: null;
@@ -103,6 +106,7 @@
 
   @return $list;
 }
+// stylelint-enable max-nesting-depth
 
 
 @function reverse-map($map, $rm-unit: false) {
@@ -155,7 +159,7 @@
     @if $i == list.length($sorted-values) {
       $max: false;
     } @else {
-      $max: $next-value - 1
+      $max: $next-value - 1;
     }
 
     @if not $min {
