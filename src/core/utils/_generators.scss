@@ -8,6 +8,10 @@
 @use 'sass:color';
 @use 'sass:math';
 
+// Generators emit nested rules through @if branches; the sass-guidelines
+// nesting limit doesn't map to generated-CSS depth here.
+// stylelint-disable max-nesting-depth
+
 $breakpoints: config.$breakpoints;
 
 @if $breakpoints == null {
