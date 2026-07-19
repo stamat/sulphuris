@@ -41,7 +41,10 @@ function setupMobileNav(): void {
 // Highlight the current page in the sidebar. Done client-side because the
 // server-side page.url carries the output-dir prefix while nav urls don't.
 function markActiveNav(): void {
-  const norm = (p: string): string => (p.replace(/index\.html$/, '').replace(/\/$/, '') || '/')
+  const norm = (p: string): string => {
+    const s = p.replace(/index\.html$/, '').replace(/\/$/, '')
+    return s === '' ? '/' : s
+  }
   const here = norm(location.pathname)
   document.querySelectorAll<HTMLAnchorElement>('.sidebar a.nav-link').forEach((a) => {
     if (norm(new URL(a.href).pathname) === here) {
@@ -62,16 +65,16 @@ function setupSearch(base: string): void {
 
   const render = (q: string): void => {
     const query = q.trim().toLowerCase()
-    if (!query) { box.hidden = true; box.innerHTML = ''; return }
+    if (query === '') { box.hidden = true; box.innerHTML = ''; return }
     const hits = index.filter((e) => {
-      const hay = (e.title + ' ' + (e.description || '') + ' ' + (e.keywords || []).join(' ')).toLowerCase()
+      const hay = (e.title + ' ' + (e.description ?? '') + ' ' + (e.keywords ?? []).join(' ')).toLowerCase()
       return hay.includes(query)
     }).slice(0, 8)
     box.hidden = false
-    if (!hits.length) { box.innerHTML = '<div class="sr-empty">No results</div>'; return }
+    if (hits.length === 0) { box.innerHTML = '<div class="sr-empty">No results</div>'; return }
     box.innerHTML = hits.map((e) =>
       `<a href="${base}${e.url}"><span class="sr-title">${e.title}</span>` +
-      (e.description ? `<span class="sr-desc">${e.description}</span>` : '') + '</a>'
+      (e.description != null && e.description !== '' ? `<span class="sr-desc">${e.description}</span>` : '') + '</a>'
     ).join('')
   }
   input.addEventListener('input', () => render(input.value))

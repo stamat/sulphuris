@@ -1,6 +1,6 @@
-@use "../config";
-@use "../utils/generators";
-@use "../utils/helpers";
+@use '../config';
+@use '../utils/generators';
+@use '../utils/helpers';
 @use 'sass:math';
 
 .grid {
@@ -9,35 +9,35 @@
 }
 
 .grid-gutter {
-  margin-left: math.div(-(config.$grid-gutter-mobile),2);
-  margin-right: math.div(-(config.$grid-gutter-mobile),2);
+  margin-left: math.div(-(config.$grid-gutter-mobile), 2);
+  margin-right: math.div(-(config.$grid-gutter-mobile), 2);
 
   @include generators.breakpoint(config.$container-breakpoint) {
-    margin-left: math.div(-(config.$grid-gutter),2);
-    margin-right: math.div(-(config.$grid-gutter),2);
+    margin-left: math.div(-(config.$grid-gutter), 2);
+    margin-right: math.div(-(config.$grid-gutter), 2);
   }
 
   &.container {
     margin-left: auto;
     margin-right: auto;
-    padding-left: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile,2);
-    padding-right: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile,2);
+    padding-left: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2);
+    padding-right: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2);
 
     @include generators.breakpoint(config.$container-breakpoint) {
       margin-left: auto;
       margin-right: auto;
-      padding-left: config.$container-offset - math.div(config.$grid-gutter,2);
-      padding-right: config.$container-offset - math.div(config.$grid-gutter,2);
+      padding-left: config.$container-offset - math.div(config.$grid-gutter, 2);
+      padding-right: config.$container-offset - math.div(config.$grid-gutter, 2);
     }
   }
 
   > [class*='col-'] {
-    padding-left: math.div(config.$grid-gutter-mobile,2);
-    padding-right: math.div(config.$grid-gutter-mobile,2);
+    padding-left: math.div(config.$grid-gutter-mobile, 2);
+    padding-right: math.div(config.$grid-gutter-mobile, 2);
 
     @include generators.breakpoint(config.$container-breakpoint) {
-      padding-left: math.div(config.$grid-gutter,2);
-      padding-right: math.div(config.$grid-gutter,2);
+      padding-left: math.div(config.$grid-gutter, 2);
+      padding-right: math.div(config.$grid-gutter, 2);
     }
   }
 }

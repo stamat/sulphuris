@@ -1,4 +1,4 @@
-@use "../config";
+@use '../config';
 
 @use 'sass:math';
 @use 'sass:list';
@@ -155,7 +155,7 @@
     @if $i == list.length($sorted-values) {
       $max: false;
     } @else {
-      $max: $next-value - 1
+      $max: $next-value - 1;
     }
 
     @if not $min {

@@ -50,24 +50,24 @@ $columns: 12 !default;
  */
 $colors: (
   foreground: #1a1a1d,
-  background: #ffffff,
+  background: #fff,
   black: #1a1a1d,
-  white: #ffffff,
+  white: #fff,
   primary: #f6c026
 ) !default;
 
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
-  orange: #F4912A,
-  red: #E41328,
-  violet: #752A6F,
+  orange: #f4912a,
+  red: #e41328,
+  violet: #752a6f,
   purple: #472573,
-  indigo: #3F00FF,
-  blue: #0F4EB3,
-  teal: #00A4A4,
-  green: #10AF2E,
-  lime: #A4C400,
+  indigo: #3f00ff,
+  blue: #0f4eb3,
+  teal: #00a4a4,
+  green: #10af2e,
+  lime: #a4c400,
 ) !default;
 
 $color-modes-selector: '[data-color-scheme="VALUE"]' !default;

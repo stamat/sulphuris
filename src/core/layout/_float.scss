@@ -1,5 +1,5 @@
-@use "../utils/fixes";
-@use "../utils/generators";
+@use '../utils/fixes';
+@use '../utils/generators';
 
 .clearfix {
   @include fixes.clearfix;
