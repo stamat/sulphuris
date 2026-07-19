@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+# Builds the demo index (repo root) and the generated docs (site/) and
+# publishes them together to GitHub Pages. The demo lands at the site root
+# and the docs at /docs/, which is where the header "Docs" nav link points.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Allow only one concurrent deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      # Compile dist/sulphuris.css that the demo index links to.
+      - name: Build library CSS
+        run: npm run build
+
+      # Build the docs site. --base-url lets Poops resolve absolute links
+      # (sitemap, search index) under the Pages deploy path.
+      - name: Build docs
+        run: npx poops -b --base-url "${{ steps.pages.outputs.base_path }}"
+        working-directory: site
+
+      # Assemble the artifact: demo at the root, docs merged in so the docs
+      # landing sits at /docs/ (where the demo's "docs/" nav link points) and
+      # its assets at /css, /js.
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp index.html favicon.ico favicon-16x16.png favicon-32x32.png sulphuris-logo.svg _site/
+          cp -r dist _site/dist
+          cp -r site/dist/. _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
