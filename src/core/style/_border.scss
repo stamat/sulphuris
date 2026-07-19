@@ -2,6 +2,10 @@
 @use '../utils/fixes';
 @use '../utils/generators';
 
+// Utility classes intentionally @extend the concrete `.border` class and reset
+// individual sides with `none`, so the sass-guidelines defaults don't apply here.
+// stylelint-disable scss/at-extend-no-missing-placeholder, declaration-property-value-disallowed-list
+
 .border {
   border-color: currentcolor;
   border-style: solid;
@@ -47,6 +51,8 @@
   border-left: none;
   border-right: none;
 }
+
+// stylelint-enable scss/at-extend-no-missing-placeholder, declaration-property-value-disallowed-list
 
 @include generators.utility-class-generator('border', 'border-width', config.$border-sizes, 'px', '');
 @include generators.utility-class-generator('border', 'border-style', ('solid', 'dashed', 'dotted'), '', '', false, false);
