@@ -423,7 +423,6 @@ $breakpoints: config.$breakpoints;
   }
 }
 
-/* stylelint-disable max-nesting-depth */
 @mixin grid-offset-generator($columns, $responsive: true) {
   $base: math.div(100, $columns);
   $unit: '%';
@@ -460,7 +459,6 @@ $breakpoints: config.$breakpoints;
     }
   }
 }
-/* stylelint-enable */
 
 @mixin typography-rules-generator($font-size, $letter-spacing: null, $line-height: null, $font-weight: null, $text-transform: null, $font-family: null) {
 
