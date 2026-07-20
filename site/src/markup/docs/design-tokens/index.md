@@ -4,7 +4,7 @@ title: Design Tokens
 navTitle: Design Tokens
 description: How Sulphuris expresses design tokens — the config maps are your compile-time tokens, and colours are additionally emitted as runtime CSS custom properties you can consume anywhere.
 order: 15
-keywords: ["design tokens", "tokens", "css variables", "custom properties", "config", "style dictionary", "figma"]
+keywords: ["design tokens", "tokens", "css variables", "custom properties", "config", "style dictionary", "figma", "poops"]
 ---
 
 # Design Tokens
@@ -114,6 +114,31 @@ values, so your components stay tied to the same tokens as the utilities:
 `helpers.color($name)` returns the `var(--color-*)` reference (with the raw
 value as fallback); `helpers.get-color($name, $mode)` returns the raw compile-time
 value. See [Functions & Mixins](../functions/).
+
+## Overriding & supplementing tokens with poops
+
+Sulphuris is transpiled with [poops](https://stamat.info/poops/), which has a
+[design-tokens step](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens)
+of its own. Because it runs at transpile time, you can point poops at a token
+source to **override or supplement** the Sulphuris config *without editing any
+SCSS* — the two layers compose:
+
+- **Override** — feed poops the same decisions Sulphuris exposes (colours,
+  spacing, typography). Its tokens win for that build, so one `poops.json` (or
+  the token file it references) can rebrand the whole utility layer per
+  target/theme without a separate config forward.
+- **Supplement** — emit token families Sulphuris bakes in at compile time
+  (spacing, sizing, typography) as live custom properties *alongside* the
+  `--color-*` set. This is the poops-driven way to get the `--space-*` /
+  `--font-*` variables the [note above](#runtime-colour-tokens) says Sulphuris
+  does not emit itself.
+
+See the
+[poops design-tokens docs](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens)
+for the exact option key and token-file shape. The integration point on the
+Sulphuris side is unchanged — the config maps in
+[`core/_config.scss`](../configuration/) remain the source of truth; poops just
+lets you feed and extend them from the build config instead of the stylesheet.
 
 ## Bringing in external token sources
 
