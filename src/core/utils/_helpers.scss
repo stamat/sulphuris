@@ -83,30 +83,31 @@
   @return $string;
 }
 
-// stylelint-disable max-nesting-depth -- nested @for/@if is inherent to the sort
-@function bubble-sort($list) {
-  $length: list.length($list);
-  $temp: null;
+// ponytail: insertion sort — fine for N≈5 breakpoints; swap for list.sort()
+// once it lands in Dart Sass if this ever sorts bigger lists.
+@function sort-numbers($list) {
+  $sorted: ();
 
-  @for $i from 1 through $length {
-    @for $j from 1 through $length - $i {
-      @if $j == 0 {
-        $j: 1;
-      }
-      $a: list.nth($list, $j);
-      $b: list.nth($list, $j + 1);
+  @each $item in $list {
+    $placed: false;
+    $new: ();
 
-      @if $a > $b {
-        $temp: $a;
-        $list: list.set-nth($list, $j, $b);
-        $list: list.set-nth($list, $j + 1, $temp);
+    @each $s in $sorted {
+      @if not $placed and $item < $s {
+        $new: list.append($new, $item);
+        $placed: true;
       }
+      $new: list.append($new, $s);
     }
+
+    @if not $placed {
+      $new: list.append($new, $item);
+    }
+    $sorted: $new;
   }
 
-  @return $list;
+  @return $sorted;
 }
-// stylelint-enable max-nesting-depth
 
 
 @function reverse-map($map, $rm-unit: false) {
@@ -130,7 +131,7 @@
   $values-list: map.keys($reverse-map);
   $sorted-values: $values-list;
   @if list.length($values-list) > 1 {
-    $sorted-values: bubble-sort($values-list);
+    $sorted-values: sort-numbers($values-list);
   }
   $breakpoints: ();
   $min: false;
