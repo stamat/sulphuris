@@ -1,0 +1,16 @@
+@use '../utils/generators';
+
+// Aspect-ratio utilities. `.aspect-16x9`, `.aspect-1x1`, ...
+@include generators.utility-class-generator((
+  prefix: 'aspect',
+  property: 'aspect-ratio',
+  values: (
+    '1x1': '1 / 1',
+    '4x3': '4 / 3',
+    '3x2': '3 / 2',
+    '16x9': '16 / 9',
+    '21x9': '21 / 9',
+    '9x16': '9 / 16'
+  ),
+  responsive: false
+));
