@@ -2,10 +2,10 @@
 
 @include generators.utility-class-generator('flex', 'flex-direction', ('row', 'row-reverse', 'column', 'column-reverse'));
 @include generators.utility-class-generator('flex', 'flex-wrap', ('wrap', 'nowrap'));
-@include generators.utility-class-generator('flex-grow', 'flex-grow', (0, 1));
+@include generators.utility-class-generator('flex-grow', 'flex-grow', (0, 1, 2, 3));
+// ponytail: flex-shrink 0/1 covers the common cases; grow the scale if a real need shows up
 @include generators.utility-class-generator('flex-shrink', 'flex-shrink', (0, 1));
-// TODO: Prefer 'end' and 'start' over 'flex-end' and 'flex-start' in v1.1.0
-@include generators.utility-class-generator('align', 'align-items', ('normal', 'center', 'flex-start', 'flex-end', 'end', 'start', 'stretch'));
-@include generators.utility-class-generator('justify', 'justify-content', ('normal', 'center', 'flex-start', 'flex-end', 'end', 'start', 'space-between', 'space-around'));
+@include generators.utility-class-generator('align', 'align-items', ('normal', 'center', 'start', 'end', 'stretch'));
+@include generators.utility-class-generator('justify', 'justify-content', ('normal', 'center', 'start', 'end', 'space-between', 'space-around'));
 @include generators.utility-class-generator('align-self', 'align-self', ('normal', 'center', 'start', 'end', 'stretch'));
 @include generators.utility-class-generator('justify-self', 'justify-self', ('normal', 'center', 'start', 'end', 'stretch'));
