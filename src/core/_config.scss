@@ -7,6 +7,21 @@ $percent-sizes: 5,10,15,20,25,50,75,100 !default;
 $negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100 !default;
 $z-index: -1,0,1,2,3,4,5,10,15,20,25,50,100 !default;
 
+/*
+ * Z-LAYERS - named stacking levels for the `z()` helper, so stacking is a
+ * token (`z(modal)`) instead of a raw magic number.
+ */
+$z-layers: (
+  'base': 0,
+  'dropdown': 10,
+  'sticky': 20,
+  'overlay': 30,
+  'modal': 40,
+  'popover': 50,
+  'toast': 60,
+  'tooltip': 70
+) !default;
+
 $border-sizes: 2,3,4,6,8 !default;
 $border-radiuses: 0,4,6,8,16,24,32 !default;
 

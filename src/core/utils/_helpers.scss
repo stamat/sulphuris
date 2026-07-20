@@ -223,6 +223,16 @@
   @return $breakpoints;
 }
 
+// Named stacking level from config.$z-layers. `z(modal)` → 40
+@function z($name) {
+  @if map.has-key(config.$z-layers, $name) {
+    @return map.get(config.$z-layers, $name);
+  }
+
+  @warn '🜍 Undefined z-layer: `#{$name}`! Please check your `_config.scss`.';
+  @return auto;
+}
+
 @mixin selection($color: primary) {
   ::selection { background: color($color); }
 }
