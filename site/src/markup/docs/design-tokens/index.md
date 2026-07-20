@@ -119,26 +119,72 @@ value. See [Functions & Mixins](../functions/).
 
 Sulphuris is transpiled with [poops](https://stamat.info/poops/), which has a
 [design-tokens step](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens)
-of its own. Because it runs at transpile time, you can point poops at a token
-source to **override or supplement** the Sulphuris config *without editing any
-SCSS* — the two layers compose:
+of its own: you author tokens once as JSON and `@use` them straight from SCSS via
+the `token:` prefix (both W3C DTCG and Style Dictionary formats are auto-detected).
+Because it runs at transpile time, you can feed those tokens into — or extend — the
+Sulphuris config, keeping a single JSON source of truth for the build.
 
-- **Override** — feed poops the same decisions Sulphuris exposes (colours,
-  spacing, typography). Its tokens win for that build, so one `poops.json` (or
-  the token file it references) can rebrand the whole utility layer per
-  target/theme without a separate config forward.
-- **Supplement** — emit token families Sulphuris bakes in at compile time
-  (spacing, sizing, typography) as live custom properties *alongside* the
-  `--color-*` set. This is the poops-driven way to get the `--space-*` /
-  `--font-*` variables the [note above](#runtime-colour-tokens) says Sulphuris
-  does not emit itself.
+Author the tokens as JSON, e.g. `src/tokens/colors.json`:
 
-See the
-[poops design-tokens docs](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens)
-for the exact option key and token-file shape. The integration point on the
-Sulphuris side is unchanged — the config maps in
+```json
+{
+  "color": {
+    "$type": "color",
+    "primary":   { "$value": "#0057ff" },
+    "secondary": { "$value": "#ff6600" },
+    "link":      { "$value": "{color.primary}" }
+  }
+}
+```
+
+Point poops' `tokenPaths` at that directory in `poops.json`:
+
+```json
+{
+  "styles": [
+    { "in": "src/scss/index.scss", "out": "dist/css/styles.css",
+      "options": { "tokenPaths": ["src/tokens"] } }
+  ]
+}
+```
+
+poops exposes each file as `token:<filename>`, flattened to `$color-*` variables.
+
+**Override** — feed those tokens into the config forward so they win for the
+build, rebranding the whole utility layer per target/theme without hand-editing
+`_config.scss`:
+
+```scss
+@use "token:colors" as c;
+
+@forward "sulphuris/core/config" with (
+  $colors: (primary: c.$color-primary, foreground: #111, background: #fff)
+);
+
+@use "sulphuris";
+```
+
+Prefer a single map to spread? Set `"tokenOutput": "map"` in the poops options
+and read it with `map.get(c.$color, primary)`.
+
+**Supplement** — emit token families Sulphuris bakes in at compile time
+(spacing, sizing, typography) as live custom properties *alongside* the
+`--color-*` set, straight from the same JSON. This is the poops-driven way to
+get the `--space-*` / `--font-*` variables the
+[note above](#runtime-colour-tokens) says Sulphuris does not emit itself:
+
+```scss
+@use "token:spacing" as s;
+
+:root {
+  --space-16: #{s.$space-16};
+  --space-24: #{s.$space-24};
+}
+```
+
+The integration point on the Sulphuris side is unchanged — the config maps in
 [`core/_config.scss`](../configuration/) remain the source of truth; poops just
-lets you feed and extend them from the build config instead of the stylesheet.
+lets you feed and extend them from a shared JSON source instead of the stylesheet.
 
 ## Bringing in external token sources
 
