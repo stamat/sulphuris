@@ -17,48 +17,31 @@
 }
 
 
-// TODO: v1.1.0 check if having absolute- classes is necessary, maybe .self-center .position-absolute? Is it worth it?
-.absolute-cover,
-.cover {
+.absolute-cover {
   height: 100%;
   left: 0;
+  position: absolute;
   top: 0;
   width: 100%;
-}
-
-.absolute-cover {
-  position: absolute;
-}
-
-.absolute-center,
-.self-center {
-  transform: translate3d(-50%, -50%, 0);
-}
-
-.absolute-center-vertical,
-.self-center-vertical {
-  transform: translateY(-50%);
-}
-
-.absolute-center-horizontal,
-.self-center-horizontal {
-  transform: translateX(-50%);
 }
 
 .absolute-center {
   left: 50%;
   position: absolute;
   top: 50%;
+  transform: translate3d(-50%, -50%, 0);
 }
 
 .absolute-center-vertical {
   position: absolute;
   top: 50%;
+  transform: translateY(-50%);
 }
 
 .absolute-center-horizontal {
   left: 50%;
   position: absolute;
+  transform: translateX(-50%);
 }
 
 .bg-cover {
