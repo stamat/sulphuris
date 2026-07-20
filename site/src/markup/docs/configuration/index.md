@@ -38,6 +38,25 @@ $border-radiuses:        0,4,6,8,16,24,32;
 A negative value renders as a double dash in the class name: `-32` → `.mt--32`
 (`margin-top: -32px`).
 
+## Z-layers
+
+Named stacking levels resolved by the `z()` helper (see
+[Functions & Mixins](../functions/)). Separate from the numeric `$z-index`
+scale used by the `.z-*` utility classes.
+
+```scss
+$z-layers: (
+  base:     0,
+  dropdown: 10,
+  sticky:   20,
+  overlay:  30,
+  modal:    40,
+  popover:  50,
+  toast:    60,
+  tooltip:  70
+);
+```
+
 ## Orientations
 
 The per-side suffixes shared by margin, padding, border, position, etc.
@@ -211,11 +230,3 @@ $button: (
 ```
 
 See [Buttons](../buttons/).
-
-## Images
-
-```scss
-$image-dir: '../images/';   // relative to the compiled .css
-```
-
-Base path used by the `bg-image()` / `icon()` helper mixins.

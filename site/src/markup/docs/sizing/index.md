@@ -125,6 +125,19 @@ Property: `max-height`. Same two values.
 .h-max-100p { max-height: 100%; }
 ```
 
+## Aspect ratio — `.aspect-*`
+
+Property: `aspect-ratio`. Not responsive.
+
+```css
+.aspect-1x1  { aspect-ratio: 1 / 1; }
+.aspect-4x3  { aspect-ratio: 4 / 3; }
+.aspect-3x2  { aspect-ratio: 3 / 2; }
+.aspect-16x9 { aspect-ratio: 16 / 9; }
+.aspect-21x9 { aspect-ratio: 21 / 9; }
+.aspect-9x16 { aspect-ratio: 9 / 16; }
+```
+
 ## Responsive variants
 
 Every `w-*`, `h-*`, `w-max-*`, and `h-max-*` class is also generated inside a

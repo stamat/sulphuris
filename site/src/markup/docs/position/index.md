@@ -72,6 +72,20 @@ Same four prefixes. Unit: `%`. A `p` suffix marks percentage classes.
 .l--100p           → left: -100%
 ```
 
+## Inset
+
+Prefix: `inset`. Property: `inset`. Sets all four offsets at once — a shorthand that complements the single-side `t`/`r`/`b`/`l` utilities.
+
+Uses the standard `$sizes` scale, plus negatives, percentages (`p` suffix), and `auto`. Responsive variants exist.
+
+```
+.inset-16          → inset: 16px
+.inset--16         → inset: -16px
+.inset-50p         → inset: 50%
+.inset-auto        → inset: auto
+.inset-md-16       → inset: 16px  (min-width: 768px)
+```
+
 ## Z-index
 
 Prefix: `z`. Property: `z-index`.
@@ -125,20 +139,14 @@ Static single-purpose classes, no responsive variants.
 
 ```
 .absolute-cover    → position: absolute; top: 0; left: 0; width: 100%; height: 100%
-.cover             → top: 0; left: 0; width: 100%; height: 100%  (no position set)
 ```
 
 **Absolute centering**
 
 ```
 .absolute-center   → position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0)
-.self-center       → transform: translate3d(-50%, -50%, 0)
-
 .absolute-center-vertical   → position: absolute; top: 50%; transform: translateY(-50%)
-.self-center-vertical       → transform: translateY(-50%)
-
 .absolute-center-horizontal → position: absolute; left: 50%; transform: translateX(-50%)
-.self-center-horizontal     → transform: translateX(-50%)
 ```
 
 **Background sizing**

@@ -45,6 +45,8 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 |---|---|
 | `.flex-grow-0` | `flex-grow: 0` |
 | `.flex-grow-1` | `flex-grow: 1` |
+| `.flex-grow-2` | `flex-grow: 2` |
+| `.flex-grow-3` | `flex-grow: 3` |
 
 ---
 
@@ -67,13 +69,9 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 |---|---|
 | `.align-normal` | `align-items: normal` |
 | `.align-center` | `align-items: center` |
-| `.align-flex-start` | `align-items: flex-start` |
-| `.align-flex-end` | `align-items: flex-end` |
 | `.align-start` | `align-items: start` |
 | `.align-end` | `align-items: end` |
 | `.align-stretch` | `align-items: stretch` |
-
-> Note: `flex-start`/`flex-end` variants are kept for compatibility. Prefer `start`/`end` going forward (see source TODO for v1.1.0).
 
 ---
 
@@ -85,8 +83,6 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 |---|---|
 | `.justify-normal` | `justify-content: normal` |
 | `.justify-center` | `justify-content: center` |
-| `.justify-flex-start` | `justify-content: flex-start` |
-| `.justify-flex-end` | `justify-content: flex-end` |
 | `.justify-start` | `justify-content: start` |
 | `.justify-end` | `justify-content: end` |
 | `.justify-space-between` | `justify-content: space-between` |
