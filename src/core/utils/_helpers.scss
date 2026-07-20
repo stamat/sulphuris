@@ -181,49 +181,6 @@
   ::selection { background: color($color); }
 }
 
-/* stylelint-disable */
-
-//TODO: CHECK 👇
-
 @mixin placeholder($color) {
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &:-ms-input-placeholder,
-  &:-moz-placeholder,
-  &::placeholder {
-    color: color($color);
-  }
-}
-
-@mixin bg-image($filename, $ext: png) {
-  background-image: url('#{config.$image_dir}#{$filename}.#{$ext}');
-}
-
-@mixin bg-image-retina($filename, $ext: png) {
-  @include bg-image($filename, $ext);
-
-  @media only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 1.3 / 1), only screen and (min-resolution: 125dpi), only screen and (min-resolution: 1.3dppx) {
-    background-image: url('#{config.$image_dir}#{$filename}@2x.#{$ext}');
-  }
-}
-
-@mixin icon($filename, $w, $h, $ext: png) {
-  background-image: url('#{config.$image_dir}#{$filename}.#{$ext}');
-  background-size: $w $h;
-  background-position: center center;
-  background-repeat: no-repeat;
-  display: inline-block;
-  width: $w;
-  height: $h;
-  line-height: $h;
-  vertical-align: middle;
-  margin-top: -3px;
-}
-
-@mixin icon-retina($filename, $w, $h, $ext: png) {
-  @include icon($filename, $w, $h, $ext);
-
-  @media only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 1.3 / 1), only screen and (min-resolution: 125dpi), only screen and (min-resolution: 1.3dppx) {
-    background-image: url('#{config.$image_dir}#{$filename}@2x.#{$ext}');
-  }
+  &::placeholder { color: color($color); }
 }
