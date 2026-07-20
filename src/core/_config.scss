@@ -4,6 +4,8 @@
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256 !default;
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64 !default;
 $percent-sizes: 5,10,15,20,25,50,75,100 !default;
+// Feeds position offsets (top/right/bottom/left/inset) only — never width/height,
+// where a negative percentage would be meaningless. See layout/_position.scss.
 $negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100 !default;
 $z-index: -1,0,1,2,3,4,5,10,15,20,25,50,100 !default;
 
