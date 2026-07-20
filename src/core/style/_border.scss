@@ -1,5 +1,4 @@
 @use '../config';
-@use '../utils/fixes';
 @use '../utils/generators';
 
 // Utility classes intentionally @extend the concrete `.border` class and reset
@@ -65,10 +64,6 @@
 
 [class*='rounded-'] {
   overflow: hidden;
-}
-
-.rounded-fix {
-  @include fixes.rounded-container-fix; //FYI: rounded fix is for fixing images only, if enabled on rounded block with shadow it will disable the shadow.
 }
 
 @include generators.utility-class-generator('rounded', 'border-radius', config.$border-radiuses, 'px', '', false, false);
