@@ -70,6 +70,40 @@ Prefix: `p`. Property: `padding`. Same `$sizes` scale. No negatives, no `auto`.
 | `.px-{size}` | `padding-left` + `padding-right` |
 | `.py-{size}` | `padding-top` + `padding-bottom` |
 
+## Gap
+
+Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
+
+| Class pattern | CSS property |
+|---|---|
+| `.gap-{size}` | `gap` |
+| `.gap-x-{size}` | `column-gap` |
+| `.gap-y-{size}` | `row-gap` |
+
+```
+.gap-16            → gap: 16px
+.gap-x-8           → column-gap: 8px
+.gap-y-24          → row-gap: 24px
+.gap-md-16         → gap: 16px  (min-width: 768px)
+```
+
+## Logical spacing (RTL-aware)
+
+The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom). The logical variants below map to **writing-direction-aware** sides, so they flip automatically under RTL. Same scales as margin/padding. Responsive.
+
+| Class pattern | CSS property |
+|---|---|
+| `.m-inline-{size}` | `margin-inline` |
+| `.m-block-{size}` | `margin-block` |
+| `.p-inline-{size}` | `padding-inline` |
+| `.p-block-{size}` | `padding-block` |
+
+```
+.m-inline-16       → margin-inline: 16px
+.p-block-24        → padding-block: 24px
+.m-inline-md-16    → margin-inline: 16px  (min-width: 768px)
+```
+
 ## Quick reference
 
 ```

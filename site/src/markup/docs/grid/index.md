@@ -144,3 +144,23 @@ Use `.col-N-max` when you want an element to grow freely on small screens but ne
 ```html
 <img class="col-6-max" src="photo.jpg" alt="">
 ```
+
+## Native CSS grid
+
+Separate from the 12-column flex system above, these utilities drive a real `display: grid` container.
+
+| Class | CSS |
+|---|---|
+| `.d-grid` | `display: grid` |
+| `.d-inline-grid` | `display: inline-grid` |
+| `.grid-cols-{n}` | `grid-template-columns: repeat({n}, minmax(0, 1fr))` |
+
+`.grid-cols-{n}` is generated for `n` = 1–12 and has responsive variants (`.grid-cols-md-3`). Pair with the `.gap-*` utilities for gutters.
+
+```html
+<div class="d-grid grid-cols-1 grid-cols-md-3 gap-16">
+  <div>Cell A</div>
+  <div>Cell B</div>
+  <div>Cell C</div>
+</div>
+```

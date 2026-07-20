@@ -4,8 +4,25 @@
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256 !default;
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64 !default;
 $percent-sizes: 5,10,15,20,25,50,75,100 !default;
+// Feeds position offsets (top/right/bottom/left/inset) only — never width/height,
+// where a negative percentage would be meaningless. See layout/_position.scss.
 $negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100 !default;
 $z-index: -1,0,1,2,3,4,5,10,15,20,25,50,100 !default;
+
+/*
+ * Z-LAYERS - named stacking levels for the `z()` helper, so stacking is a
+ * token (`z(modal)`) instead of a raw magic number.
+ */
+$z-layers: (
+  'base': 0,
+  'dropdown': 10,
+  'sticky': 20,
+  'overlay': 30,
+  'modal': 40,
+  'popover': 50,
+  'toast': 60,
+  'tooltip': 70
+) !default;
 
 $border-sizes: 2,3,4,6,8 !default;
 $border-radiuses: 0,4,6,8,16,24,32 !default;
@@ -155,6 +172,3 @@ $button: (
   border-width: 2px,
   border-radius: 4px
 ) !default;
-
-//Image directory default - change it to wherever you store images relative to the compiled .css
-$image-dir: '../images/' !default;

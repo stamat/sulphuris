@@ -17,6 +17,37 @@ Prefix: `filter`. Property: `filter`. Not responsive.
 |---|---|
 | `.filter-invert` | `filter: invert(1)` |
 
+## Opacity
+
+Prefix: `opacity`. Property: `opacity`. Not responsive.
+
+| Class | CSS |
+|---|---|
+| `.opacity-0` | `opacity: 0` |
+| `.opacity-25` | `opacity: 0.25` |
+| `.opacity-50` | `opacity: 0.5` |
+| `.opacity-75` | `opacity: 0.75` |
+| `.opacity-100` | `opacity: 1` |
+
+## Cursor
+
+Prefix: `cursor`. Property: `cursor`. Not responsive.
+
+| Class | CSS |
+|---|---|
+| `.cursor-auto` | `cursor: auto` |
+| `.cursor-default` | `cursor: default` |
+| `.cursor-pointer` | `cursor: pointer` |
+| `.cursor-wait` | `cursor: wait` |
+| `.cursor-text` | `cursor: text` |
+| `.cursor-move` | `cursor: move` |
+| `.cursor-grab` | `cursor: grab` |
+| `.cursor-grabbing` | `cursor: grabbing` |
+| `.cursor-not-allowed` | `cursor: not-allowed` |
+| `.cursor-help` | `cursor: help` |
+| `.cursor-progress` | `cursor: progress` |
+| `.cursor-none` | `cursor: none` |
+
 ## Z-index
 
 Prefix: `z`. Property: `z-index`. Responsive.
@@ -45,6 +76,20 @@ Responsive pattern: `.z-{bp}-{value}`
 .z-md-10   → z-index: 10  (min-width: 768px)
 .z-lg-50   → z-index: 50  (min-width: 1024px)
 ```
+
+## Transition classes
+
+Ready-made utility classes. Not responsive. Each uses the default 250ms duration and `ease-in-out-quint` easing from the transition mixin below.
+
+| Class | CSS |
+|---|---|
+| `.transition` | `transition: all …` |
+| `.transition-colors` | `transition: color, background-color, border-color …` |
+| `.transition-transform` | `transition: transform …` |
+| `.transition-opacity` | `transition: opacity …` |
+| `.transition-none` | `transition: none` |
+
+These complement the SCSS `transition` mixin documented below.
 
 ## Transition mixin (SCSS API)
 

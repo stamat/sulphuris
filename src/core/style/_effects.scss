@@ -1,0 +1,41 @@
+@use '../utils/generators';
+
+// Opacity. `.opacity-50` => opacity: 0.5
+@include generators.utility-class-generator((
+  prefix: 'opacity',
+  property: 'opacity',
+  values: (0: 0, 25: 0.25, 50: 0.5, 75: 0.75, 100: 1),
+  responsive: false
+));
+
+// Cursor.
+@include generators.utility-class-generator(
+  'cursor',
+  'cursor',
+  ('auto', 'default', 'pointer', 'wait', 'text', 'move', 'grab', 'grabbing', 'not-allowed', 'help', 'progress', 'none'),
+  '',
+  '',
+  false,
+  false
+);
+
+// Ready-made transition classes backed by the `transition` mixin.
+.transition {
+  @include generators.transition(all);
+}
+
+.transition-colors {
+  @include generators.transition((color, background-color, border-color));
+}
+
+.transition-transform {
+  @include generators.transition(transform);
+}
+
+.transition-opacity {
+  @include generators.transition(opacity);
+}
+
+.transition-none {
+  transition: none;
+}

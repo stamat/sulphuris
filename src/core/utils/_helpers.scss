@@ -42,6 +42,29 @@
   @return $value;
 }
 
+/*
+ * Fluid value between two breakpoints via `clamp()`. Scales linearly with the
+ * viewport from $min-vw to $max-vw, then clamps at both ends. px in, rem out.
+ *
+ * @param $min      smallest value (e.g. 16px)
+ * @param $max      largest value (e.g. 24px)
+ * @param $min-vw   viewport where scaling starts (default: smallest breakpoint)
+ * @param $max-vw   viewport where scaling ends (default: largest breakpoint)
+ * @return e.g. `clamp(1rem, 0.833rem + 0.635vw, 1.5rem)`
+ */
+@function fluid($min, $max, $min-vw: 420px, $max-vw: 1680px) {
+  $min-u: rm-unit($min);
+  $max-u: rm-unit($max);
+  $min-vw-u: rm-unit($min-vw);
+  $max-vw-u: rm-unit($max-vw);
+
+  $slope: math.div($max-u - $min-u, $max-vw-u - $min-vw-u);
+  $intercept: $min-u - $slope * $min-vw-u;
+
+  // clamp()/min()/max() allow bare calc math, no calc() wrapper needed
+  @return clamp(#{toRem($min)}, #{toRem($intercept * 1px)} + #{$slope * 100}vw, #{toRem($max)});
+}
+
 @function color($color) {
   @if map.has-key(config.$colors, $color) {
     @return var(--color-#{$color});
@@ -83,30 +106,54 @@
   @return $string;
 }
 
-// stylelint-disable max-nesting-depth -- nested @for/@if is inherent to the sort
-@function bubble-sort($list) {
-  $length: list.length($list);
-  $temp: null;
+// Split a string on a separator into a list. `str-split('a.b.c', '.')` → 'a' 'b' 'c'
+@function str-split($string, $separator) {
+  $result: ();
+  $index: string.index($string, $separator);
 
-  @for $i from 1 through $length {
-    @for $j from 1 through $length - $i {
-      @if $j == 0 {
-        $j: 1;
-      }
-      $a: list.nth($list, $j);
-      $b: list.nth($list, $j + 1);
-
-      @if $a > $b {
-        $temp: $a;
-        $list: list.set-nth($list, $j, $b);
-        $list: list.set-nth($list, $j + 1, $temp);
-      }
-    }
+  @while $index != null {
+    $result: list.append($result, string.slice($string, 1, $index - 1));
+    $string: string.slice($string, $index + string.length($separator));
+    $index: string.index($string, $separator);
   }
 
-  @return $list;
+  @return list.append($result, $string);
 }
-// stylelint-enable max-nesting-depth
+
+// Fetch a nested map value by a path of keys. `map-deep-get($m, 'a', 'b')`
+@function map-deep-get($map, $keys...) {
+  @each $key in $keys {
+    $map: map.get($map, $key);
+  }
+
+  @return $map;
+}
+
+// ponytail: insertion sort — fine for N≈5 breakpoints; swap for list.sort()
+// once it lands in Dart Sass if this ever sorts bigger lists.
+@function sort-numbers($list) {
+  $sorted: ();
+
+  @each $item in $list {
+    $placed: false;
+    $new: ();
+
+    @each $s in $sorted {
+      @if not $placed and $item < $s {
+        $new: list.append($new, $item);
+        $placed: true;
+      }
+      $new: list.append($new, $s);
+    }
+
+    @if not $placed {
+      $new: list.append($new, $item);
+    }
+    $sorted: $new;
+  }
+
+  @return $sorted;
+}
 
 
 @function reverse-map($map, $rm-unit: false) {
@@ -130,7 +177,7 @@
   $values-list: map.keys($reverse-map);
   $sorted-values: $values-list;
   @if list.length($values-list) > 1 {
-    $sorted-values: bubble-sort($values-list);
+    $sorted-values: sort-numbers($values-list);
   }
   $breakpoints: ();
   $min: false;
@@ -176,53 +223,20 @@
   @return $breakpoints;
 }
 
+// Named stacking level from config.$z-layers. `z(modal)` → 40
+@function z($name) {
+  @if map.has-key(config.$z-layers, $name) {
+    @return map.get(config.$z-layers, $name);
+  }
+
+  @warn '🜍 Undefined z-layer: `#{$name}`! Please check your `_config.scss`.';
+  @return auto;
+}
+
 @mixin selection($color: primary) {
   ::selection { background: color($color); }
 }
 
-/* stylelint-disable */
-
-//TODO: CHECK 👇
-
 @mixin placeholder($color) {
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &:-ms-input-placeholder,
-  &:-moz-placeholder,
-  &::placeholder {
-    color: color($color);
-  }
-}
-
-@mixin bg-image($filename, $ext: png) {
-  background-image: url('#{config.$image_dir}#{$filename}.#{$ext}');
-}
-
-@mixin bg-image-retina($filename, $ext: png) {
-  @include bg-image($filename, $ext);
-
-  @media only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 1.3 / 1), only screen and (min-resolution: 125dpi), only screen and (min-resolution: 1.3dppx) {
-    background-image: url('#{config.$image_dir}#{$filename}@2x.#{$ext}');
-  }
-}
-
-@mixin icon($filename, $w, $h, $ext: png) {
-  background-image: url('#{config.$image_dir}#{$filename}.#{$ext}');
-  background-size: $w $h;
-  background-position: center center;
-  background-repeat: no-repeat;
-  display: inline-block;
-  width: $w;
-  height: $h;
-  line-height: $h;
-  vertical-align: middle;
-  margin-top: -3px;
-}
-
-@mixin icon-retina($filename, $w, $h, $ext: png) {
-  @include icon($filename, $w, $h, $ext);
-
-  @media only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 1.3 / 1), only screen and (min-resolution: 125dpi), only screen and (min-resolution: 1.3dppx) {
-    background-image: url('#{config.$image_dir}#{$filename}@2x.#{$ext}');
-  }
+  &::placeholder { color: color($color); }
 }

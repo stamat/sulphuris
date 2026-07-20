@@ -1,10 +1,5 @@
 /* stylelint-disable */
 
-// fixes overflow hidden container with border-radius
-@mixin rounded-container-fix() {
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-}
-
 // fixes jump on animateing transform scale
 @mixin animate-scale-fix() {
   -webkit-transform-style: preserve-3d;

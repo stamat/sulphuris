@@ -21,5 +21,11 @@
 @include generators.utility-class-generator('b', 'bottom', config.$negative-percent-sizes, '%', 'p');
 @include generators.utility-class-generator('l', 'left', config.$negative-percent-sizes, '%', 'p');
 
+// `inset` shorthand — sets top/right/bottom/left at once, complements t/r/b/l.
+@include generators.utility-class-generator('inset', 'inset', config.$sizes, 'px');
+@include generators.utility-class-generator('inset', 'inset', config.$negative-sizes, 'px');
+@include generators.utility-class-generator('inset', 'inset', config.$percent-sizes, '%', 'p');
+@include generators.utility-class-generator('inset', 'inset', ('auto'));
+
 @include generators.utility-class-generator('position', 'position', ('static', 'absolute', 'fixed', 'relative', 'sticky'));
 @include generators.utility-class-generator('z', 'z-index', (config.$z-index));

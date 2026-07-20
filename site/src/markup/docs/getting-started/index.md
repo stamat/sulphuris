@@ -80,7 +80,7 @@ defaults.
 
 ```html
 <div class="container">
-  <div class="d-flex justify-content-between items-center p-24">
+  <div class="d-flex justify-space-between align-center p-24">
     <h1 class="h3 mb-0 text-primary">🜍 Hello</h1>
     <button class="btn">Click me</button>
   </div>
@@ -88,7 +88,7 @@ defaults.
 ```
 
 - `.container` — centred, max-width wrapper.
-- `.d-flex`, `.justify-content-between`, `.items-center` — flexbox layout.
+- `.d-flex`, `.justify-space-between`, `.align-center` — flexbox layout.
 - `.p-24` — `padding: 24px`.
 - `.h3` — heading-3 typography without an `<h3>` tag.
 - `.mb-0` — `margin-bottom: 0`.

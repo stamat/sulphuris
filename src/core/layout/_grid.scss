@@ -46,6 +46,9 @@
 @include generators.grid-offset-generator(config.$columns);
 @include generators.grid-column-max-generator(config.$columns);
 
+// Native CSS grid (`display: grid` via `.d-grid`) column templates.
+@include generators.grid-template-generator(config.$columns);
+
 .grid-reverse {
   flex-direction: row-reverse;
 }

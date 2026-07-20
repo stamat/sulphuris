@@ -383,6 +383,30 @@ $breakpoints: config.$breakpoints;
   }
 }
 
+// Native CSS-grid column templates: `.grid-cols-3` => 3 equal minmax(0,1fr)
+// tracks. Pair with `.d-grid` and `.gap-*`. Responsive by default.
+@mixin grid-template-generator($columns, $responsive: true) {
+  @for $i from 1 through $columns {
+    .grid-cols-#{$i} {
+      grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+    }
+  }
+
+  @if $responsive {
+    @each $b-name, $b-value in $breakpoints {
+      @if $b-name != '' and $b-name != 'min' and $b-name != 'minimal' {
+        @media #{generate-breakpoint($b-name)} {
+          @for $i from 1 through $columns {
+            .grid-cols-#{$b-name}-#{$i} {
+              grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 @function get-min-breakpoint-value() {
   $value: 0;
 
