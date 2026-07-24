@@ -6,9 +6,10 @@
 
 An adaptable CSS utility library
 
-> Sulphuris aims to be the soul of your next front-end project. Inspired by [Bootstrap](https://github.com/twbs/bootstrap) and [Primer](https://github.com/primer/css), but tailored to suit your everyday front-end development needs.
+> [!NOTE]
+> Sulphuris sits somewhere between the old-school utility libraries [Bootstrap](https://github.com/twbs/bootstrap) and [Primer](https://github.com/primer/css) on one side and on the other Tailwind.
 
-Sulphuris is built around a single [`_config.scss`](https://github.com/sulphuris/sulphuris/blob/main/src/core/_config.scss) file that defines almost all utility class generation. By overriding these configuration variables, you can customize breakpoints, colors, spacing, and more — tailoring the framework to each project's specific needs.
+Sulphuris is built around a single [`_config.scss`](https://github.com/sulphuris/sulphuris/blob/main/src/core/_config.scss) file that defines almost all utility class generation. It is basically design tokens but in scss. By overriding these configuration variables, you can customize breakpoints, colors, spacing, and more — tailoring the framework to each project's specific needs.
 
 ### Highlights
 
@@ -75,7 +76,7 @@ Be sure to include the `node_modules` directory in your `sass` include paths. Th
 
 ## 📚 Documentation
 
-Full documentation lives in [`site/`](site/) as a Poops-built static site — an
+Full documentation lives in [`site/`](site/) as a [Poops](https://github.com/stamat/poops)-built static site — an
 introduction, a getting-started guide, the full configuration reference, and a
 reference page per utility category (spacing, sizing, display, flexbox, grid,
 position, colours, typography, borders, buttons, effects, and the SCSS
