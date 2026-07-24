@@ -10,7 +10,7 @@ keywords: ["config", "configuration", "variables", "sizes", "breakpoints", "colo
 # Configuration
 
 Sulphuris generates almost every class from the variables in
-[`core/_config.scss`](https://github.com/sulphuris/sulphuris/blob/main/src/core/_config.scss).
+[`core/_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss).
 Change a value there — or, in your own project, override it with
 `@forward "sulphuris/core/config" with (…)` (see
 [Getting Started](../getting-started/)) — rebuild, and the utility set adapts.

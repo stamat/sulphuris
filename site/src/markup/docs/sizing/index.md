@@ -10,7 +10,7 @@ keywords: ["width", "height", "min-width", "max-width", "size", "w", "h", "vh", 
 # Sizing
 
 Width and height utilities are generated from
-[`core/layout/_dimension.scss`](https://github.com/sulphuris/sulphuris/blob/main/src/core/layout/_dimension.scss).
+[`core/layout/_dimension.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/layout/_dimension.scss).
 All classes are responsive by default.
 
 ## Class naming

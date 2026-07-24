@@ -9,7 +9,7 @@ An adaptable CSS utility library
 > [!NOTE]
 > Sulphuris sits somewhere between the old-school utility libraries [Bootstrap](https://github.com/twbs/bootstrap) and [Primer](https://github.com/primer/css) on one side and on the other Tailwind.
 
-Sulphuris is built around a single [`_config.scss`](https://github.com/sulphuris/sulphuris/blob/main/src/core/_config.scss) file that defines almost all utility class generation. It is basically design tokens but in scss. By overriding these configuration variables, you can customize breakpoints, colors, spacing, and more — tailoring the framework to each project's specific needs.
+Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) file that defines almost all utility class generation. It is basically design tokens but in scss. By overriding these configuration variables, you can customize breakpoints, colors, spacing, and more — tailoring the framework to each project's specific needs.
 
 ### Highlights
 
@@ -40,7 +40,7 @@ To bundle Sulphuris utilities with your project you can use:
 
 In order to configure Sulphuris you must override the default configuration, before the `@use 'sulphuris';` line.
 
-The list of config variables you can override or negate (turn off) can be seen in the default config file: [core/\_config.scss](https://github.com/sulphuris/sulphuris/blob/main/src/core/_config.scss)
+The list of config variables you can override or negate (turn off) can be seen in the default config file: [core/\_config.scss](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss)
 
 ```scss
 @forward "sulphuris/core/config" with (
@@ -109,7 +109,7 @@ Will start a local development server. It will also watch for the changes and re
 $ script/publish
 ```
 
-Will run the [publish script](https://github.com/sulphuris/sulphuris/blob/main/script/publish) which will lead you through the npm publishing process. It can increment the version, build the code, tag it and publish it to npm.
+Will run the [publish script](https://github.com/stamat/sulphuris/blob/main/script/publish) which will lead you through the npm publishing process. It can increment the version, build the code, tag it and publish it to npm.
 
 If you want to create an GitHub release related to your version tag - make sure you have [GitHub CLI](https://cli.github.com) installed. This is purely optional.
 

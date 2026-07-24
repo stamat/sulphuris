@@ -24,7 +24,7 @@
     "site": {
       "title": "🜍 Sulphuris",
       "description": "An adaptable, self-generating CSS utility library.",
-      "url": "https://sulphuris.github.io"
+      "url": "https://stamat.info/sulphuris"
     },
     "includePaths": ["_layouts", "_partials"],
     "searchIndex": "search-index.json",

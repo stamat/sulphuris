@@ -10,7 +10,7 @@
     "dist",
     "src"
   ],
-  "repository": "https://github.com/sulphuris/sulphuris.git",
+  "repository": "https://github.com/stamat/sulphuris.git",
   "keywords": [
     "css",
     "utility",
@@ -23,7 +23,7 @@
     "nested-grid"
   ],
   "author": "Stamat <@stamat> (https://github.com/stamat)",
-  "homepage": "http://sulphuris.github.io",
+  "homepage": "https://stamat.info/sulphuris",
   "private": false,
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.18.0",
