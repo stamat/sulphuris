@@ -4,7 +4,7 @@ title: Flexbox
 navTitle: Flexbox
 description: Utility classes for flex direction, wrapping, alignment, justification, grow, and shrink.
 order: 6
-keywords: ["flex", "flexbox", "justify-content", "align-items", "flex-direction", "flex-wrap"]
+keywords: ["flex", "flexbox", "justify-content", "align-items", "flex-direction", "flex-wrap", "gap"]
 ---
 
 # Flexbox
@@ -123,12 +123,16 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 A centered card row that stacks vertically on small screens:
 
 ```html
-<div class="flex-row flex-sm-column align-center justify-space-between">
+<div class="flex-row flex-sm-column align-center justify-space-between gap-16">
   <div class="flex-grow-1">Card A</div>
   <div class="flex-grow-1">Card B</div>
   <div class="flex-shrink-0">Fixed</div>
 </div>
 ```
+
+Spacing between flex children comes from the `.gap-*` family (`.gap-16`, axis
+variants `.gap-x-*` / `.gap-y-*`), documented under
+[Spacing](/docs/spacing/#gap).
 
 ---
 

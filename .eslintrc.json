@@ -18,5 +18,5 @@
             }
         ]
     },
-    "ignorePatterns": ["src/**/*.test.ts", "src/**/*.scss"]
+    "ignorePatterns": ["src/**/*.test.ts", "src/**/*.scss", "script/*.mjs"]
 }
