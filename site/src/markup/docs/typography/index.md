@@ -207,6 +207,23 @@ below its content by default, so pair it with `.min-w-0` there:
 </div>
 ```
 
+For more than one line, use `.line-clamp-{n}` — generated from `$line-clamps`
+(`1, 2, 3, 4, 5, 6`), not responsive.
+
+```
+.line-clamp-3           → display: -webkit-box; -webkit-box-orient: vertical;
+                          -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden
+```
+
+The clamp is implemented with `display: -webkit-box`, which is still the only
+form every supported browser understands — the unprefixed `line-clamp` is
+emitted alongside it for the ones that do. Two consequences:
+
+- `display` is part of the mechanism, so putting `.d-block` or `.d-flex` on the
+  same element switches the clamp off. Clamp the inner element instead.
+- There is no `.line-clamp-none`. Removing the class is the way to unclamp; if
+  you need to undo it at a breakpoint, swap in a `.d-*` class there.
+
 ---
 
 ## List utilities

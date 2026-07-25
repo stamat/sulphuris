@@ -124,3 +124,17 @@ h6 {
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+// Multi-line ellipsis. The `-webkit-box` trio is still the only route that
+// works everywhere in the browserslist targets — unprefixed `line-clamp` is
+// Chromium-only so far. `display` is part of the mechanism, so a `.d-*` class
+// on the same element turns the clamp off.
+@each $line-clamp in config.$line-clamps {
+  .line-clamp-#{$line-clamp} {
+    display: -webkit-box; // stylelint-disable-line value-no-vendor-prefix
+    overflow: hidden;
+    -webkit-box-orient: vertical; // stylelint-disable-line property-no-vendor-prefix
+    -webkit-line-clamp: $line-clamp; // stylelint-disable-line property-no-vendor-prefix
+    line-clamp: $line-clamp;
+  }
+}

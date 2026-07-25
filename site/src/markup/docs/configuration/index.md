@@ -176,6 +176,8 @@ $mono-font:      monospace;
 $line-height:           1.2;
 $heading-line-height:   1;
 $paragraph-line-height: 1.5;
+
+$line-clamps: 1,2,3,4,5,6;      // line counts for the `.line-clamp-*` family
 ```
 
 The `$typography` map defines the type scale — every heading and paragraph
