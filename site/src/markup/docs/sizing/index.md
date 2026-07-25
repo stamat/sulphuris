@@ -2,9 +2,9 @@
 layout: docs
 title: Sizing
 navTitle: Sizing
-description: Width and height utility classes generated from the pixel size scale, percentage sizes, viewport units, and keyword values.
+description: Width, height, min and max sizing utility classes generated from the pixel size scale, percentage sizes, viewport units, and keyword values.
 order: 4
-keywords: ["width", "height", "min-width", "max-width", "size", "w", "h", "vh", "vw"]
+keywords: ["width", "height", "min-width", "max-width", "min-height", "max-height", "size", "w", "h", "vh", "vw"]
 ---
 
 # Sizing
@@ -19,7 +19,7 @@ All classes are responsive by default.
 .{prefix}[-{bp}]-{key}{suffix}  →  {property}: {value}{unit}
 ```
 
-- **prefix** — `w`, `h`, `w-max`, `h-max`
+- **prefix** — `w`, `h`, `min-w`, `max-w`, `min-h`, `max-h`
 - **bp** — omitted for base styles; one of `sm`, `md`, `lg`, `xl`, `xxl` for responsive variants
 - **key** — the numeric value (e.g. `32`, `50`, `100`)
 - **suffix** — empty for `px` values; `p` for percent; `vw` for viewport width; `vh` for viewport height
@@ -107,23 +107,33 @@ Property: `height`. Same value set as width, with two differences:
 .h-inherit { height: inherit; }
 ```
 
-## Max-width — `.w-max-*`
+## Min and max — `.min-w-*`, `.max-w-*`, `.min-h-*`, `.max-h-*`
 
-Property: `max-width`. Two values only.
-
-```css
-.w-max-none { max-width: none; }
-.w-max-100p { max-width: 100%; }
-```
-
-## Max-height — `.h-max-*`
-
-Property: `max-height`. Same two values.
+Properties: `min-width`, `max-width`, `min-height`, `max-height`. Each family
+carries the same scale as `w` / `h` — pixel, percent and the matching viewport
+unit — so anything you can set as a width you can also set as a bound.
 
 ```css
-.h-max-none { max-height: none; }
-.h-max-100p { max-height: 100%; }
+.max-w-256  { max-width: 256px; }
+.max-w-50p  { max-width: 50%; }
+.max-w-100vw { max-width: 100vw; }
+
+.min-h-0    { min-height: 0px; }
+.min-h-100p { min-height: 100%; }
+.min-h-100vh { min-height: 100vh; }
 ```
+
+The keyword differs per family, because the two are not interchangeable in CSS:
+
+```css
+.min-w-auto { min-width: auto; }   /* `min-*` takes auto */
+.max-w-none { max-width: none; }   /* `max-*` takes none */
+```
+
+There is no `.min-w-none` or `.max-w-auto` — neither is valid CSS.
+
+> [!WARNING]
+> These replace `.w-max-*` / `.h-max-*`, removed in `3.0.0`. The old prefix read as `width: max-content` rather than `max-width`. Rename `.w-max-none` → `.max-w-none` and `.w-max-100p` → `.max-w-100p`, same for `h`.
 
 ## Aspect ratio — `.aspect-*`
 
@@ -140,7 +150,7 @@ Property: `aspect-ratio`. Not responsive.
 
 ## Responsive variants
 
-Every `w-*`, `h-*`, `w-max-*`, and `h-max-*` class is also generated inside a
+Every `w-*`, `h-*`, `min-w-*`, `max-w-*`, `min-h-*` and `max-h-*` class is also generated inside a
 `min-width` media query for each breakpoint. The breakpoint token is inserted
 after the prefix:
 
@@ -172,6 +182,6 @@ Examples:
 @media only screen and (min-width: 1024px) {
   .w-lg-100vw  { width: 100vw; }
   .h-lg-100vh  { height: 100vh; }
-  .w-max-lg-none { max-width: none; }
+  .max-w-lg-none { max-width: none; }
 }
 ```

@@ -3,22 +3,40 @@
 
 @use 'sass:list';
 
-$dimension-sizes: config.$sizes;
+// `vw` only means something on a width and `vh` only on a height, so the two
+// axes get their own value lists rather than one shared list filtered per
+// property.
+$width-sizes: config.$sizes;
+$height-sizes: config.$sizes;
 
-@for $i from 1 through list.length(config.$percent-sizes) {
-  $value: list.nth(config.$percent-sizes, $i);
-  $dimension-sizes: list.append($dimension-sizes, (value: $value, unit: '%', suffix: 'p'));
-  $dimension-sizes: list.append($dimension-sizes, (value: $value, unit: 'vw', suffix: 'vw', condition: 'width'));
-  $dimension-sizes: list.append($dimension-sizes, (value: $value, unit: 'vh', suffix: 'vh', condition: 'height'));
+@each $value in config.$percent-sizes {
+  $percent: (value: $value, unit: '%', suffix: 'p');
+
+  $width-sizes: list.append($width-sizes, $percent);
+  $width-sizes: list.append($width-sizes, (value: $value, unit: 'vw', suffix: 'vw'));
+
+  $height-sizes: list.append($height-sizes, $percent);
+  $height-sizes: list.append($height-sizes, (value: $value, unit: 'vh', suffix: 'vh'));
 }
 
-$dimension-sizes: list.append($dimension-sizes, 'auto');
-$dimension-sizes: list.append($dimension-sizes, 'inherit');
+// `min-*` takes `auto`, `max-*` takes `none` — the other way round is invalid
+// CSS, so the keyword is appended per family, not shared.
+$min-width-sizes: list.append($width-sizes, 'auto');
+$min-height-sizes: list.append($height-sizes, 'auto');
+$max-width-sizes: list.append($width-sizes, 'none');
+$max-height-sizes: list.append($height-sizes, 'none');
 
-@include generators.utility-class-generator('w', 'width', $dimension-sizes, 'px');
-@include generators.utility-class-generator('h', 'height', $dimension-sizes, 'px');
+$width-sizes: list.append($width-sizes, 'auto');
+$width-sizes: list.append($width-sizes, 'inherit');
+$height-sizes: list.append($height-sizes, 'auto');
+$height-sizes: list.append($height-sizes, 'inherit');
 
-$max-sizes: ('none', (value: 100, unit: '%', suffix: 'p'));
+@include generators.utility-class-generator('w', 'width', $width-sizes, 'px');
+@include generators.utility-class-generator('h', 'height', $height-sizes, 'px');
 
-@include generators.utility-class-generator('w-max', 'max-width', $max-sizes);
-@include generators.utility-class-generator('h-max', 'max-height', $max-sizes);
+// Prefix order matches the CSS property: `.max-w-*`, not `.w-max-*`, which
+// reads as `width: max-content`.
+@include generators.utility-class-generator('min-w', 'min-width', $min-width-sizes, 'px');
+@include generators.utility-class-generator('min-h', 'min-height', $min-height-sizes, 'px');
+@include generators.utility-class-generator('max-w', 'max-width', $max-width-sizes, 'px');
+@include generators.utility-class-generator('max-h', 'max-height', $max-height-sizes, 'px');
