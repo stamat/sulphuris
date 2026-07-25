@@ -4,7 +4,7 @@ title: Display & Visibility
 navTitle: Display & Visibility
 description: Utility classes for display, visibility, and overflow — all with full responsive variants.
 order: 5
-keywords: ["display", "d-flex", "d-none", "visibility", "overflow", "hidden"]
+keywords: ["display", "d-flex", "d-grid", "d-none", "visibility", "overflow", "hidden"]
 ---
 
 # Display & Visibility
@@ -20,9 +20,15 @@ Prefix: `d`. Property: `display`.
 | `.d-inline-block` | `display: inline-block` |
 | `.d-flex` | `display: flex` |
 | `.d-inline-flex` | `display: inline-flex` |
+| `.d-grid` | `display: grid` |
+| `.d-inline-grid` | `display: inline-grid` |
 | `.d-table` | `display: table` |
 | `.d-table-cell` | `display: table-cell` |
 | `.d-none` | `display: none` |
+
+> [!NOTE]
+> `.d-grid` pairs with the `.grid-cols-*` and `.gap-*` families — see
+> [Grid](../grid/) for the native CSS grid utilities.
 
 ## Visibility
 

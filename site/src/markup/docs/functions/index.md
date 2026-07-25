@@ -228,6 +228,22 @@ This emits classes like `.p-0`, `.p-8`, `.pt-16`, `.pb-32`, and breakpoint varia
 ));
 ```
 
+### `grid-template-generator($columns, $responsive: true)` mixin
+
+Emits the native-grid `.grid-cols-*` family — `.grid-cols-3` becomes
+`grid-template-columns: repeat(3, minmax(0, 1fr))` — plus the breakpoint
+variants (`.grid-cols-md-3`). Called with `config.$columns` in
+`core/layout/_grid.scss`, so overriding `$columns` is enough for the common
+case; call it directly only if you need a second, different track count.
+
+```scss
+@include gen.grid-template-generator(4);
+// → .grid-cols-1 … .grid-cols-4, plus .grid-cols-sm-1 … .grid-cols-xxl-4
+```
+
+Breakpoints named `''`, `min` or `minimal` are skipped, same as every other
+responsive generator. See [Grid](../grid/) for the classes themselves.
+
 ---
 
 ## Browser fixes (`_fixes.scss`)

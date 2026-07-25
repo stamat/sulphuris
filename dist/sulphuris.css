@@ -1,4 +1,4 @@
-/* sulphuris v2.0.1 | http://sulphuris.github.io | MIT License */
+/* sulphuris v2.0.1 | https://stamat.info/sulphuris | MIT License */
 .border, .border-y, .border-x, .border-r, .border-l, .border-b, .border-t {
   border-color: currentcolor;
   border-style: solid;
@@ -7122,22 +7122,20 @@ h6 {
   cursor: none;
 }
 
-.transition {
-  transition: all 250ms cubic-bezier(0.86, 0, 0.07, 1);
+@media (prefers-reduced-motion: no-preference) {
+  .transition {
+    transition: all 250ms cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .transition-colors {
+    transition:  color 250ms cubic-bezier(0.86, 0, 0.07, 1), background-color 250ms cubic-bezier(0.86, 0, 0.07, 1), border-color 250ms cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .transition-transform {
+    transition: transform 250ms cubic-bezier(0.86, 0, 0.07, 1);
+  }
+  .transition-opacity {
+    transition: opacity 250ms cubic-bezier(0.86, 0, 0.07, 1);
+  }
 }
-
-.transition-colors {
-  transition:  color 250ms cubic-bezier(0.86, 0, 0.07, 1), background-color 250ms cubic-bezier(0.86, 0, 0.07, 1), border-color 250ms cubic-bezier(0.86, 0, 0.07, 1);
-}
-
-.transition-transform {
-  transition: transform 250ms cubic-bezier(0.86, 0, 0.07, 1);
-}
-
-.transition-opacity {
-  transition: opacity 250ms cubic-bezier(0.86, 0, 0.07, 1);
-}
-
 .transition-none {
   transition: none;
 }

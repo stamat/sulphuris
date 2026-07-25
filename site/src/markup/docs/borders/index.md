@@ -117,11 +117,12 @@ Examples:
 .round           → border-radius: 50%; overflow: hidden
 ```
 
-**Overflow fix** (for images inside rounded containers):
-
-```
-.rounded-fix     → applies browser rendering fix for clipped child images
-```
+> [!WARNING]
+> Every `rounded-*` class also sets `overflow: hidden`, via a
+> `[class*='rounded-']` selector. That clips box-shadows, dropdowns, tooltips
+> and focus rings on any element with a radius — including `.rounded-tl-0`,
+> whose only job is to *un*-round a corner. There is no opt-out short of
+> `overflow: visible !important` on the element.
 
 ### Per-corner and per-side zero overrides
 

@@ -89,7 +89,12 @@ Ready-made utility classes. Not responsive. Each uses the default 250ms duration
 | `.transition-opacity` | `transition: opacity …` |
 | `.transition-none` | `transition: none` |
 
+All four animating classes are wrapped in `@media (prefers-reduced-motion: no-preference)`, so they emit nothing for visitors whose system asks for reduced motion. `.transition-none` sits outside the query and always applies — turning motion off is safe regardless of the preference.
+
 These complement the SCSS `transition` mixin documented below.
+
+> [!NOTE]
+> The `transition` mixin itself is **not** gated — it emits a bare `transition` declaration wherever you include it. If you use it directly, add your own `prefers-reduced-motion` query, the way `.btn` does in `src/core/style/_button.scss`.
 
 ## Transition mixin (SCSS API)
 

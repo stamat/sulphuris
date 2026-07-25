@@ -76,7 +76,7 @@ Same four prefixes. Unit: `%`. A `p` suffix marks percentage classes.
 
 Prefix: `inset`. Property: `inset`. Sets all four offsets at once — a shorthand that complements the single-side `t`/`r`/`b`/`l` utilities.
 
-Uses the standard `$sizes` scale, plus negatives, percentages (`p` suffix), and `auto`. Responsive variants exist.
+Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages from `$percent-sizes` (`p` suffix), and `auto`. Responsive variants exist. Unlike the single-side `t`/`r`/`b`/`l` utilities, `inset` is **not** fed `$negative-percent-sizes` — there is no `.inset--50p`.
 
 ```
 .inset-16          → inset: 16px
