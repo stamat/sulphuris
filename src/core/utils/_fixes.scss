@@ -1,12 +1,11 @@
 /* stylelint-disable */
 
-// fixes jump on animateing transform scale
+// fixes jump on animating transform scale
+// -webkit- kept for older Safari; the -moz- pair went unprefixed in Firefox 16
 @mixin animate-scale-fix() {
   -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 

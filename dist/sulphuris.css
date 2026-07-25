@@ -7204,7 +7204,6 @@ h6 {
 }
 
 .hide-native-scrollbar {
-  -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
@@ -7248,8 +7247,6 @@ h6 {
 
 .no-select {
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
