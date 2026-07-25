@@ -172,7 +172,6 @@ Static single-purpose classes, no responsive variants.
 ```
 .appearance-none   → -webkit-appearance: none; appearance: none
 .no-select         → user-select: none (plus -webkit- for older Safari)
-.spacer            → display: block; visibility: hidden; pointer-events: none; width: 100%; height: auto
 .sr-only           → screen-reader-only accessible hide (clip + clip-path + 1px)
 .content-box       → box-sizing: content-box  (overrides global border-box reset)
 ```

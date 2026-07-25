@@ -168,10 +168,17 @@ Responsive variants follow the same breakpoint-infix pattern as alignment.
 .text-lowercase          → text-transform: lowercase
 .text-capitalize         → text-transform: capitalize
 .text-full-width         → text-transform: full-width
+.text-full-size-kana     → text-transform: full-size-kana
 .text-transform-none     → text-transform: none
 ```
 
 Responsive variants available for all breakpoints.
+
+> [!NOTE]
+> `full-width` and `full-size-kana` are CJK typographic values — `full-width`
+> converts halfwidth latin and kana to their fullwidth forms, `full-size-kana`
+> converts small kana to full-size (a ruby-text convention). Both are no-ops on
+> latin-only text.
 
 ---
 

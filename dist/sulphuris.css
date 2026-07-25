@@ -6913,6 +6913,10 @@ h6 {
   text-transform: full-width;
 }
 
+.text-full-size-kana {
+  text-transform: full-size-kana;
+}
+
 .text-transform-none {
   text-transform: none;
 }
@@ -6929,6 +6933,9 @@ h6 {
   }
   .text-sm-full-width {
     text-transform: full-width;
+  }
+  .text-sm-full-size-kana {
+    text-transform: full-size-kana;
   }
   .text-transform-sm-none {
     text-transform: none;
@@ -6947,6 +6954,9 @@ h6 {
   .text-md-full-width {
     text-transform: full-width;
   }
+  .text-md-full-size-kana {
+    text-transform: full-size-kana;
+  }
   .text-transform-md-none {
     text-transform: none;
   }
@@ -6963,6 +6973,9 @@ h6 {
   }
   .text-lg-full-width {
     text-transform: full-width;
+  }
+  .text-lg-full-size-kana {
+    text-transform: full-size-kana;
   }
   .text-transform-lg-none {
     text-transform: none;
@@ -6981,6 +6994,9 @@ h6 {
   .text-xl-full-width {
     text-transform: full-width;
   }
+  .text-xl-full-size-kana {
+    text-transform: full-size-kana;
+  }
   .text-transform-xl-none {
     text-transform: none;
   }
@@ -6997,6 +7013,9 @@ h6 {
   }
   .text-xxl-full-width {
     text-transform: full-width;
+  }
+  .text-xxl-full-size-kana {
+    text-transform: full-size-kana;
   }
   .text-transform-xxl-none {
     text-transform: none;
@@ -7273,14 +7292,6 @@ h6 {
 .appearance-none {
   -webkit-appearance: none;
   appearance: none;
-}
-
-.spacer {
-  display: block;
-  height: auto !important;
-  pointer-events: none;
-  visibility: hidden;
-  width: 100% !important;
 }
 
 .events-none {
@@ -9678,26 +9689,12 @@ template {
   visibility: visible;
 }
 
-.v-collapse {
-  visibility: collapse;
-}
-
-.v-inherit {
-  visibility: inherit;
-}
-
 @media only screen and (min-width: 420px) {
   .v-sm-hidden {
     visibility: hidden;
   }
   .v-sm-visible {
     visibility: visible;
-  }
-  .v-sm-collapse {
-    visibility: collapse;
-  }
-  .v-sm-inherit {
-    visibility: inherit;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -9707,12 +9704,6 @@ template {
   .v-md-visible {
     visibility: visible;
   }
-  .v-md-collapse {
-    visibility: collapse;
-  }
-  .v-md-inherit {
-    visibility: inherit;
-  }
 }
 @media only screen and (min-width: 1024px) {
   .v-lg-hidden {
@@ -9720,12 +9711,6 @@ template {
   }
   .v-lg-visible {
     visibility: visible;
-  }
-  .v-lg-collapse {
-    visibility: collapse;
-  }
-  .v-lg-inherit {
-    visibility: inherit;
   }
 }
 @media only screen and (min-width: 1366px) {
@@ -9735,12 +9720,6 @@ template {
   .v-xl-visible {
     visibility: visible;
   }
-  .v-xl-collapse {
-    visibility: collapse;
-  }
-  .v-xl-inherit {
-    visibility: inherit;
-  }
 }
 @media only screen and (min-width: 1680px) {
   .v-xxl-hidden {
@@ -9748,12 +9727,6 @@ template {
   }
   .v-xxl-visible {
     visibility: visible;
-  }
-  .v-xxl-collapse {
-    visibility: collapse;
-  }
-  .v-xxl-inherit {
-    visibility: inherit;
   }
 }
 .overflow-hidden {

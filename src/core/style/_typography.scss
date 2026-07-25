@@ -87,7 +87,7 @@ h6 {
 }
 
 @include generators.utility-class-generator('text', 'text-decoration', ('underline', 'overline', 'line-through', (value: 'none', alias: 'text-decoration-none')), '', '', false, true);
-@include generators.utility-class-generator('text', 'text-transform', ('uppercase', 'lowercase', 'capitalize', 'full-width', (value: 'none', prefix: 'text-transform')), '', '', false, true);
+@include generators.utility-class-generator('text', 'text-transform', ('uppercase', 'lowercase', 'capitalize', 'full-width', 'full-size-kana', (value: 'none', prefix: 'text-transform')), '', '', false, true);
 
 h1 {
   margin-bottom: 0.33em;

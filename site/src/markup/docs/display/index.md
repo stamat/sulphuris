@@ -38,8 +38,6 @@ Prefix: `v`. Property: `visibility`.
 |---|---|
 | `.v-hidden` | `visibility: hidden` |
 | `.v-visible` | `visibility: visible` |
-| `.v-collapse` | `visibility: collapse` |
-| `.v-inherit` | `visibility: inherit` |
 
 > [!NOTE]
 > `.v-hidden` hides the element but it still occupies space in the layout. Use `.d-none` to remove it from flow entirely.
