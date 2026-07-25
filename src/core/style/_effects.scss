@@ -1,4 +1,13 @@
+@use '../config';
 @use '../utils/generators';
+
+// Box shadow. `.shadow-md` => box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%)
+@include generators.utility-class-generator((
+  prefix: 'shadow',
+  property: 'box-shadow',
+  values: config.$shadows,
+  responsive: false
+));
 
 // Opacity. `.opacity-50` => opacity: 0.5
 @include generators.utility-class-generator((

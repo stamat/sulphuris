@@ -2,12 +2,42 @@
 layout: docs
 title: Effects
 navTitle: Effects
-description: Utility classes for CSS filters and z-index, plus a SCSS transition mixin backed by configurable custom easings.
+description: Utility classes for box shadows, CSS filters and z-index, plus a SCSS transition mixin backed by configurable custom easings.
 order: 13
-keywords: ["filter", "blur", "opacity", "z-index", "transition", "easing"]
+keywords: ["shadow", "box-shadow", "filter", "blur", "opacity", "z-index", "transition", "easing"]
 ---
 
 # Effects
+
+## Box shadow
+
+Prefix: `shadow`. Property: `box-shadow`. Not responsive.
+
+Generated from the `$shadows` map in `_config.scss`.
+
+| Class | CSS |
+|---|---|
+| `.shadow-sm` | `box-shadow: 0 1px 2px rgb(0 0 0 / 5%)` |
+| `.shadow-md` | `box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%)` |
+| `.shadow-lg` | `box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%)` |
+| `.shadow-xl` | `box-shadow: 0 20px 25px -5px rgb(0 0 0 / 10%)` |
+| `.shadow-none` | `box-shadow: none` |
+
+Override or extend the scale in your config — the class names follow the map keys:
+
+```scss
+$shadows: (
+  'sm': 0 1px 2px rgb(0 0 0 / 5%),
+  'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
+  'lg': 0 10px 15px -3px rgb(0 0 0 / 10%),
+  'xl': 0 20px 25px -5px rgb(0 0 0 / 10%),
+  'inner': inset 0 2px 4px rgb(0 0 0 / 5%),
+  'none': none
+);
+// → adds .shadow-inner
+```
+
+Safe to pair with `.rounded-*` — since `3.0.0` those classes no longer set `overflow: hidden`, so shadows are not clipped on rounded elements.
 
 ## Filter
 

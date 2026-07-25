@@ -165,6 +165,17 @@ $custom-easings: (
 $default-transition-duration: 250ms !default;
 $default-transition-easing: 'ease-in-out-quint' !default;
 
+/*
+ * SHADOWS - 'shadow label': box-shadow value
+ */
+$shadows: (
+  'sm': 0 1px 2px rgb(0 0 0 / 5%),
+  'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
+  'lg': 0 10px 15px -3px rgb(0 0 0 / 10%),
+  'xl': 0 20px 25px -5px rgb(0 0 0 / 10%),
+  'none': none
+) !default;
+
 $button: (
   height: 56px,
   padding-x: 32px,

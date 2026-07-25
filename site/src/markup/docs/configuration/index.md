@@ -215,6 +215,21 @@ $default-transition-easing:   'ease-in-out-quint';
 
 Used by the `transition()` mixin. See [Effects](../effects/).
 
+## Shadows
+
+```scss
+$shadows: (
+  'sm':   0 1px 2px rgb(0 0 0 / 5%),
+  'md':   0 4px 6px -1px rgb(0 0 0 / 10%),
+  'lg':   0 10px 15px -3px rgb(0 0 0 / 10%),
+  'xl':   0 20px 25px -5px rgb(0 0 0 / 10%),
+  'none': none
+);
+```
+
+Map keys become class names: `.shadow-sm` … `.shadow-none`. Add a key, get a
+class. See [Effects](../effects/).
+
 ## Button
 
 The single button primitive (`.btn`) is sized from this map:
