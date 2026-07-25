@@ -313,11 +313,6 @@
 }
 .round {
   border-radius: 50%;
-  overflow: hidden;
-}
-
-[class*=rounded-] {
-  overflow: hidden;
 }
 
 .rounded-0 {

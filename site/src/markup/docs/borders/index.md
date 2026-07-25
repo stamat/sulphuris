@@ -95,7 +95,7 @@ Grades: `100` (lightest) → `500` (base) → `900` (darkest).
 
 ## Border radius
 
-Generated from `$border-radiuses`: `0, 4, 6, 8, 16, 24, 32` (px). Prefix `rounded`. Not responsive. All `.rounded-*` elements get `overflow: hidden` applied automatically.
+Generated from `$border-radiuses`: `0, 4, 6, 8, 16, 24, 32` (px). Prefix `rounded`. Not responsive. Radius only — these classes set `border-radius` and nothing else.
 
 ```
 .rounded-{size}  → border-radius: {size}px
@@ -114,15 +114,26 @@ Examples:
 **Full circle:**
 
 ```
-.round           → border-radius: 50%; overflow: hidden
+.round           → border-radius: 50%
 ```
 
-> [!WARNING]
-> Every `rounded-*` class also sets `overflow: hidden`, via a
-> `[class*='rounded-']` selector. That clips box-shadows, dropdowns, tooltips
-> and focus rings on any element with a radius — including `.rounded-tl-0`,
-> whose only job is to *un*-round a corner. There is no opt-out short of
-> `overflow: visible !important` on the element.
+### Clipping child content
+
+Rounding an element does **not** clip what's inside it. If a child reaches the
+rounded corner — a full-bleed image, a filled swatch — add `.overflow-hidden`:
+
+```html
+<div class="rounded-8 overflow-hidden">
+  <img src="…" alt="…">
+</div>
+```
+
+> [!NOTE]
+> Up to v2, every `rounded-*` class carried `overflow: hidden` implicitly, via a
+> `[class*='rounded-']` selector. That clipped box-shadows, dropdowns and focus
+> rings on any element with a radius, and applied even to `.rounded-tl-0`, whose
+> only job is to *un*-round a corner. It is gone as of 3.0.0 — clipping is opt-in
+> now.
 
 ### Per-corner and per-side zero overrides
 

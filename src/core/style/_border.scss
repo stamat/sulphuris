@@ -59,12 +59,11 @@
 
 .round {
   border-radius: 50%;
-  overflow: hidden;
 }
 
-[class*='rounded-'] {
-  overflow: hidden;
-}
+// No blanket `[class*='rounded-'] { overflow: hidden }` here on purpose: it
+// clipped shadows, dropdowns and focus rings on every element with a radius,
+// and matched `.rounded-tl-0` too. Clipping is opt-in via `.overflow-hidden`.
 
 @include generators.utility-class-generator('rounded', 'border-radius', config.$border-radiuses, 'px', '', false, false);
 
