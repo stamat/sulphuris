@@ -4,7 +4,7 @@ title: Typography
 navTitle: Typography
 description: Type scale, responsive heading sizes, font-family utilities, and text decoration/alignment helpers generated from the $typography config map.
 order: 10
-keywords: ["typography", "heading", "font", "text", "h1", "paragraph", "rem", "text-align", "list"]
+keywords: ["typography", "heading", "font", "text", "h1", "paragraph", "rem", "text-align", "list", "truncate", "ellipsis"]
 ---
 
 # Typography
@@ -189,6 +189,22 @@ Responsive variants available for all breakpoints.
 
 ```
 .text-nowrap            → white-space: nowrap
+```
+
+## Truncation
+
+```
+.truncate               → overflow: hidden; white-space: nowrap; text-overflow: ellipsis
+```
+
+Single-line ellipsis. The element needs a width to overflow against — a block
+element inherits one from its parent, but a flex or grid child does not shrink
+below its content by default, so pair it with `.min-w-0` there:
+
+```html
+<div class="d-flex">
+  <span class="truncate min-w-0">A very long label that gets cut off…</span>
+</div>
 ```
 
 ---

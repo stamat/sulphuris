@@ -4,7 +4,7 @@ title: Borders & Radius
 navTitle: Borders & Radius
 description: Utility classes for border width, border style, border colour, and border radius — including per-side shorthands and responsive variants.
 order: 11
-keywords: ["border", "border-radius", "rounded", "border-color", "border-width"]
+keywords: ["border", "border-radius", "rounded", "rounded-full", "pill", "border-color", "border-width"]
 ---
 
 # Borders & Radius
@@ -116,6 +116,16 @@ Examples:
 ```
 .round           → border-radius: 50%
 ```
+
+**Pill:**
+
+```
+.rounded-full    → border-radius: 9999px
+```
+
+`.round` is a circle — 50% of *both* axes, so a wide element becomes an ellipse.
+`.rounded-full` is a stadium: the radius is capped at half the shorter side, so
+the ends stay semicircular at any width. Use it for pills, tags and badges.
 
 ### Clipping child content
 

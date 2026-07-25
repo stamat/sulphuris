@@ -116,3 +116,11 @@ h6 {
 .text-nowrap {
   white-space: nowrap;
 }
+
+// Single-line ellipsis. Needs a constrained width to do anything — a block
+// element gets one from its parent, an inline-flex child may need `.min-w-0`.
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

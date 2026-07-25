@@ -61,6 +61,12 @@
   border-radius: 50%;
 }
 
+// `.round` is a circle (50% of both axes). This is a pill: the radius is capped
+// at half the shorter side, so it stays a stadium shape at any width.
+.rounded-full {
+  border-radius: 9999px;
+}
+
 // No blanket `[class*='rounded-'] { overflow: hidden }` here on purpose: it
 // clipped shadows, dropdowns and focus rings on every element with a radius,
 // and matched `.rounded-tl-0` too. Clipping is opt-in via `.overflow-hidden`.

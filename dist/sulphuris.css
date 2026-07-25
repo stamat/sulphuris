@@ -315,6 +315,10 @@
   border-radius: 50%;
 }
 
+.rounded-full {
+  border-radius: 9999px;
+}
+
 .rounded-0 {
   border-radius: 0px;
 }
@@ -7023,6 +7027,12 @@ h6 {
 
 .text-nowrap {
   white-space: nowrap;
+}
+
+.truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .filter-invert {
