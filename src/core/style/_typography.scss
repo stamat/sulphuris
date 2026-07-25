@@ -40,59 +40,52 @@ h6 {
   font-family: config.$mono-font !important;
 }
 
-//TODO: Prefer font over text for weight utility classes in v1.1.0
+// Weight lives under `font-`, matching the CSS property. The `.text-*` aliases
+// are gone — `text-*` is reserved for real `text-` properties (`text-align`,
+// `text-transform`, `text-decoration`).
 
-.text-thin,
 .font-thin {
   font-weight: 100 !important;
 }
 
-.text-ultra-light,
 .font-ultra-light {
   font-weight: 200 !important;
 }
 
-.text-light,
 .font-light {
   font-weight: 300 !important;
 }
 
-.text-normal,
 .font-normal {
   font-weight: 400 !important;
 }
 
-.text-medium,
 .font-medium {
   font-weight: 500 !important;
 }
 
-.text-semi-bold,
 .font-semi-bold {
   font-weight: 600 !important;
 }
 
-.text-bold,
 .font-bold {
   font-weight: 700 !important;
 }
 
-.text-ultra-bold,
 .font-ultra-bold {
   font-weight: 800 !important;
 }
 
-.text-heavy,
 .font-black {
   font-weight: 900 !important;
 }
 
-.text-lighter,
+// Relative to the parent's weight, so the result depends on where they land.
+// Flagged for removal — see IMPROVEMENTS.md.
 .font-lighter {
   font-weight: lighter !important;
 }
 
-.text-bolder,
 .font-bolder {
   font-weight: bolder !important;
 }

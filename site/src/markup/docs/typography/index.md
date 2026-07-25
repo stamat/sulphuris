@@ -108,21 +108,27 @@ Override the font family on any element. All use `!important`.
 
 ## Font weight utilities
 
-Both `.text-*` and `.font-*` forms exist (identical output). All use `!important`.
+Weight lives under `font-`, matching the CSS property. All use `!important`.
 
 | Class | `font-weight` |
 |---|---|
-| `.text-thin` / `.font-thin` | `100` |
-| `.text-ultra-light` / `.font-ultra-light` | `200` |
-| `.text-light` / `.font-light` | `300` |
-| `.text-normal` / `.font-normal` | `400` |
-| `.text-medium` / `.font-medium` | `500` |
-| `.text-semi-bold` / `.font-semi-bold` | `600` |
-| `.text-bold` / `.font-bold` | `700` |
-| `.text-ultra-bold` / `.font-ultra-bold` | `800` |
-| `.text-heavy` / `.font-black` | `900` |
-| `.text-lighter` / `.font-lighter` | `lighter` |
-| `.text-bolder` / `.font-bolder` | `bolder` |
+| `.font-thin` | `100` |
+| `.font-ultra-light` | `200` |
+| `.font-light` | `300` |
+| `.font-normal` | `400` |
+| `.font-medium` | `500` |
+| `.font-semi-bold` | `600` |
+| `.font-bold` | `700` |
+| `.font-ultra-bold` | `800` |
+| `.font-black` | `900` |
+| `.font-lighter` | `lighter` |
+| `.font-bolder` | `bolder` |
+
+> [!WARNING]
+> The `.text-*` weight aliases (`.text-bold`, `.text-heavy`, …) were removed in `3.0.0`. `text-*` is reserved for real `text-` properties — `text-align`, `text-transform`, `text-decoration`. Rename to the `font-*` form; `.text-heavy` becomes `.font-black`.
+
+> [!NOTE]
+> `font-weight: lighter | bolder` resolves against the **parent's** weight, so `.font-lighter` / `.font-bolder` give different results depending on where you apply them. Prefer a numeric class.
 
 ---
 
