@@ -4,7 +4,7 @@ title: Grid & Container
 navTitle: Grid & Container
 description: Twelve-column flexbox grid with responsive column widths, offsets, and a max-width container that switches gutters at the lg breakpoint.
 order: 8
-keywords: ["grid", "columns", "col", "container", "offset", "gutter", "row"]
+keywords: ["grid", "columns", "col", "container", "offset", "gutter", "row", "place-items", "place-content"]
 ---
 
 # Grid & Container
@@ -162,5 +162,41 @@ Separate from the 12-column flex system above, these utilities drive a real `dis
   <div>Cell A</div>
   <div>Cell B</div>
   <div>Cell C</div>
+</div>
+```
+
+### Alignment
+
+`place-items` and `place-content` set both axes at once — the row axis (`align-*`) and the column axis (`justify-*`) — so `.place-center` is a one-class replacement for `.align-center.justify-center`.
+
+**Prefix:** `place`  **Property:** `place-items`
+
+| Class | CSS |
+|---|---|
+| `.place-normal` | `place-items: normal` |
+| `.place-center` | `place-items: center` |
+| `.place-start` | `place-items: start` |
+| `.place-end` | `place-items: end` |
+| `.place-stretch` | `place-items: stretch` |
+
+**Prefix:** `place-content`  **Property:** `place-content`
+
+| Class | CSS |
+|---|---|
+| `.place-content-normal` | `place-content: normal` |
+| `.place-content-center` | `place-content: center` |
+| `.place-content-start` | `place-content: start` |
+| `.place-content-end` | `place-content: end` |
+| `.place-content-stretch` | `place-content: stretch` |
+| `.place-content-space-between` | `place-content: space-between` |
+| `.place-content-space-around` | `place-content: space-around` |
+
+`place-items` aligns each item inside its own track; `place-content` aligns the track grid as a whole inside the container. Both prefixes generate responsive variants (`.place-md-center`, `.place-content-lg-start`).
+
+```html
+<div class="d-grid grid-cols-3 gap-16 place-center">
+  <div>Centered in its cell</div>
+  <div>Centered in its cell</div>
+  <div>Centered in its cell</div>
 </div>
 ```

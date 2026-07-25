@@ -49,6 +49,11 @@
 // Native CSS grid (`display: grid` via `.d-grid`) column templates.
 @include generators.grid-template-generator(config.$columns);
 
+// Box-alignment shorthands. `.place-*` is `place-items`, mirroring `.align-*`
+// => `align-items`; `place-content` keeps its full name to stay unambiguous.
+@include generators.utility-class-generator('place', 'place-items', ('normal', 'center', 'start', 'end', 'stretch'));
+@include generators.utility-class-generator('place-content', 'place-content', ('normal', 'center', 'start', 'end', 'stretch', 'space-between', 'space-around'));
+
 .grid-reverse {
   flex-direction: row-reverse;
 }
