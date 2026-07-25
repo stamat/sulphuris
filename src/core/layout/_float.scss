@@ -1,9 +1,0 @@
-@use '../utils/fixes';
-@use '../utils/generators';
-
-.clearfix {
-  @include fixes.clearfix;
-}
-
-@include generators.utility-class-generator('float', 'float', ('left', 'right', 'none'), '', '', false, true);
-@include generators.utility-class-generator('clear', 'clear', ('left', 'right', 'both', 'none'), '', '', false, true);

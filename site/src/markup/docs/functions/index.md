@@ -277,6 +277,11 @@ Two mixins for targeted rendering quirks. Include only where needed.
 }
 ```
 
+`clearfix()` no longer backs a `.clearfix` class — the float, clear and clearfix
+utilities were dropped in 3.0.0. The mixin stays for the case it is still good
+for: clearing a float you set yourself, in your own CSS. Sulphuris emits no
+floats.
+
 ---
 
 ## Normalize (`_normalize.scss`)

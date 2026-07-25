@@ -2,9 +2,9 @@
 layout: docs
 title: Position
 navTitle: Position
-description: Utility classes for position, top/right/bottom/left offsets (px and %), z-index, float, clear, and related layout helpers.
+description: Utility classes for position, top/right/bottom/left offsets (px and %), z-index, and related layout helpers.
 order: 7
-keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left", "z-index", "float", "inset", "inset-inline", "inset-block", "logical", "rtl"]
+keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left", "z-index", "inset", "inset-inline", "inset-block", "logical", "rtl"]
 ---
 
 # Position
@@ -120,37 +120,6 @@ Scale: `-1, 0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 50, 100`
 .z-100             → z-index: 100
 ```
 
-## Float & Clear
-
-Both groups generate responsive variants.
-
-**Float** — prefix: `float`. Property: `float`.
-
-| Class | CSS |
-|---|---|
-| `.float-left` | `float: left` |
-| `.float-right` | `float: right` |
-| `.float-none` | `float: none` |
-
-**Clear** — prefix: `clear`. Property: `clear`.
-
-| Class | CSS |
-|---|---|
-| `.clear-left` | `clear: left` |
-| `.clear-right` | `clear: right` |
-| `.clear-both` | `clear: both` |
-| `.clear-none` | `clear: none` |
-
-**Clearfix**
-
-```css
-.clearfix::after {
-  content: "";
-  display: table;
-  clear: both;
-}
-```
-
 ## Helpers (_misc.scss)
 
 Static single-purpose classes, no responsive variants.
@@ -213,7 +182,7 @@ Static single-purpose classes, no responsive variants.
 
 ## Responsive
 
-All offset, position, z-index, float, and clear classes generate responsive variants. Insert a breakpoint name between the prefix and the size key.
+All offset, position and z-index classes generate responsive variants. Insert a breakpoint name between the prefix and the size key.
 
 Pattern: `.{prefix}-{bp}-{key}`
 
@@ -223,7 +192,6 @@ Pattern: `.{prefix}-{bp}-{key}`
 .t-md--16              → top: -16px           (min-width: 768px)
 .l-xl-50p              → left: 50%            (min-width: 1366px)
 .z-md-10               → z-index: 10          (min-width: 768px)
-.float-md-left         → float: left          (min-width: 768px)
 ```
 
 Breakpoints (all min-width):
