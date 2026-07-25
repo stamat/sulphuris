@@ -104,6 +104,8 @@ The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom)
 .m-inline-md-16    → margin-inline: 16px  (min-width: 768px)
 ```
 
+Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`, documented under [Position](/docs/position/).
+
 ## Quick reference
 
 ```

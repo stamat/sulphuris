@@ -4,7 +4,7 @@ title: Position
 navTitle: Position
 description: Utility classes for position, top/right/bottom/left offsets (px and %), z-index, float, clear, and related layout helpers.
 order: 7
-keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left", "z-index", "float"]
+keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left", "z-index", "float", "inset", "inset-inline", "inset-block", "logical", "rtl"]
 ---
 
 # Position
@@ -84,6 +84,26 @@ Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages f
 .inset-50p         → inset: 50%
 .inset-auto        → inset: auto
 .inset-md-16       → inset: 16px  (min-width: 768px)
+```
+
+## Logical inset (RTL-aware)
+
+Prefixes: `inset-inline`, `inset-block`. The physical `inset` above sets all four sides; these two set a **writing-direction-aware** pair, so they flip automatically under RTL — the positioning counterpart to the logical `.m-inline-*` / `.p-block-*` spacing utilities.
+
+| Class pattern | CSS property |
+|---|---|
+| `.inset-inline-{size}` | `inset-inline` (left + right in LTR) |
+| `.inset-block-{size}` | `inset-block` (top + bottom) |
+
+Same scales as `inset`: `$sizes`, `$negative-sizes`, `$percent-sizes` (`p` suffix), and `auto`. Responsive.
+
+```
+.inset-inline-0    → inset-inline: 0px
+.inset-block-16    → inset-block: 16px
+.inset-inline--8   → inset-inline: -8px
+.inset-block-50p   → inset-block: 50%
+.inset-inline-auto → inset-inline: auto
+.inset-block-md-16 → inset-block: 16px  (min-width: 768px)
 ```
 
 ## Z-index
