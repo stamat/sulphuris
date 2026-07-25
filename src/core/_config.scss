@@ -61,6 +61,11 @@ $container-breakpoint: 'lg' !default;
 $grid-gutter: 32px !default;
 $grid-gutter-mobile: 16px !default;
 $columns: 12 !default;
+// Native-grid row tracks, a separate knob from $columns and deliberately
+// smaller. `grid-template-rows` only does visible work on a container with a
+// definite height, and real row templates are 2–6 deep; 7–12 would be 72 dead
+// selectors. Raise it if a layout needs them.
+$rows: 6 !default;
 
 /*
  * COLORS

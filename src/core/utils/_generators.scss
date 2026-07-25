@@ -383,28 +383,39 @@ $breakpoints: config.$breakpoints;
   }
 }
 
-// Native CSS-grid column templates: `.grid-cols-3` => 3 equal minmax(0,1fr)
-// tracks. Pair with `.d-grid` and `.gap-*`. Responsive by default.
-@mixin grid-template-generator($columns, $responsive: true) {
-  @for $i from 1 through $columns {
-    .grid-cols-#{$i} {
-      grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
-    }
+/*
+ * Native CSS-grid track templates: `1…$n` => `repeat(n, minmax(0, 1fr))`.
+ * Feed to `utility-class-generator` for `.grid-cols-*` / `.grid-rows-*`.
+ *
+ * @param $n: (number) track count
+ * @return (map) keyed 1…$n
+ */
+@function grid-track-map($n) {
+  $map: ();
+
+  @for $i from 1 through $n {
+    $map: map.merge($map, ($i: 'repeat(#{$i}, minmax(0, 1fr))'));
   }
 
-  @if $responsive {
-    @each $b-name, $b-value in $breakpoints {
-      @if $b-name != '' and $b-name != 'min' and $b-name != 'minimal' {
-        @media #{generate-breakpoint($b-name)} {
-          @for $i from 1 through $columns {
-            .grid-cols-#{$b-name}-#{$i} {
-              grid-template-columns: repeat(#{$i}, minmax(0, 1fr));
-            }
-          }
-        }
-      }
-    }
+  @return $map;
+}
+
+/*
+ * Native CSS-grid item spans: `1…$n` => `span n / span n`, plus `full` =>
+ * `1 / -1` for edge-to-edge regardless of track count. Feed to
+ * `utility-class-generator` for `.grid-column-span-*` / `.grid-row-span-*`.
+ *
+ * @param $n: (number) largest span
+ * @return (map) keyed 1…$n plus `full`
+ */
+@function grid-span-map($n) {
+  $map: ();
+
+  @for $i from 1 through $n {
+    $map: map.merge($map, ($i: 'span #{$i} / span #{$i}'));
   }
+
+  @return map.merge($map, ('full': '1 / -1'));
 }
 
 @function get-min-breakpoint-value() {

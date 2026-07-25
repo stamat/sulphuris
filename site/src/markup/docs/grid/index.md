@@ -2,12 +2,20 @@
 layout: docs
 title: Grid & Container
 navTitle: Grid & Container
-description: Twelve-column flexbox grid with responsive column widths, offsets, and a max-width container that switches gutters at the lg breakpoint.
+description: Twelve-column flexbox grid with responsive column widths, offsets and a max-width container, plus native CSS grid track templates, item spans and auto-flow.
 order: 8
-keywords: ["grid", "columns", "col", "container", "offset", "gutter", "row", "place-items", "place-content"]
+keywords: ["grid", "columns", "col", "container", "offset", "gutter", "row", "place-items", "place-content", "grid-cols", "grid-rows", "span", "grid-column-span", "grid-row-span", "auto-flow", "grid-flow", "dense", "css grid"]
 ---
 
 # Grid & Container
+
+## Which grid
+
+Sulphuris ships two. **`.grid` + `.col-*` is the default** — flexbox, twelve columns, responsive widths, offsets and gutters. Use it for page layout and anything column-shaped.
+
+Reach for [native CSS grid](#native-css-grid) (`.d-grid` + `.grid-cols-*` + `.gap-*`) when you need two-dimensional control: equal-height rows, row templates, item spanning.
+
+They compose — a `.col-6` can be a `.d-grid`.
 
 ## Container
 
@@ -114,6 +122,8 @@ Responsive variants follow the same pattern: `.col-offset-{bp}-N`.
 
 Add `.grid-reverse` to a `.grid` row to set `flex-direction: row-reverse`. When `.grid-reverse` is present, offset classes switch from `margin-left` to `margin-right`, so offsets keep working visually in the reversed direction.
 
+Flex-only — `flex-direction` does nothing on a `.d-grid` container. Native grid reverses with `direction: rtl` or explicit line placement.
+
 ```html
 <div class="grid grid-gutter grid-reverse">
   <div class="col-4 col-offset-2">Pushed from the right</div>
@@ -153,15 +163,83 @@ Separate from the 12-column flex system above, these utilities drive a real `dis
 |---|---|
 | `.d-grid` | `display: grid` |
 | `.d-inline-grid` | `display: inline-grid` |
-| `.grid-cols-{n}` | `grid-template-columns: repeat({n}, minmax(0, 1fr))` |
 
-`.grid-cols-{n}` is generated for `n` = 1–12 and has responsive variants (`.grid-cols-md-3`). Pair with the `.gap-*` utilities for gutters.
+Every class in this section spells out the axis as `column` / `row`, never `col` — matching `.flex-column` in [Flexbox](/docs/flexbox/), and keeping the flex grid's `.col-*` namespace clear.
+
+All of them generate responsive variants, with the breakpoint before the value: `.grid-cols-md-3`, `.grid-column-span-lg-4`, `.grid-flow-md-column`.
+
+### Track templates
+
+| Class | CSS |
+|---|---|
+| `.grid-cols-{n}` | `grid-template-columns: repeat({n}, minmax(0, 1fr))` |
+| `.grid-rows-{n}` | `grid-template-rows: repeat({n}, minmax(0, 1fr))` |
+
+Columns run 1–12 (`$columns`), rows 1–6 (`$rows`). Rows stop at 6 on purpose: `grid-template-rows` only does visible work on a container with a definite height, and templates that deep are rare. Raise `$rows` if you need more.
+
+The `minmax(0, 1fr)` — rather than plain `1fr` — is what stops a long word or a wide `<pre>` from blowing a track past its share.
+
+Pair with the `.gap-*` utilities for gutters.
 
 ```html
 <div class="d-grid grid-cols-1 grid-cols-md-3 gap-16">
   <div>Cell A</div>
   <div>Cell B</div>
   <div>Cell C</div>
+</div>
+```
+
+Rows need a height to divide, so give the container one:
+
+```html
+<div class="d-grid grid-rows-3 gap-8 h-100vh">
+  <header>Fixed third</header>
+  <main>Fixed third</main>
+  <footer>Fixed third</footer>
+</div>
+```
+
+### Item spans
+
+| Class | CSS |
+|---|---|
+| `.grid-column-span-{n}` | `grid-column: span {n} / span {n}` |
+| `.grid-column-span-full` | `grid-column: 1 / -1` |
+| `.grid-row-span-{n}` | `grid-row: span {n} / span {n}` |
+| `.grid-row-span-full` | `grid-row: 1 / -1` |
+
+`{n}` matches the track ranges — 1–12 for columns, 1–6 for rows. `-full` spans the first line to the last regardless of how many tracks the container has, which is the one that survives a change to `.grid-cols-*`.
+
+```html
+<div class="d-grid grid-cols-3 gap-16">
+  <div class="grid-column-span-full">Full-width heading</div>
+  <div class="grid-column-span-2">Two thirds</div>
+  <div>One third</div>
+</div>
+```
+
+### Auto-flow — `.grid-flow-*`
+
+Controls where items land when they have no explicit placement.
+
+| Class | CSS |
+|---|---|
+| `.grid-flow-row` | `grid-auto-flow: row` |
+| `.grid-flow-column` | `grid-auto-flow: column` |
+| `.grid-flow-dense` | `grid-auto-flow: dense` |
+| `.grid-flow-row-dense` | `grid-auto-flow: row dense` |
+| `.grid-flow-column-dense` | `grid-auto-flow: column dense` |
+
+`row` is the CSS default — the class exists to undo a `column` set at a narrower breakpoint. `dense` backfills holes left by spanning items instead of leaving gaps, at the cost of items appearing out of source order (which is also what it does to keyboard and screen-reader order, so use it for galleries, not for content that has to be read in sequence).
+
+`.grid-flow-dense` on its own is `row dense`. The two combined forms exist because `grid-auto-flow` is one property — `.grid-flow-column.grid-flow-dense` cannot work, the second class just wins.
+
+```html
+<!-- Masonry-ish gallery: no gaps, source order not guaranteed -->
+<div class="d-grid grid-cols-4 gap-8 grid-flow-row-dense">
+  <img class="grid-column-span-2" src="wide.jpg" alt="">
+  <img src="a.jpg" alt="">
+  <img src="b.jpg" alt="">
 </div>
 ```
 

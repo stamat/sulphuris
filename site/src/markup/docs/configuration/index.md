@@ -105,9 +105,12 @@ $container-breakpoint:    'lg';    // breakpoint the container switches at
 $grid-gutter:             32px;
 $grid-gutter-mobile:      16px;
 $columns:                 12;      // grid column count → .col-1 … .col-12
+$rows:                    6;       // native grid row count → .grid-rows-1 … -6
 ```
 
-Change `$columns` and the whole `.col-*` / `.col-offset-*` set regenerates.
+Change `$columns` and the whole `.col-*` / `.col-offset-*` set regenerates, along with `.grid-cols-*` and `.grid-column-span-*`.
+
+`$rows` only drives the native grid — `.grid-rows-*` and `.grid-row-span-*`. It is deliberately smaller than `$columns`: `grid-template-rows` only does visible work on a container with a definite height, so deep row templates are rare. Raise it if a layout needs them.
 
 ## Colours
 

@@ -228,21 +228,37 @@ This emits classes like `.p-0`, `.p-8`, `.pt-16`, `.pb-32`, and breakpoint varia
 ));
 ```
 
-### `grid-template-generator($columns, $responsive: true)` mixin
+### `grid-track-map($n)`
 
-Emits the native-grid `.grid-cols-*` family — `.grid-cols-3` becomes
-`grid-template-columns: repeat(3, minmax(0, 1fr))` — plus the breakpoint
-variants (`.grid-cols-md-3`). Called with `config.$columns` in
-`core/layout/_grid.scss`, so overriding `$columns` is enough for the common
-case; call it directly only if you need a second, different track count.
+Returns a map keyed `1…$n` whose values are `repeat(n, minmax(0, 1fr))`. Not a
+generator itself — feed it to `utility-class-generator`, which is what emits the
+classes and their breakpoint variants.
 
 ```scss
-@include gen.grid-template-generator(4);
+@include gen.utility-class-generator('grid-cols', 'grid-template-columns', gen.grid-track-map(4));
 // → .grid-cols-1 … .grid-cols-4, plus .grid-cols-sm-1 … .grid-cols-xxl-4
 ```
 
-Breakpoints named `''`, `min` or `minimal` are skipped, same as every other
-responsive generator. See [Grid](../grid/) for the classes themselves.
+`core/layout/_grid.scss` calls it twice, with `config.$columns` and
+`config.$rows`, to produce `.grid-cols-*` and `.grid-rows-*`. Overriding those
+two config values is enough for the common case; call it directly only for a
+third track family with a different count.
+
+### `grid-span-map($n)`
+
+Returns a map keyed `1…$n` plus `full`, whose values are `span n / span n` and
+`1 / -1`. Same shape of use — pass it to `utility-class-generator` with
+`grid-column` or `grid-row`.
+
+```scss
+@include gen.utility-class-generator('grid-column-span', 'grid-column', gen.grid-span-map(4));
+// → .grid-column-span-1 … -4, .grid-column-span-full, plus breakpoint variants
+```
+
+Both are plain maps, so `map.merge` adds your own keys before generating —
+`('screen': '1 / -1')` or a named area — without touching the generator.
+
+See [Grid](../grid/) for the classes themselves.
 
 ---
 

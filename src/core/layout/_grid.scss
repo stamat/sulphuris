@@ -46,8 +46,21 @@
 @include generators.grid-offset-generator(config.$columns);
 @include generators.grid-column-max-generator(config.$columns);
 
-// Native CSS grid (`display: grid` via `.d-grid`) column templates.
-@include generators.grid-template-generator(config.$columns);
+// Native CSS grid (`display: grid` via `.d-grid`). Track templates, item spans
+// and auto-flow. Names carry the full `column` / `row` axis word rather than
+// `col`, matching `.flex-column` — and no generated name contains the substring
+// `col-`, which `.grid-gutter` above matches to pad flex-grid children.
+@include generators.utility-class-generator('grid-cols', 'grid-template-columns', generators.grid-track-map(config.$columns));
+@include generators.utility-class-generator('grid-rows', 'grid-template-rows', generators.grid-track-map(config.$rows));
+@include generators.utility-class-generator('grid-column-span', 'grid-column', generators.grid-span-map(config.$columns));
+@include generators.utility-class-generator('grid-row-span', 'grid-row', generators.grid-span-map(config.$rows));
+@include generators.utility-class-generator('grid-flow', 'grid-auto-flow', (
+  'row': 'row',
+  'column': 'column',
+  'dense': 'dense',
+  'row-dense': 'row dense',
+  'column-dense': 'column dense'
+));
 
 // Box-alignment shorthands. `.place-*` is `place-items`, mirroring `.align-*`
 // => `align-items`; `place-content` keeps its full name to stay unambiguous.
