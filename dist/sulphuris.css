@@ -6735,14 +6735,6 @@ h6 {
   font-weight: 900 !important;
 }
 
-.font-lighter {
-  font-weight: lighter !important;
-}
-
-.font-bolder {
-  font-weight: bolder !important;
-}
-
 .text-left {
   text-align: left;
 }
@@ -6810,7 +6802,6 @@ h6 {
     text-align: center;
   }
 }
-.text-italic,
 .font-italic {
   font-style: italic;
 }

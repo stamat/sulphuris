@@ -80,19 +80,8 @@ h6 {
   font-weight: 900 !important;
 }
 
-// Relative to the parent's weight, so the result depends on where they land.
-// Flagged for removal — see IMPROVEMENTS.md.
-.font-lighter {
-  font-weight: lighter !important;
-}
-
-.font-bolder {
-  font-weight: bolder !important;
-}
-
 @include generators.utility-class-generator('text', 'text-align', ('left', 'right', 'center'), '', '', false, true);
 
-.text-italic,
 .font-italic {
   font-style: italic;
 }

@@ -121,14 +121,11 @@ Weight lives under `font-`, matching the CSS property. All use `!important`.
 | `.font-bold` | `700` |
 | `.font-ultra-bold` | `800` |
 | `.font-black` | `900` |
-| `.font-lighter` | `lighter` |
-| `.font-bolder` | `bolder` |
 
 > [!WARNING]
 > The `.text-*` weight aliases (`.text-bold`, `.text-heavy`, …) were removed in `3.0.0`. `text-*` is reserved for real `text-` properties — `text-align`, `text-transform`, `text-decoration`. Rename to the `font-*` form; `.text-heavy` becomes `.font-black`.
-
-> [!NOTE]
-> `font-weight: lighter | bolder` resolves against the **parent's** weight, so `.font-lighter` / `.font-bolder` give different results depending on where you apply them. Prefer a numeric class.
+>
+> The relative `lighter` / `bolder` classes are gone too. They resolved against the **parent's** weight, so the same class produced a different weight depending on where it landed — the one thing a utility class must not do. Pick the numeric class you actually want.
 
 ---
 
@@ -181,8 +178,10 @@ Responsive variants available for all breakpoints.
 ## Font style
 
 ```
-.text-italic / .font-italic     → font-style: italic
+.font-italic     → font-style: italic
 ```
+
+`.text-italic` was removed in `3.0.0` — `font-style` is a `font-` property, so it belongs in the `font-*` namespace with the weights.
 
 ---
 
