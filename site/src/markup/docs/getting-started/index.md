@@ -119,6 +119,14 @@ If you are hacking on the library (not just consuming it):
 
 ```bash
 npm install       # install dev deps (Poops)
-script/server     # build + watch + live-reload dev server
-script/docs       # build & serve this documentation site
+script/server     # library + demo page, :4040
+script/docs       # demo + this documentation site, :4041
 ```
+
+Use `script/docs` for anything docs-related — it serves the same layout as the
+deployed site (demo at `/`, docs at `/docs/`) and watches `../src`, so library
+edits live-reload too. `script/server` serves the repo root, where `/docs/` does
+not exist until the docs build merges it in.
+
+The [Class Reference](../reference/) page is generated from the built CSS by
+`script/gen-reference.mjs` — both commands above refresh it.

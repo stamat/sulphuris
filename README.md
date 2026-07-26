@@ -82,12 +82,22 @@ reference page per utility category (spacing, sizing, display, flexbox, grid,
 position, colours, typography, borders, buttons, effects, and the SCSS
 functions/mixins API).
 
+The **Class Reference** page is generated, not written — `script/gen-reference.mjs`
+parses the built `dist/sulphuris.css` and emits every selector with its
+declarations, so it cannot drift from what Sass actually produces. It is
+gitignored and rebuilt by `npm run build` and `script/docs`.
+
 Build and serve it locally:
 
 ```bash
-$ script/docs        # build + serve with live reload
+$ script/docs        # build + serve on :4041 with live reload
 $ script/docs -b     # build once, no server
 ```
+
+This server mirrors the deployed layout — the demo page at `/` and the docs at
+`/docs/` — so use it for anything docs-related. `script/server` only serves the
+repo root, where `/docs/` does not exist yet. If `:4041` is taken, Poops picks
+the next free port and prints the URL it actually bound to.
 
 ## 💻 Local Development
 

@@ -35,6 +35,17 @@
       "collections": "index"
     }
   },
+  "copy": {
+    "in": [
+      "../index.html",
+      "../favicon.ico",
+      "../favicon-16x16.png",
+      "../favicon-32x32.png",
+      "../sulphuris-logo.svg",
+      "../dist"
+    ],
+    "out": "dist"
+  },
   "serve": {
     "port": 4041,
     "base": "/dist"

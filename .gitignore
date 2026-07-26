@@ -3,3 +3,6 @@ node_modules
 
 # docs site build output
 site/dist
+
+# generated from dist/sulphuris.css by script/gen-reference.mjs
+site/src/markup/docs/reference/index.md

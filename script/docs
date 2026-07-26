@@ -1,4 +1,7 @@
 #!/bin/bash
 # Build & serve the documentation site (site/) with Poops.
 # Pass -b to build once without serving:  script/docs -b
-cd "$(dirname "$0")/../site" && npx 💩 "$@"
+cd "$(dirname "$0")/.."
+# docs/reference/ is generated from dist/sulphuris.css, so it has to exist first.
+node script/gen-reference.mjs
+cd site && npx 💩 "$@"

@@ -37,7 +37,7 @@
   },
   "scripts": {
     "dev": "npx poops",
-    "build": "npx poops -b && node script/strip-css-comments.mjs",
+    "build": "npx poops -b && node script/strip-css-comments.mjs && node script/gen-reference.mjs",
     "lint:css": "stylelint \"src/**/*.scss\"",
     "lint:js": "eslint \"site/src/js/**/*.ts\"",
     "lint": "npm run lint:css && npm run lint:js",
