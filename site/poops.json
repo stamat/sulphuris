@@ -30,6 +30,8 @@
       "logo": "sulphuris-logo.svg"
     },
     "includePaths": ["_layouts", "_partials"],
+    "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
+    "data": ["../../../package.json"],
     "searchIndex": "search-index.json",
     "sitemap": "sitemap.xml",
     "llms": {
