@@ -55,7 +55,7 @@ button.reset,
   background: transparent;
   border: solid map.get(config.$button, border-width) helpers.color('foreground');
   color: helpers.color('foreground');
-  padding: map.get(config.$button, padding-y - map.get(config.$button, border-width)) map.get(config.$button, padding-x - map.get(config.$button, border-width));
+  padding: (map.get(config.$button, padding-y) - map.get(config.$button, border-width)) (map.get(config.$button, padding-x) - map.get(config.$button, border-width));
 
   @include generators.breakpoint(config.$container-breakpoint) {
     &:hover {

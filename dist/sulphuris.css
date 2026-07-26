@@ -431,6 +431,7 @@ button.reset,
   background: transparent;
   border: solid 2px var(--color-foreground);
   color: var(--color-foreground);
+  padding: 14px 30px;
 }
 @media only screen and (min-width: 1024px) {
   .btn-outline:hover {
