@@ -8,6 +8,12 @@
     }
   },
   "banner": "/* {{ name }} v{{ version }} | {{ homepage }} | {{ license }} License */",
+  "exec": {
+    "styles": [
+      "node script/strip-css-comments.mjs",
+      "node script/gen-reference.mjs"
+    ]
+  },
   "serve" : {
     "port": 4040,
     "base": "/"
