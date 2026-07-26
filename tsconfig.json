@@ -12,5 +12,6 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "resolveJsonModule": true
-  }
+  },
+  "exclude": ["node_modules", "eslint.config.mjs"]
 }
