@@ -3,16 +3,21 @@
 # Sulphuris
 
 [![npm version](https://img.shields.io/npm/v/sulphuris)](https://www.npmjs.com/package/sulphuris)
+[![build status](https://github.com/stamat/sulphuris/actions/workflows/ci.yml/badge.svg)](https://github.com/stamat/sulphuris/actions/workflows/ci.yml)
+[![license](https://img.shields.io/github/license/stamat/sulphuris.svg)](https://github.com/stamat/sulphuris/blob/main/LICENSE)
 
 An adaptable CSS utility library
 
 > [!NOTE]
-> Sulphuris sits somewhere between the old-school utility libraries [Bootstrap](https://github.com/twbs/bootstrap) and [Primer](https://github.com/primer/css) on one side and on the other Tailwind.
+> Sulphuris sits somewhere between the old-school utility libraries [Bootstrap](https://github.com/twbs/bootstrap) and [Primer](https://github.com/primer/css) on one side and on the other [Tailwind](https://github.com/tailwindlabs/tailwindcss).
 
 Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) file that defines almost all utility class generation. It is basically design tokens but in scss. By overriding these configuration variables, you can customize breakpoints, colors, spacing, and more — tailoring the framework to each project's specific needs.
 
+**[📖 Docs](https://stamat.github.io/sulphuris/docs)**
+
 ### Highlights
 
+- **Design tokens** - A single SCSS [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) containing the variables that dictate which utilities will be generated. You can wire your Figma design tokens to diectly override the config variables (with a bit of work, or simply use [poops](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens).
 - **Less !important usage** - abstaining from `!important` usage as much as possible.
 - **Spacing size classes in pixels** - e.g. `.pt-32` results in `padding-top: 32px;`, and `.pt--32` results in `padding-top: -32px;`. **Note:** this might not be smart cause reusability of html like components, revise.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
@@ -28,9 +33,7 @@ $ npm install sulphuris
 
 ### Usage
 
-#### Version 2 (Current)
-
-Uses SCSS modules (`@use`/`@forward`) for better scoping and tree-shaking. This makes it a bit difficult to override the config variables, but future proofs the usage.
+Uses SCSS modules (`@use`/`@forward`) for better scoping and tree-shaking. This makes it a bit difficult to override the config variables, but future proofs the usage (meaning `dart-sass v3`).
 
 To bundle Sulphuris utilities with your project you can use:
 
@@ -61,7 +64,7 @@ The list of config variables you can override or negate (turn off) can be seen i
 
 Overriding the default configuration with create the style utility classes tailored for your project.
 
-#### Version 1
+#### Legacy imports
 
 Previously Sulphuris used the oldschool imports and overrides making it super easy to place your own overrides.
 
@@ -73,31 +76,6 @@ In your main SCSS file, import Sulphuris:
 ```
 
 Be sure to include the `node_modules` directory in your `sass` include paths. This is usually done in your build tool configuration.
-
-## 📚 Documentation
-
-Full documentation lives in [`site/`](site/) as a [Poops](https://github.com/stamat/poops)-built static site — an
-introduction, a getting-started guide, the full configuration reference, and a
-reference page per utility category (spacing, sizing, display, flexbox, grid,
-position, colours, typography, borders, buttons, effects, and the SCSS
-functions/mixins API).
-
-The **Class Reference** page is generated, not written — `script/gen-reference.mjs`
-parses the built `dist/sulphuris.css` and emits every selector with its
-declarations, so it cannot drift from what Sass actually produces. It is
-gitignored and rebuilt by `npm run build` and `script/docs`.
-
-Build and serve it locally:
-
-```bash
-$ script/docs        # build + serve on :4041 with live reload
-$ script/docs -b     # build once, no server
-```
-
-This server mirrors the deployed layout — the demo page at `/` and the docs at
-`/docs/` — so use it for anything docs-related. `script/server` only serves the
-repo root, where `/docs/` does not exist yet. If `:4041` is taken, Poops picks
-the next free port and prints the URL it actually bound to.
 
 ## 💻 Local Development
 
@@ -111,7 +89,18 @@ This project requires `node` and `npm` installed. To setup the project run `npm 
 $ script/server
 ```
 
-Will start a local development server. It will also watch for the changes and rebuild the project when necessary.
+Will start a local development server. It will also watch for the changes and rebuild the project when necessary. `script/server` only serves the repo root, where `/docs/` does not exist yet.
+
+### Generating docs
+
+To develop or build the docs use either following:
+
+```bash
+$ script/docs        # build + serve on :4041 with live reload
+$ script/docs -b     # build once, no server
+```
+
+The **Class Reference** page is generated, not written — `script/gen-reference.mjs` parses the built `dist/sulphuris.css` and emits every selector with its declarations, so it cannot drift from what Sass actually produces.
 
 ### Publishing
 
@@ -119,13 +108,13 @@ Will start a local development server. It will also watch for the changes and re
 $ script/publish
 ```
 
-Will run the [publish script](https://github.com/stamat/sulphuris/blob/main/script/publish) which will lead you through the npm publishing process. It can increment the version, build the code, tag it and publish it to npm.
+Will run the [publish script](https://github.com/stamat/sulphuris/blob/main/script/publish) which will lead you through the npm publishing process. It can increment the version, build the code, tag it and create a new GitHub release (make sure that you have `gh` [GitHub CLI](https://cli.github.com) installed and authentified).
 
-If you want to create an GitHub release related to your version tag - make sure you have [GitHub CLI](https://cli.github.com) installed. This is purely optional.
+Publishing GitHub action is set to publish to NPM when a new release is created.
 
 ## 📝 Contributing
 
-If you have any ideas on how to improve Sulphuris, feel free to open an issue or a pull request. We're always looking for new contributors to help us make this project better.
+If you have any ideas on how to improve Sulphuris, feel free to open an issue or a pull request. Contributions welcome!
 
 ### ToDo:
 
@@ -134,7 +123,12 @@ If you have any ideas on how to improve Sulphuris, feel free to open an issue or
 - [ ] Inline links
 - [ ] Animations and transitions
 - [ ] Form elements
-- [x] WRITE DOCS!!!!! — docs written in `site/`; wire up deployment to complete the site
+
+## Why
+
+It's 2021. After years of making websites I realized I'm copy/pasting a set of utilites that were growing as the time progressed. Primer and Bootstrap were a bit too stubborn for my taste just bedcause I wanted something like that but configurable to the extreme. Something that will adapt to every project that I embark on. So I made my own. 
+
+P.S. I found out about Tailwind a while later. I'm not a guy who follows the news. And even then I prefered the old school, cause sometimes it gets hard to swim in Tailwind class soup.
 
 ## Name
 
@@ -152,4 +146,4 @@ _~Fullstack Alchemist_ :laughing:
 
 ## License
 
-[MIT © Sulphuris](LICENSE)
+[MIT](LICENSE) 2021 [@stamat](https://github.com/stamat)
