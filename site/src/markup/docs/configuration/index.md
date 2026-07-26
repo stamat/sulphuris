@@ -4,7 +4,17 @@ title: Configuration
 navTitle: Configuration
 description: Every Sulphuris utility is generated from the variables in core/_config.scss. This is the full reference of those variables and their defaults.
 order: 2
-keywords: ["config", "configuration", "variables", "sizes", "breakpoints", "colors", "override", "defaults"]
+keywords:
+  [
+    "config",
+    "configuration",
+    "variables",
+    "sizes",
+    "breakpoints",
+    "colors",
+    "override",
+    "defaults",
+  ]
 ---
 
 # Configuration
@@ -24,15 +34,18 @@ Spacing utilities (margin, padding, `top`/`right`/…, gaps) are generated from
 these lists. Values are unitless numbers; the emitting utility appends the unit
 (`px` for spacing, `%` where noted).
 
+<!-- config: sizes, negative-sizes, percent-sizes, negative-percent-sizes, z-index, border-sizes, border-radiuses -->
+
 ```scss
-$sizes:                  0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
-$negative-sizes:         -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
-$percent-sizes:          5,10,15,20,25,50,75,100;
+$sizes:          0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
+$negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
+$percent-sizes:  5,10,15,20,25,50,75,100;
+
 $negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100;
 $z-index:                -1,0,1,2,3,4,5,10,15,20,25,50,100;
 
-$border-sizes:           2,3,4,6,8;
-$border-radiuses:        0,4,6,8,16,24,32;
+$border-sizes:    2,3,4,6,8;
+$border-radiuses: 0,4,6,8,16,24,32;
 ```
 
 A negative value renders as a double dash in the class name: `-32` → `.mt--32`
@@ -44,16 +57,18 @@ Named stacking levels resolved by the `z()` helper (see
 [Functions & Mixins](../functions/)). Separate from the numeric `$z-index`
 scale used by the `.z-*` utility classes.
 
+<!-- config: z-layers -->
+
 ```scss
 $z-layers: (
-  base:     0,
-  dropdown: 10,
-  sticky:   20,
-  overlay:  30,
-  modal:    40,
-  popover:  50,
-  toast:    60,
-  tooltip:  70
+  'base': 0,
+  'dropdown': 10,
+  'sticky': 20,
+  'overlay': 30,
+  'modal': 40,
+  'popover': 50,
+  'toast': 60,
+  'tooltip': 70
 );
 ```
 
@@ -61,14 +76,16 @@ $z-layers: (
 
 The per-side suffixes shared by margin, padding, border, position, etc.
 
+<!-- config: orientations -->
+
 ```scss
 $orientations: (
   't': ('top'),
   'r': ('right'),
   'b': ('bottom'),
   'l': ('left'),
-  'x': ('right', 'left'),   // horizontal
-  'y': ('top', 'bottom')    // vertical
+  'x': ('right', 'left'),
+  'y': ('top', 'bottom')
 );
 ```
 
@@ -80,33 +97,42 @@ sets top and bottom margin.
 Responsive variants are min-width and derived from this map. Add or remove keys
 freely — the class variants follow.
 
+<!-- config: breakpoints -->
+
 ```scss
 $breakpoints: (
   'xxl': 1680px,
-  'xl':  1366px,
-  'lg':  1024px,
-  'md':  768px,
-  'sm':  420px
+  'xl': 1366px,
+  'lg': 1024px,
+  'md': 768px,
+  'sm': 420px
 );
 ```
 
 Internally the map is expanded into min/max ranges, and the base (`''`) range
 covers everything below the smallest breakpoint. A utility variant like
-`.d-md-none` applies from `md` (768px) upward.
+`.d-md-none` applies from `md` upward.
 
 ## Container & grid
 
+<!-- config: container-max-width, container-offset, container-offset-mobile, container-breakpoint, grid-gutter, grid-gutter-mobile, columns, rows -->
+
 ```scss
 $container-max-width:     1680px;
-$container-offset:        56px;    // horizontal gutter, desktop
-$container-offset-mobile: 16px;    // horizontal gutter, mobile
-$container-breakpoint:    'lg';    // breakpoint the container switches at
+$container-offset:        56px;
+$container-offset-mobile: 16px;
+$container-breakpoint:    'lg';
 
-$grid-gutter:             32px;
-$grid-gutter-mobile:      16px;
-$columns:                 12;      // grid column count → .col-1 … .col-12
-$rows:                    6;       // native grid row count → .grid-rows-1 … -6
+$grid-gutter:        32px;
+$grid-gutter-mobile: 16px;
+$columns:            12;
+
+$rows: 6;
 ```
+
+`$container-offset` / `$container-offset-mobile` are the horizontal gutters,
+switching at `$container-breakpoint`. `$columns` is the grid column count
+(`.col-1` … `.col-12`), `$rows` the native grid row count (`.grid-rows-1` … `-6`).
 
 Change `$columns` and the whole `.col-*` / `.col-offset-*` set regenerates, along with `.grid-cols-*` and `.grid-column-span-*`.
 
@@ -118,47 +144,51 @@ Two maps. `$colors` are the named, semantic colours emitted as CSS custom
 properties (`--color-primary`) and used by `.text-*` / `.bg-*`. `$palettes` are
 expanded into 100–900 tint/shade scales.
 
+<!-- config: colors, palettes -->
+
 ```scss
 $colors: (
   foreground: #1a1a1d,
-  background: #ffffff,
-  black:      #1a1a1d,
-  white:      #ffffff,
-  primary:    #f6c026
+  background: #fff,
+  black: #1a1a1d,
+  white: #fff,
+  primary: #f6c026
 );
 
 $palettes: (
-  gray:   #8c8c8e,
+  gray: #8c8c8e,
   yellow: #f6c026,
-  orange: #F4912A,
-  red:    #E41328,
-  violet: #752A6F,
+  orange: #f4912a,
+  red: #e41328,
+  violet: #752a6f,
   purple: #472573,
-  indigo: #3F00FF,
-  blue:   #0F4EB3,
-  teal:   #00A4A4,
-  green:  #10AF2E,
-  lime:   #A4C400,
+  indigo: #3f00ff,
+  blue: #0f4eb3,
+  teal: #00a4a4,
+  green: #10af2e,
+  lime: #a4c400,
 );
 ```
 
-Each palette entry `gray: #8c8c8e` generates `.text-gray-100` … `.text-gray-900`
-(and matching `.bg-*`), with `-500` being the base colour. See
-[Colours](../color/).
+Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
+`.bg-*`), with `-500` being the base colour. See [Colours](../color/).
 
 ### Colour modes (dark mode)
+
+<!-- config: color-modes-selector, color-modes -->
 
 ```scss
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
     colors: (
-      foreground: #ffffff,
+      foreground: #fff,
       background: #1a1a1d,
-      black:      #1a1a1d,
-      white:      #ffffff,
-      primary:    #3F00FF
+      black: #1a1a1d,
+      white: #fff,
+      primary: #3f00ff
     )
+    // palettes: ( ... )
   )
 );
 ```
@@ -169,19 +199,23 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 
 ## Typography
 
+<!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps -->
+
 ```scss
-$base-font-size: 16px;         // 1rem reference
+$base-font-size: 16px;
 
-$heading-font:   'Roboto', sans-serif;
-$paragraph-font: 'Nunito', sans-serif;
-$mono-font:      monospace;
-
+$heading-font:          'Roboto', sans-serif;
+$paragraph-font:        'Nunito', sans-serif;
+$mono-font:             monospace;
 $line-height:           1.2;
 $heading-line-height:   1;
 $paragraph-line-height: 1.5;
 
-$line-clamps: 1,2,3,4,5,6;      // line counts for the `.line-clamp-*` family
+$line-clamps: 1,2,3,4,5,6;
 ```
+
+`$base-font-size` is the `1rem` reference; `$line-clamps` the line counts behind
+the `.line-clamp-*` family.
 
 The `$typography` map defines the type scale — every heading and paragraph
 class. Each entry is
@@ -189,19 +223,40 @@ class. Each entry is
 headings may carry separate `desktop` / `mobile` values that switch at
 `$container-breakpoint`:
 
+<!-- config: typography -->
+
 ```scss
 $typography: (
   'h1, .h1': (
     desktop: (96px, -1.5px, $heading-line-height, bold),
-    mobile:  (64px, -0.5px, $heading-line-height, bold)
+    mobile: (64px, -0.5px, $heading-line-height, bold)
   ),
-  // … h2–h6 …
+  'h2, .h2': (
+    desktop: (64px, -0.5px, $heading-line-height, bold),
+    mobile: (48px, 0, $heading-line-height, bold)
+  ),
+  'h3, .h3': (
+    desktop: (48px, 0, $heading-line-height, bold),
+    mobile: (32px, 0.25px, $heading-line-height, bold)
+  ),
+  'h4, .h4': (
+    desktop: (32px, 0.25px, $heading-line-height, bold),
+    mobile: (24px, 0, $heading-line-height, bold)
+  ),
+  'h5, .h5': (
+    desktop: (24px, 0, $heading-line-height, bold),
+    mobile: (20px, 0.15px, $heading-line-height, bold)
+  ),
+  'h6, .h6': (
+    desktop: (20px, 0.15px, $heading-line-height, bold),
+    mobile: (16px, 0.15px, $heading-line-height, bold)
+  ),
   '.p1': (24px, 0.3px, $paragraph-line-height),
   '.p2': (20px, 0.2px, $paragraph-line-height),
-  'p':   ($base-font-size, 0.2px, $paragraph-line-height),
+  'p': ($base-font-size, 0.2px, $paragraph-line-height),
   '.p3, figcaption': (14px, 0.4px, $paragraph-line-height),
-  '.p4, small':      (12px, 0.6px, $paragraph-line-height),
-  '.supertitle':     (14px, 2px, $paragraph-line-height, 500, uppercase)
+  '.p4, small': (12px, 0.6px, $paragraph-line-height),
+  '.supertitle': (14px, 2px, $paragraph-line-height, 500, uppercase)
 );
 ```
 
@@ -210,10 +265,13 @@ in the config uses pixels. See [Typography](../typography/).
 
 ## Transitions & easings
 
+<!-- config: custom-easings, default-transition-duration, default-transition-easing -->
+
 ```scss
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
+
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -222,12 +280,14 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 
 ## Shadows
 
+<!-- config: shadows -->
+
 ```scss
 $shadows: (
-  'sm':   0 1px 2px rgb(0 0 0 / 5%),
-  'md':   0 4px 6px -1px rgb(0 0 0 / 10%),
-  'lg':   0 10px 15px -3px rgb(0 0 0 / 10%),
-  'xl':   0 20px 25px -5px rgb(0 0 0 / 10%),
+  'sm': 0 1px 2px rgb(0 0 0 / 5%),
+  'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
+  'lg': 0 10px 15px -3px rgb(0 0 0 / 10%),
+  'xl': 0 20px 25px -5px rgb(0 0 0 / 10%),
   'none': none
 );
 ```
@@ -239,12 +299,14 @@ class. See [Effects](../effects/).
 
 The single button primitive (`.btn`) is sized from this map:
 
+<!-- config: button -->
+
 ```scss
 $button: (
-  height:        56px,
-  padding-x:     32px,
-  padding-y:     16px,
-  border-width:  2px,
+  height: 56px,
+  padding-x: 32px,
+  padding-y: 16px,
+  border-width: 2px,
   border-radius: 4px
 );
 ```

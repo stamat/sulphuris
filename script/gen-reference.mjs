@@ -51,8 +51,14 @@ const breakpoints = new Map(
 
 const bpByWidth = new Map([...breakpoints].map(([token, px]) => [px, token]))
 
+// Every `!default` in declaration order, so the per-section `<!-- config: … -->`
+// markers list their variables consistently. The values behind those markers are
+// gen-config-docs.mjs's job.
+const configVars = [...config.matchAll(/^\$([\w-]+):/gm)].map((m) => m[1])
+
 assert.ok(orientations.size, 'no orientations parsed')
 assert.ok(breakpoints.size, 'no breakpoints parsed')
+assert.ok(configVars.length, `no variables parsed from ${configFile}`)
 
 /* ------------------------------------------------------------------- css -- */
 
@@ -244,10 +250,34 @@ async function scssFiles (dir) {
 }
 
 const origins = new Map() // section key => [{ file, line, text }]
+const feeds = new Map() // section key => Set(config variable name)
+
+// The config variables a call site depends on. A call reaches most of them
+// directly as `config.$sizes`, but some go through a local alias first
+// (`$margin-sizes: list.append(config.$sizes, 'auto')`), so aliases are followed
+// as far as they go.
+function configRefs (text, locals, seen = new Set()) {
+  const found = new Set()
+  for (const [, name] of text.matchAll(/config\.\$([\w-]+)/g)) found.add(name)
+
+  for (const [, name] of text.matchAll(/(?<!config\.)\$([\w-]+)/g)) {
+    if (seen.has(name) || !locals.has(name)) continue
+    seen.add(name)
+    for (const nested of configRefs(locals.get(name), locals, seen)) found.add(nested)
+  }
+  return found
+}
 
 for (const file of (await scssFiles(sourceDir)).sort()) {
   const source = await readFile(file, 'utf8')
   const calls = source.matchAll(/@include\s+generators\.([\w-]+)\(/g)
+
+  // Local aliases, indented ones included: `_margin.scss` extends its list a
+  // second time inside an `@if`, and that branch carries $negative-sizes.
+  const locals = new Map()
+  for (const [, name, body] of source.matchAll(/^\s*\$([\w-]+):([\s\S]*?);$/gm)) {
+    locals.set(name, `${locals.get(name) ?? ''}${body}`)
+  }
 
   for (const call of calls) {
     const mixin = call[1]
@@ -274,10 +304,24 @@ for (const file of (await scssFiles(sourceDir)).sort()) {
       line: source.slice(0, call.index).split('\n').length,
       text: source.slice(call.index, source[end] === ';' ? end + 1 : end)
     })
+
+    for (const name of configRefs(body, locals)) {
+      if (configVars.includes(name)) bucket(feeds, key, new Set()).add(name)
+    }
   }
 }
 
 assert.ok(origins.size > 20, `only ${origins.size} sections traced to a generator call`)
+assert.ok(feeds.size > 5, `only ${feeds.size} sections traced back to a config variable`)
+
+// The values the section's call sites read, as a marker rather than a block:
+// script/gen-config-docs.mjs fills it in on the pass after this one, which keeps
+// the config parsing in one place. Names follow config declaration order.
+function configBlock (key) {
+  const fed = feeds.get(key)
+  if (!fed) return []
+  return ['Config values it reads:', '', `<!-- config: ${configVars.filter((name) => fed.has(name)).join(', ')} -->`, '']
+}
 
 // Rendered under a section heading: the call sites that generate it, each
 // tagged with file:line. Sections with no generator behind them (hand-written
@@ -285,7 +329,13 @@ assert.ok(origins.size > 20, `only ${origins.size} sections traced to a generato
 function originBlock (key, entries = []) {
   const calls = origins.get(key)
   if (calls) {
-    return ['```scss', ...calls.flatMap(({ file, line, text }) => [`// ${file}:${line}`, text]), '```', '']
+    return [
+      '```scss',
+      ...calls.flatMap(({ file, line, text }) => [`// ${file}:${line}`, text]),
+      '```',
+      '',
+      ...configBlock(key)
+    ]
   }
 
   const files = [...new Set(entries.map(({ name }) => sourceOf.get(name)).filter(Boolean))].sort()

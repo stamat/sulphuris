@@ -11,7 +11,8 @@
   "exec": {
     "styles": [
       "node script/strip-css-comments.mjs",
-      "node script/gen-reference.mjs"
+      "node script/gen-reference.mjs",
+      "node script/gen-config-docs.mjs"
     ]
   },
   "serve" : {
