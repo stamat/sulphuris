@@ -13,7 +13,11 @@ Margin and padding utilities are generated from the `$sizes` scale. Both support
 
 ## Scale
 
-`$sizes`: `0, 1, 2, 3, 4, 6, 8, 12, 14, 16, 24, 32, 40, 48, 56, 64, 80, 96, 128, 256` (px)
+<!-- config: sizes -->
+
+```scss
+$sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
+```
 
 ## Margin
 
@@ -28,20 +32,26 @@ Prefix: `m`. Property: `margin`.
 
 **Per side / axis**
 
-| Class pattern | CSS property |
-|---|---|
-| `.mt-{size}` | `margin-top` |
-| `.mr-{size}` | `margin-right` |
-| `.mb-{size}` | `margin-bottom` |
-| `.ml-{size}` | `margin-left` |
-| `.mx-{size}` | `margin-left` + `margin-right` |
-| `.my-{size}` | `margin-top` + `margin-bottom` |
+| Class pattern | CSS property                   |
+| ------------- | ------------------------------ |
+| `.mt-{size}`  | `margin-top`                   |
+| `.mr-{size}`  | `margin-right`                 |
+| `.mb-{size}`  | `margin-bottom`                |
+| `.ml-{size}`  | `margin-left`                  |
+| `.mx-{size}`  | `margin-left` + `margin-right` |
+| `.my-{size}`  | `margin-top` + `margin-bottom` |
 
 Per-side variants also accept `auto`: `.mt-auto`, `.mx-auto`, etc.
 
 **Negatives**
 
-Negative scale: `-1, -2, -3, -4, -8, -12, -14, -16, -24, -32, -40, -48, -56, -64` (px). The leading `-` in the key becomes a second dash in the class name.
+<!-- config: negative-sizes -->
+
+```scss
+$negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
+```
+
+The leading `-` in the key becomes a second dash in the class name.
 
 ```
 .m--32             → margin: -32px
@@ -61,24 +71,24 @@ Prefix: `p`. Property: `padding`. Same `$sizes` scale. No negatives, no `auto`.
 
 **Per side / axis**
 
-| Class pattern | CSS property |
-|---|---|
-| `.pt-{size}` | `padding-top` |
-| `.pr-{size}` | `padding-right` |
-| `.pb-{size}` | `padding-bottom` |
-| `.pl-{size}` | `padding-left` |
-| `.px-{size}` | `padding-left` + `padding-right` |
-| `.py-{size}` | `padding-top` + `padding-bottom` |
+| Class pattern | CSS property                     |
+| ------------- | -------------------------------- |
+| `.pt-{size}`  | `padding-top`                    |
+| `.pr-{size}`  | `padding-right`                  |
+| `.pb-{size}`  | `padding-bottom`                 |
+| `.pl-{size}`  | `padding-left`                   |
+| `.px-{size}`  | `padding-left` + `padding-right` |
+| `.py-{size}`  | `padding-top` + `padding-bottom` |
 
 ## Gap
 
 Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 
-| Class pattern | CSS property |
-|---|---|
-| `.gap-{size}` | `gap` |
+| Class pattern   | CSS property |
+| --------------- | ------------ |
+| `.gap-{size}`   | `gap`        |
 | `.gap-x-{size}` | `column-gap` |
-| `.gap-y-{size}` | `row-gap` |
+| `.gap-y-{size}` | `row-gap`    |
 
 ```
 .gap-16            → gap: 16px
@@ -91,12 +101,12 @@ Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 
 The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom). The logical variants below map to **writing-direction-aware** sides, so they flip automatically under RTL. Same scales as margin/padding. Responsive.
 
-| Class pattern | CSS property |
-|---|---|
-| `.m-inline-{size}` | `margin-inline` |
-| `.m-block-{size}` | `margin-block` |
+| Class pattern      | CSS property     |
+| ------------------ | ---------------- |
+| `.m-inline-{size}` | `margin-inline`  |
+| `.m-block-{size}`  | `margin-block`   |
 | `.p-inline-{size}` | `padding-inline` |
-| `.p-block-{size}` | `padding-block` |
+| `.p-block-{size}`  | `padding-block`  |
 
 ```
 .m-inline-16       → margin-inline: 16px
@@ -130,13 +140,13 @@ Insert a breakpoint name between the prefix+orientation and the size value.
 
 Breakpoints (all min-width):
 
-| Name | Min-width |
-|---|---|
-| `sm` | 420px |
-| `md` | 768px |
-| `lg` | 1024px |
-| `xl` | 1366px |
-| `xxl` | 1680px |
+| Name  | Min-width |
+| ----- | --------- |
+| `sm`  | 420px     |
+| `md`  | 768px     |
+| `lg`  | 1024px    |
+| `xl`  | 1366px    |
+| `xxl` | 1680px    |
 
 > [!NOTE]
 > Classes without a breakpoint segment apply at all viewport widths. Responsive variants layer on top via `min-width` media queries, so the base class is the mobile-first default.
