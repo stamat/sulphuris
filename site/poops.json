@@ -24,11 +24,19 @@
     "site": {
       "title": "🜍 Sulphuris",
       "description": "An adaptable, self-generating CSS utility library.",
-      "url": "https://stamat.info/sulphuris"
+      "url": "https://stamat.info/sulphuris",
+      "lang": "en",
+      "author": "Stamat",
+      "logo": "sulphuris-logo.svg"
     },
     "includePaths": ["_layouts", "_partials"],
     "searchIndex": "search-index.json",
     "sitemap": "sitemap.xml",
+    "llms": {
+      "output": "llms.txt",
+      "description": "An adaptable, self-generating CSS utility library. You describe your design tokens, Sulphuris emits the utility classes.",
+      "full": true
+    },
     "nav": {
       "output": "nav.json",
       "root": "docs",
