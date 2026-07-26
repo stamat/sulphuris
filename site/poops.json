@@ -56,6 +56,11 @@
     ],
     "out": "dist"
   },
+  "exec": {
+    "markup": [
+      "node ../script/gen-config-docs.mjs"
+    ]
+  },
   "serve": {
     "port": 4041,
     "base": "/dist"

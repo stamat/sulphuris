@@ -4,7 +4,22 @@ title: Position
 navTitle: Position
 description: Utility classes for position, top/right/bottom/left offsets (px and %), z-index, and related layout helpers.
 order: 7
-keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left", "z-index", "inset", "inset-inline", "inset-block", "logical", "rtl"]
+keywords:
+  [
+    "position",
+    "relative",
+    "absolute",
+    "fixed",
+    "sticky",
+    "top",
+    "left",
+    "z-index",
+    "inset",
+    "inset-inline",
+    "inset-block",
+    "logical",
+    "rtl",
+  ]
 ---
 
 # Position
@@ -13,24 +28,24 @@ keywords: ["position", "relative", "absolute", "fixed", "sticky", "top", "left",
 
 Prefix: `position`. Property: `position`.
 
-| Class | CSS |
-|---|---|
-| `.position-static` | `position: static` |
+| Class                | CSS                  |
+| -------------------- | -------------------- |
+| `.position-static`   | `position: static`   |
 | `.position-relative` | `position: relative` |
 | `.position-absolute` | `position: absolute` |
-| `.position-fixed` | `position: fixed` |
-| `.position-sticky` | `position: sticky` |
+| `.position-fixed`    | `position: fixed`    |
+| `.position-sticky`   | `position: sticky`   |
 
 ## Offset (px)
 
 Each side has its own single-letter prefix. Unit: `px`.
 
 | Prefix | Property |
-|---|---|
-| `t` | `top` |
-| `r` | `right` |
-| `b` | `bottom` |
-| `l` | `left` |
+| ------ | -------- |
+| `t`    | `top`    |
+| `r`    | `right`  |
+| `b`    | `bottom` |
+| `l`    | `left`   |
 
 **Positive scale** — `$sizes`: `0, 1, 2, 3, 4, 6, 8, 12, 14, 16, 24, 32, 40, 48, 56, 64, 80, 96, 128, 256`
 
@@ -90,10 +105,10 @@ Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages f
 
 Prefixes: `inset-inline`, `inset-block`. The physical `inset` above sets all four sides; these two set a **writing-direction-aware** pair, so they flip automatically under RTL — the positioning counterpart to the logical `.m-inline-*` / `.p-block-*` spacing utilities.
 
-| Class pattern | CSS property |
-|---|---|
+| Class pattern          | CSS property                         |
+| ---------------------- | ------------------------------------ |
 | `.inset-inline-{size}` | `inset-inline` (left + right in LTR) |
-| `.inset-block-{size}` | `inset-block` (top + bottom) |
+| `.inset-block-{size}`  | `inset-block` (top + bottom)         |
 
 Same scales as `inset`: `$sizes`, `$negative-sizes`, `$percent-sizes` (`p` suffix), and `auto`. Responsive.
 
@@ -120,7 +135,7 @@ Scale: `-1, 0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 50, 100`
 .z-100             → z-index: 100
 ```
 
-## Helpers (_misc.scss)
+## Helpers (\_misc.scss)
 
 Static single-purpose classes, no responsive variants.
 
@@ -195,13 +210,13 @@ Pattern: `.{prefix}-{bp}-{key}`
 
 Breakpoints (all min-width):
 
-| Name | Min-width |
-|---|---|
-| `sm` | 420px |
-| `md` | 768px |
-| `lg` | 1024px |
-| `xl` | 1366px |
-| `xxl` | 1680px |
+| Name  | Min-width |
+| ----- | --------- |
+| `sm`  | 420px     |
+| `md`  | 768px     |
+| `lg`  | 1024px    |
+| `xl`  | 1366px    |
+| `xxl` | 1680px    |
 
 > [!NOTE]
 > Classes without a breakpoint segment apply at all viewport widths. Responsive variants layer on top via `min-width` media queries, so the base class is the mobile-first default.

@@ -15,9 +15,10 @@
 // Grouping is by CSS property. The source map is not usable for this: rules
 // come out of mixins, so 1671 of 1788 of them trace back to _generators.scss.
 import assert from 'node:assert/strict'
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises'
+import { readFile, writeFile, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import postcss from 'postcss'
+import { generatorCalls } from './lib/scss-generators.mjs'
 
 const cssFile = process.argv[2] ?? 'dist/sulphuris.css'
 const configFile = 'src/core/_config.scss'
@@ -211,10 +212,8 @@ const sorted = [...sections].sort((a, b) =>
 
 /* --------------------------------------------------------------- origins -- */
 
-// The `@include` that produced a section — the line to edit to change it. Read
-// from source rather than the source map, which resolves every generated rule
-// to the mixin body in _generators.scss instead of its call site.
-const CSS_PROPERTY_ARG = 1 // utility-class-generator($prefix, $property, …)
+// The `@include` that produced a section — the line to edit to change it.
+// Parsing lives in script/lib/scss-generators.mjs, shared with gen-config-docs.
 
 // Generators that do not take a property argument, mapped to what they emit.
 const emits = {
@@ -223,30 +222,6 @@ const emits = {
   'grid-offset-generator': 'margin',
   'typography-generator': COMPOSITE,
   'css-variable-generator': VARIABLES
-}
-
-// Splits an argument list on top-level commas only, so nested lists and maps
-// like `('block', 'inline')` survive as one argument.
-function args (text) {
-  const out = ['']
-  let depth = 0
-  let quote = null
-  for (const char of text) {
-    if (quote) quote = char === quote ? null : quote
-    else if (char === "'" || char === '"') quote = char
-    else if (char === '(') depth++
-    else if (char === ')') depth--
-    else if (char === ',' && depth === 0) { out.push(''); continue }
-    out[out.length - 1] += char
-  }
-  return out.map((arg) => arg.trim())
-}
-
-const unquote = (arg) => arg.match(/^'([^']*)'$/)?.[1] ?? arg.match(/^"([^"]*)"$/)?.[1]
-
-async function scssFiles (dir) {
-  const entries = await readdir(dir, { recursive: true })
-  return entries.filter((entry) => entry.endsWith('.scss')).map((entry) => path.join(dir, entry))
 }
 
 const origins = new Map() // section key => [{ file, line, text }]
@@ -268,10 +243,7 @@ function configRefs (text, locals, seen = new Set()) {
   return found
 }
 
-for (const file of (await scssFiles(sourceDir)).sort()) {
-  const source = await readFile(file, 'utf8')
-  const calls = source.matchAll(/@include\s+generators\.([\w-]+)\(/g)
-
+for (const { file, source, calls } of await generatorCalls(sourceDir)) {
   // Local aliases, indented ones included: `_margin.scss` extends its list a
   // second time inside an `@if`, and that branch carries $negative-sizes.
   const locals = new Map()
@@ -280,32 +252,15 @@ for (const file of (await scssFiles(sourceDir)).sort()) {
   }
 
   for (const call of calls) {
-    const mixin = call[1]
-    let depth = 1
-    let end = call.index + call[0].length
-    while (end < source.length && depth > 0) {
-      if (source[end] === '(') depth++
-      else if (source[end] === ')') depth--
-      end++
-    }
-
-    const body = source.slice(call.index + call[0].length, end - 1)
-    // Map form carries the property as a key; positional form as an argument.
-    const property = emits[mixin] ??
-      unquote(body.match(/property:\s*('[^']*'|"[^"]*")/)?.[1] ?? '') ??
-      unquote(args(body)[CSS_PROPERTY_ARG] ?? '')
+    const property = emits[call.mixin] ?? call.property
     if (!property) continue
 
     const key = property === COMPOSITE || property === VARIABLES ? property : group(property)
     if (!sections.has(key) && key !== VARIABLES) continue
 
-    bucket(origins, key, []).push({
-      file,
-      line: source.slice(0, call.index).split('\n').length,
-      text: source.slice(call.index, source[end] === ';' ? end + 1 : end)
-    })
+    bucket(origins, key, []).push({ file, line: call.line, text: call.text })
 
-    for (const name of configRefs(body, locals)) {
+    for (const name of configRefs(call.body, locals)) {
       if (configVars.includes(name)) bucket(feeds, key, new Set()).add(name)
     }
   }

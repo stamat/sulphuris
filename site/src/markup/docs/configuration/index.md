@@ -37,13 +37,16 @@ these lists. Values are unitless numbers; the emitting utility appends the unit
 <!-- config: sizes, negative-sizes, percent-sizes, negative-percent-sizes, z-index, border-sizes, border-radiuses -->
 
 ```scss
+// src/core/_config.scss:4
 $sizes:          0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 $percent-sizes:  5,10,15,20,25,50,75,100;
 
+// src/core/_config.scss:9
 $negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100;
 $z-index:                -1,0,1,2,3,4,5,10,15,20,25,50,100;
 
+// src/core/_config.scss:27
 $border-sizes:    2,3,4,6,8;
 $border-radiuses: 0,4,6,8,16,24,32;
 ```
@@ -60,6 +63,7 @@ scale used by the `.z-*` utility classes.
 <!-- config: z-layers -->
 
 ```scss
+// src/core/_config.scss:16
 $z-layers: (
   'base': 0,
   'dropdown': 10,
@@ -79,6 +83,7 @@ The per-side suffixes shared by margin, padding, border, position, etc.
 <!-- config: orientations -->
 
 ```scss
+// src/core/_config.scss:33
 $orientations: (
   't': ('top'),
   'r': ('right'),
@@ -100,6 +105,7 @@ freely — the class variants follow.
 <!-- config: breakpoints -->
 
 ```scss
+// src/core/_config.scss:45
 $breakpoints: (
   'xxl': 1680px,
   'xl': 1366px,
@@ -118,15 +124,18 @@ covers everything below the smallest breakpoint. A utility variant like
 <!-- config: container-max-width, container-offset, container-offset-mobile, container-breakpoint, grid-gutter, grid-gutter-mobile, columns, rows -->
 
 ```scss
+// src/core/_config.scss:56
 $container-max-width:     1680px;
 $container-offset:        56px;
 $container-offset-mobile: 16px;
 $container-breakpoint:    'lg';
 
+// src/core/_config.scss:61
 $grid-gutter:        32px;
 $grid-gutter-mobile: 16px;
 $columns:            12;
 
+// src/core/_config.scss:68
 $rows: 6;
 ```
 
@@ -147,6 +156,7 @@ expanded into 100–900 tint/shade scales.
 <!-- config: colors, palettes -->
 
 ```scss
+// src/core/_config.scss:73
 $colors: (
   foreground: #1a1a1d,
   background: #fff,
@@ -155,6 +165,7 @@ $colors: (
   primary: #f6c026
 );
 
+// src/core/_config.scss:81
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -178,6 +189,7 @@ Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
+// src/core/_config.scss:95
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
@@ -202,8 +214,10 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps -->
 
 ```scss
+// src/core/_config.scss:119
 $base-font-size: 16px;
 
+// src/core/_config.scss:121
 $heading-font:          'Roboto', sans-serif;
 $paragraph-font:        'Nunito', sans-serif;
 $mono-font:             monospace;
@@ -211,6 +225,7 @@ $line-height:           1.2;
 $heading-line-height:   1;
 $paragraph-line-height: 1.5;
 
+// src/core/_config.scss:129
 $line-clamps: 1,2,3,4,5,6;
 ```
 
@@ -226,6 +241,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
+// src/core/_config.scss:136
 $typography: (
   'h1, .h1': (
     desktop: (96px, -1.5px, $heading-line-height, bold),
@@ -268,10 +284,12 @@ in the config uses pixels. See [Typography](../typography/).
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
+// src/core/_config.scss:169
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
+// src/core/_config.scss:173
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -283,6 +301,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
+// src/core/_config.scss:179
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -302,6 +321,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
+// src/core/_config.scss:187
 $button: (
   height: 56px,
   padding-x: 32px,

@@ -10,12 +10,25 @@
 // below it is written if missing and overwritten if present. Unmarked blocks are
 // left alone — pages deliberately show overrides and extensions that differ from
 // the defaults. Prose stays hand-written; source comments are not copied over,
-// the page explains instead.
+// the page explains instead. Each group does get a `// file:line` origin line,
+// the same way script/gen-reference.mjs tags the call sites it quotes.
+//
+// `<!-- generators: m, p -->` works the same way for the other direction: it
+// quotes the `@include generators.…()` call sites that emit a prefix's classes,
+// so a page can show what produces the utilities it documents. Generators that
+// take no prefix (grid-column-generator and friends) are named by mixin instead.
 import assert from 'node:assert/strict'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
+import { generatorCalls } from './lib/scss-generators.mjs'
+
+// Paths are repo-relative for display, resolved against the repo root for I/O:
+// poops runs this from site/, npm scripts from the root.
+const root = path.resolve(import.meta.dirname, '..')
+const abs = (file) => path.join(root, file)
 
 const configFile = 'src/core/_config.scss'
+const sourceDir = 'src/core'
 const pagesDir = 'site/src/markup/docs'
 
 // The page that claims to document every variable: it must cover all of them,
@@ -23,7 +36,7 @@ const pagesDir = 'site/src/markup/docs'
 // pages quote whatever subset their topic needs.
 const configPage = path.join(pagesDir, 'configuration', 'index.md')
 
-const lines = (await readFile(configFile, 'utf8')).split('\n')
+const lines = (await readFile(abs(configFile), 'utf8')).split('\n')
 
 // name => { text, start, end }. Declarations only: a value spans until the `;`
 // that closes it at paren depth 0, so multi-line maps survive intact.
@@ -70,10 +83,13 @@ function align (group) {
 function block (names, page) {
   const out = []
   let group = []
+  let start = 0
   let previous = null
 
+  // Each group is a contiguous run in the config, so one `file:line` for the
+  // line it opens on points at the whole thing.
   const flush = () => {
-    if (group.length) out.push(...align(group))
+    if (group.length) out.push(`// ${configFile}:${start + 1}`, ...align(group))
     group = []
   }
 
@@ -86,6 +102,7 @@ function block (names, page) {
       flush()
       out.push('')
     }
+    if (!group.length) start = entry.start
     group.push(entry.text)
     previous = entry
   }
@@ -94,14 +111,45 @@ function block (names, page) {
   return out.join('\n')
 }
 
+/* ------------------------------------------------------------ generators -- */
+
+// handle => [{ file, line, text }]. A call is addressed by the prefix it emits,
+// which is what the docs pages already head their sections with; the handful of
+// generators that take no prefix are addressed by mixin name. Two call sites can
+// share a prefix (`flex` sets both flex-direction and flex-wrap), so a handle
+// holds a list and the marker quotes all of it.
+const generators = new Map()
+
+for (const { file, calls } of await generatorCalls(sourceDir, root)) {
+  for (const { mixin, prefix, text, line } of calls) {
+    const handle = prefix ?? mixin
+    if (!generators.has(handle)) generators.set(handle, [])
+    generators.get(handle).push({ file, line, text })
+  }
+}
+
+assert.ok(generators.size > 20, `only ${generators.size} generator handles parsed from ${sourceDir}`)
+
+function calls (handles, page) {
+  const out = []
+  for (const handle of handles) {
+    const found = generators.get(handle)
+    assert.ok(found, `${page} documents the '${handle}' generator, which no @include in ${sourceDir} carries`)
+    for (const { file, line, text } of found) out.push(`// ${file}:${line}`, text)
+  }
+  return out.join('\n')
+}
+
 /* ----------------------------------------------------------------- pages -- */
 
 // The fence is optional: a bare marker gets one inserted, an existing one is
 // replaced. Its closing line is anchored with `^…$` so an empty block cannot
 // let the match run on to the next section's fence.
-const marker = /<!-- config: ([^>]*?) -->(?:\n+```scss\n[\s\S]*?^```$)?/gm
+const fence = '(?:\\n+```scss\\n[\\s\\S]*?^```$)?'
+const marker = new RegExp(`<!-- config: ([^>]*?) -->${fence}`, 'gm')
+const generatorMarker = new RegExp(`<!-- generators: ([^>]*?) -->${fence}`, 'gm')
 
-const pages = (await readdir(pagesDir, { recursive: true }))
+const pages = (await readdir(abs(pagesDir), { recursive: true }))
   .filter((entry) => entry.endsWith('.md'))
   .map((entry) => path.join(pagesDir, entry))
   .sort()
@@ -109,22 +157,30 @@ const pages = (await readdir(pagesDir, { recursive: true }))
 const documented = new Set()
 const written = []
 let blocks = 0
+let origins = 0
 
 for (const page of pages) {
-  const before = await readFile(page, 'utf8')
+  const before = await readFile(abs(page), 'utf8')
   let found = 0
 
-  const after = before.replace(marker, (_, list) => {
+  let after = before.replace(marker, (_, list) => {
     const names = list.split(',').map((name) => name.trim().replace(/^\$/, ''))
     // Coverage is tracked for the Configuration page alone — a variable quoted
     // on a topic page is not the same as one the page-of-record documents.
     if (page === configPage) for (const name of names) documented.add(name)
     found++
+    blocks++
     return `<!-- config: ${list} -->\n\n\`\`\`scss\n${block(names, page)}\n\`\`\``
   })
 
+  after = after.replace(generatorMarker, (_, list) => {
+    const handles = list.split(',').map((handle) => handle.trim())
+    found++
+    origins++
+    return `<!-- generators: ${list} -->\n\n\`\`\`scss\n${calls(handles, page)}\n\`\`\``
+  })
+
   if (!found) continue
-  blocks += found
 
   // Only the Configuration page is held to listing nothing by hand: elsewhere a
   // declaration outside a generated block is an override or extension example,
@@ -135,7 +191,7 @@ for (const page of pages) {
     assert.deepEqual(copied, [], `${page}: hand-copied declarations outside a generated block: ${copied.join(' ')}`)
   }
 
-  if (after !== before) await writeFile(page, after)
+  if (after !== before) await writeFile(abs(page), after)
   written.push(page)
 }
 
@@ -147,4 +203,4 @@ assert.ok(written.includes(configPage), `${configPage} has no <!-- config: … -
 const missing = [...vars.keys()].filter((name) => !documented.has(name))
 assert.deepEqual(missing, [], `undocumented in ${configPage}: ${missing.map((n) => `$${n}`).join(', ')}`)
 
-console.log(`[docs] config blocks generated: ${blocks} across ${written.length} page(s), ${vars.size} variables`)
+console.log(`[docs] config blocks generated: ${blocks}, generator blocks: ${origins}, across ${written.length} page(s) — ${vars.size} variables, ${generators.size} generator handles`)
