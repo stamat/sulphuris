@@ -7340,7 +7340,7 @@ code,
 kbd,
 samp {
   font-family: monospace, monospace;
-  font-size: em(16px);
+  font-size: 1em;
 }
 a {
   background-color: transparent;
@@ -7366,11 +7366,11 @@ sup {
 }
 
 sub {
-  bottom: em(-4px);
+  bottom: -0.25em;
 }
 
 sup {
-  top: em(-8px);
+  top: -0.5em;
 }
 img {
   border-style: none;

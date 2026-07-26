@@ -54,7 +54,7 @@ code,
 kbd,
 samp {
   font-family: monospace, monospace; /* 1 */
-  font-size: em(16px); /* 2 */
+  font-size: 1em; /* 2 */
 }
 
 /* Text-level semantics
@@ -110,11 +110,11 @@ sup {
 }
 
 sub {
-  bottom: em(-4px);
+  bottom: -0.25em;
 }
 
 sup {
-  top: em(-8px);
+  top: -0.5em;
 }
 
 /* Embedded content
