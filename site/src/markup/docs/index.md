@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Introduction
 navTitle: Introduction
 description: Sulphuris is an adaptable, self-generating CSS utility library that sits between old Primer/Bootstrap and Tailwind.

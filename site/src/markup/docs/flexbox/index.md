@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Flexbox
 navTitle: Flexbox
 description: Utility classes for flex direction, wrapping, alignment, justification, grow, and shrink.

@@ -1,11 +1,6 @@
 {
   "styles": [
     {
-      "in": "../src/index.scss",
-      "out": "dist/css/sulphuris.css",
-      "options": { "minify": true, "justMinified": true }
-    },
-    {
       "in": "src/scss/docs.scss",
       "out": "dist/css/docs.css",
       "options": { "minify": true, "justMinified": true }
@@ -13,7 +8,7 @@
   ],
   "scripts": [
     {
-      "in": "src/js/docs.ts",
+      "in": "../node_modules/poops-docs-theme/src/docs.ts",
       "out": "dist/js/docs.js",
       "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
     }
@@ -23,13 +18,16 @@
     "out": "dist",
     "site": {
       "title": "🜍 Sulphuris",
+      "brand": "Sulphuris",
+      "brandMark": "🜍",
       "description": "An adaptable, self-generating CSS utility library.",
       "url": "https://stamat.info/sulphuris",
       "lang": "en",
       "author": "Stamat",
-      "logo": "sulphuris-logo.svg"
+      "logo": "sulphuris-logo.svg",
+      "repo": "https://github.com/stamat/sulphuris",
+      "branch": "main"
     },
-    "includePaths": ["_layouts", "_partials"],
     "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
     "data": ["../../../package.json"],
     "searchIndex": "search-index.json",

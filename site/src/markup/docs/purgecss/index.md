@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: PurgeCSS
 navTitle: PurgeCSS
 description: Sulphuris generates a large utility set on purpose. Run PurgeCSS as a PostCSS plugin to strip the classes your markup never uses and ship a small stylesheet.

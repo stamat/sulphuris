@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Colours
 navTitle: Colours
 description: CSS custom property–backed text, background, and border colour utilities generated from a flat colour map and an 11-palette, 100–900 tint/shade scale.

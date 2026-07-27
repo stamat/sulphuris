@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Typography
 navTitle: Typography
 description: Type scale, responsive heading sizes, font-size and line-height utilities, font-family utilities, and text decoration/alignment helpers generated from the $typography config map.

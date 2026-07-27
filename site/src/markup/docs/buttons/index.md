@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Buttons
 navTitle: Buttons
 description: A minimal button primitive with filled, inverted, and outline variants — compose with utilities for everything else.

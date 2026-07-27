@@ -308,7 +308,7 @@ const rows = sorted.reduce((n, [, entries]) => n + entries.length, 0)
 const out = []
 
 out.push('---')
-out.push('layout: docs')
+out.push('layout: poops-docs-theme/docs')
 out.push('title: Class Reference')
 out.push('navTitle: Class Reference')
 out.push('description: Every generated selector with its declarations, grouped by CSS property. Direction and breakpoint variants are collapsed into the legend tables.')

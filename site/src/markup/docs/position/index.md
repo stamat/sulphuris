@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Position
 navTitle: Position
 description: Utility classes for position, top/right/bottom/left offsets (px and %), z-index, and related layout helpers.

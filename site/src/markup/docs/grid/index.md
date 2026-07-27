@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Grid & Container
 navTitle: Grid & Container
 description: Twelve-column flexbox grid with responsive column widths, offsets and a max-width container, plus native CSS grid track templates, item spans and auto-flow.

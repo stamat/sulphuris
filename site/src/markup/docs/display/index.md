@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Display & Visibility
 navTitle: Display & Visibility
 description: Utility classes for display, visibility, and overflow — all with full responsive variants.

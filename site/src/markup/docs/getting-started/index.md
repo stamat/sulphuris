@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Getting Started
 navTitle: Getting Started
 description: Install Sulphuris, pull the utilities into your SCSS, and override the config so the generated classes fit your project.

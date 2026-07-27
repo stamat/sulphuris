@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Functions & Mixins
 navTitle: Functions & Mixins
 description: SCSS functions and mixins for unit conversion, color lookups, breakpoints, transitions, and utility-class generation.

@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Spacing
 navTitle: Spacing
 description: Margin and padding utility classes generated from the $sizes scale, with per-side, axis, and responsive variants.

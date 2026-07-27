@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Effects
 navTitle: Effects
 description: Utility classes for box shadows, CSS filters, z-index and transforms, plus a SCSS transition mixin backed by configurable custom easings.

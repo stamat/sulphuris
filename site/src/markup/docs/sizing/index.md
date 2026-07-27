@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: poops-docs-theme/docs
 title: Sizing
 navTitle: Sizing
 description: Width, height, min and max sizing utility classes generated from the pixel size scale, percentage sizes, viewport units, and keyword values.
