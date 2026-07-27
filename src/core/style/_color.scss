@@ -15,6 +15,10 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
   prefix: 'text',
   property: 'color',
   values: $colors,
+  // Color per breakpoint is a fringe need; every color × grade × breakpoint ×
+  // 3 properties was ~23% of the build. Theme changes go through the CSS
+  // variables instead.
+  responsive: false,
   variable: true
 ));
 
@@ -34,6 +38,7 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
   prefix: 'bg',
   property: 'background-color',
   values: $colors,
+  responsive: false,
   variable: 'color'
 ));
 
@@ -41,6 +46,7 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
   prefix: 'border',
   property: 'border-color',
   values: $colors,
+  responsive: false,
   variable: 'color'
 ));
 

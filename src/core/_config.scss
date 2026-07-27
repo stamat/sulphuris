@@ -1,4 +1,12 @@
 /*
+ * FEATURE FLAGS - whole families that cost a lot of rules for a niche win, so
+ * they ship off and are one `true` away.
+ */
+// The RTL-aware logical pairs: `.m-inline-*`, `.p-block-*`, `.inset-inline-*`,
+// `.inset-block-*`. The physical families cover LTR-only projects.
+$logical-properties: false !default;
+
+/*
  * SIZES
  */
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256 !default;
@@ -6,14 +14,27 @@ $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64 !default;
 $percent-sizes: 5,10,15,20,25,50,75,100 !default;
 // Feeds the top/right/bottom/left offsets only — never width/height, where a
 // negative percentage would be meaningless. See layout/_position.scss.
-$negative-percent-sizes: -5,-10,-15,-20,-25,-50,-75,-100 !default;
-$z-index: -1,0,1,2,3,4,5,10,15,20,25,50,100 !default;
+// Deliberately coarser than $percent-sizes: real use is centering (-50) and
+// full-bleed (-100); the fine steps were 4 values × 4 offsets × 5 breakpoints
+// of dead weight.
+$negative-percent-sizes: -25,-50,-75,-100 !default;
+// Viewport-unit steps for width/height families (`.h-100vh`, `.max-w-50vw`).
+// Separate from $percent-sizes because viewport sizing is coarse in practice —
+// `.min-w-15vw` is not a thing anyone reaches for. See layout/_dimension.scss.
+$viewport-sizes: 25,50,75,100 !default;
+// Deliberately coarse. Fine steps (3,4,5,15,25) were 5 values × 6 breakpoints
+// of dead weight — nobody reaches for `.z-md-15`. Stacking that needs a name
+// belongs in $z-layers below, not in a numeric utility.
+$z-index: -1,0,1,2,10,20,50,100 !default;
 
 /*
  * Z-LAYERS - named stacking levels for the `z()` helper, so stacking is a
  * token (`z(modal)`) instead of a raw magic number.
  */
 $z-layers: (
+  // Decorative pseudo-elements sitting under their own content. One negative
+  // level is enough — a second means the stacking context is wrong.
+  'behind': -1,
   'base': 0,
   'dropdown': 10,
   'sticky': 20,

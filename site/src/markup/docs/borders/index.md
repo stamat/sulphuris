@@ -162,16 +162,17 @@ Hard-coded classes to zero out individual corners or sides. Only `0` is availabl
 
 ## Responsive
 
-Border width and border colour classes are responsive. Insert the breakpoint name between the prefix and the value.
+Border **width** classes are responsive. Insert the breakpoint name between the prefix and the value.
 
-Pattern: `.border-{bp}-{size}` / `.border-{color}-{grade}` at breakpoint via `.border-{bp}-{color}`
+Pattern: `.border-{bp}-{size}`
 
 ```
 .border-md-4         → border-width: 4px  (min-width: 768px)
 .border-lg-8         → border-width: 8px  (min-width: 1024px)
 .border-t-md-0       → border-top: 0      (min-width: 768px)
-.border-md-primary   → border-color: var(--color-primary)  (min-width: 768px)
 ```
+
+Border **colour** classes are not responsive — `.border-md-primary` does not exist. See [Color](../color/#colour-does-not-vary-by-breakpoint).
 
 Breakpoints (all min-width):
 

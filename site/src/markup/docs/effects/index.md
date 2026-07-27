@@ -82,7 +82,7 @@ Prefix: `cursor`. Property: `cursor`. Not responsive.
 
 Prefix: `z`. Property: `z-index`. Responsive.
 
-Generated from `$z-index: -1, 0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 50, 100`.
+Generated from `$z-index: -1, 0, 1, 2, 10, 20, 50, 100`.
 
 | Class | CSS |
 |---|---|
@@ -90,15 +90,13 @@ Generated from `$z-index: -1, 0, 1, 2, 3, 4, 5, 10, 15, 20, 25, 50, 100`.
 | `.z-0` | `z-index: 0` |
 | `.z-1` | `z-index: 1` |
 | `.z-2` | `z-index: 2` |
-| `.z-3` | `z-index: 3` |
-| `.z-4` | `z-index: 4` |
-| `.z-5` | `z-index: 5` |
 | `.z-10` | `z-index: 10` |
-| `.z-15` | `z-index: 15` |
 | `.z-20` | `z-index: 20` |
-| `.z-25` | `z-index: 25` |
 | `.z-50` | `z-index: 50` |
 | `.z-100` | `z-index: 100` |
+
+For named stacking (`behind`, `dropdown`, `modal`, …) use the
+[`z()` helper](../functions/) with `$z-layers` instead of a magic number.
 
 Responsive pattern: `.z-{bp}-{value}`
 

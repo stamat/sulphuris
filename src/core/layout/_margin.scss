@@ -17,5 +17,7 @@ $margin-sizes: list.append(config.$sizes, 'auto');
 ));
 
 // Logical-property margins (RTL-aware). `.m-inline-16` => margin-inline: 16px
-@include generators.utility-class-generator('m-inline', 'margin-inline', $margin-sizes, 'px');
-@include generators.utility-class-generator('m-block', 'margin-block', $margin-sizes, 'px');
+@if config.$logical-properties {
+  @include generators.utility-class-generator('m-inline', 'margin-inline', $margin-sizes, 'px');
+  @include generators.utility-class-generator('m-block', 'margin-block', $margin-sizes, 'px');
+}

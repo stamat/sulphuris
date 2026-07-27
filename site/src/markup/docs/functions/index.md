@@ -85,7 +85,13 @@ Returns a named stacking level from the `config.$z-layers` map. Warns and return
 z-index: helpers.z(modal); // → 40
 ```
 
-The map ships as: `base` 0, `dropdown` 10, `sticky` 20, `overlay` 30, `modal` 40, `popover` 50, `toast` 60, `tooltip` 70.
+The map ships as: `behind` -1, `base` 0, `dropdown` 10, `sticky` 20, `overlay` 30, `modal` 40, `popover` 50, `toast` 60, `tooltip` 70.
+
+`behind` is for decorative pseudo-elements that sit under their own content:
+
+```scss
+&::before { z-index: helpers.z(behind); } // → -1
+```
 
 ---
 

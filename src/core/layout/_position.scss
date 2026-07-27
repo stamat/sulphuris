@@ -28,15 +28,17 @@
 @include generators.utility-class-generator('inset', 'inset', ('auto'));
 
 // Logical-property insets (RTL-aware). `.inset-inline-16` => inset-inline: 16px
-@include generators.utility-class-generator('inset-inline', 'inset-inline', config.$sizes, 'px');
-@include generators.utility-class-generator('inset-inline', 'inset-inline', config.$negative-sizes, 'px');
-@include generators.utility-class-generator('inset-inline', 'inset-inline', config.$percent-sizes, '%', 'p');
-@include generators.utility-class-generator('inset-inline', 'inset-inline', ('auto'));
+@if config.$logical-properties {
+  @include generators.utility-class-generator('inset-inline', 'inset-inline', config.$sizes, 'px');
+  @include generators.utility-class-generator('inset-inline', 'inset-inline', config.$negative-sizes, 'px');
+  @include generators.utility-class-generator('inset-inline', 'inset-inline', config.$percent-sizes, '%', 'p');
+  @include generators.utility-class-generator('inset-inline', 'inset-inline', ('auto'));
 
-@include generators.utility-class-generator('inset-block', 'inset-block', config.$sizes, 'px');
-@include generators.utility-class-generator('inset-block', 'inset-block', config.$negative-sizes, 'px');
-@include generators.utility-class-generator('inset-block', 'inset-block', config.$percent-sizes, '%', 'p');
-@include generators.utility-class-generator('inset-block', 'inset-block', ('auto'));
+  @include generators.utility-class-generator('inset-block', 'inset-block', config.$sizes, 'px');
+  @include generators.utility-class-generator('inset-block', 'inset-block', config.$negative-sizes, 'px');
+  @include generators.utility-class-generator('inset-block', 'inset-block', config.$percent-sizes, '%', 'p');
+  @include generators.utility-class-generator('inset-block', 'inset-block', ('auto'));
+}
 
 @include generators.utility-class-generator('position', 'position', ('static', 'absolute', 'fixed', 'relative', 'sticky'));
 @include generators.utility-class-generator('z', 'z-index', (config.$z-index));

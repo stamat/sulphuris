@@ -16,7 +16,7 @@ Margin and padding utilities are generated from the `$sizes` scale. Both support
 <!-- config: sizes -->
 
 ```scss
-// src/core/_config.scss:4
+// src/core/_config.scss:12
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 ```
 
@@ -62,7 +62,7 @@ Per-side variants also accept `auto`: `.mt-auto`, `.mx-auto`, etc.
 <!-- config: negative-sizes -->
 
 ```scss
-// src/core/_config.scss:5
+// src/core/_config.scss:13
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 ```
 
@@ -112,9 +112,15 @@ Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 .gap-md-16         → gap: 16px  (min-width: 768px)
 ```
 
-## Logical spacing (RTL-aware)
+## Logical spacing (RTL-aware) — opt-in
 
 The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom). The logical variants below map to **writing-direction-aware** sides, so they flip automatically under RTL. Same scales as margin/padding. Responsive.
+
+**Off by default.** Turn them on with [`$logical-properties`](../configuration/#feature-flags):
+
+```scss
+@forward 'sulphuris/core/config' with ($logical-properties: true);
+```
 
 | Class pattern      | CSS property     |
 | ------------------ | ---------------- |

@@ -13,9 +13,12 @@ $height-sizes: config.$sizes;
   $percent: (value: $value, unit: '%', suffix: 'p');
 
   $width-sizes: list.append($width-sizes, $percent);
-  $width-sizes: list.append($width-sizes, (value: $value, unit: 'vw', suffix: 'vw'));
-
   $height-sizes: list.append($height-sizes, $percent);
+}
+
+// Viewport units run on their own, coarser list — see config.$viewport-sizes.
+@each $value in config.$viewport-sizes {
+  $width-sizes: list.append($width-sizes, (value: $value, unit: 'vw', suffix: 'vw'));
   $height-sizes: list.append($height-sizes, (value: $value, unit: 'vh', suffix: 'vh'));
 }
 

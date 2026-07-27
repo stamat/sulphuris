@@ -80,7 +80,11 @@ Same four prefixes. Unit: `%`. A `p` suffix marks percentage classes.
 .r-25p             → right: 25%
 ```
 
-**Negative %** — `$negative-percent-sizes`: `-5, -10, -15, -20, -25, -50, -75, -100`
+**Negative %** — `$negative-percent-sizes`: `-25, -50, -75, -100`
+
+Coarser than the positive list on purpose: negative percentage offsets are a
+centering trick (`-50`) and a full-bleed pull (`-100`), not a scale. Add the
+finer steps back in the config if a layout needs them.
 
 ```
 .t--50p            → top: -50%
@@ -101,9 +105,15 @@ Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages f
 .inset-md-16       → inset: 16px  (min-width: 768px)
 ```
 
-## Logical inset (RTL-aware)
+## Logical inset (RTL-aware) — opt-in
 
 Prefixes: `inset-inline`, `inset-block`. The physical `inset` above sets all four sides; these two set a **writing-direction-aware** pair, so they flip automatically under RTL — the positioning counterpart to the logical `.m-inline-*` / `.p-block-*` spacing utilities.
+
+**Off by default.** They cost ~700 rules for a need most LTR projects never have, so they ship behind [`$logical-properties`](../configuration/#feature-flags):
+
+```scss
+@forward 'sulphuris/core/config' with ($logical-properties: true);
+```
 
 | Class pattern          | CSS property                         |
 | ---------------------- | ------------------------------------ |

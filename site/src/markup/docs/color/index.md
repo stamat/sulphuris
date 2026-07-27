@@ -121,29 +121,11 @@ Prefix: `border`. Property: `border-color`. Same key set.
 .border-red-500        → border-color: var(--color-red-500)
 ```
 
-## Responsive variants
+## Colour does not vary by breakpoint
 
-All three sets (`text-*`, `bg-*`, `border-*`) generate responsive variants. Insert a breakpoint name before the colour key.
+None of the three sets (`text-*`, `bg-*`, `border-*`) has responsive variants — `.text-md-primary` and `.bg-xl-red-300` do not exist. Every colour × every palette grade × every breakpoint × three properties was ~23% of the shipped stylesheet, for a need that barely comes up.
 
-```
-.text-{bp}-{name}      → color: var(--color-{name})  at min-width
-.bg-{bp}-{name}        → background-color: var(--color-{name})  at min-width
-```
-
-```
-.text-md-primary       → color: var(--color-primary)  (min-width: 768px)
-.bg-lg-blue-100        → background-color: var(--color-blue-100)  (min-width: 1024px)
-```
-
-Breakpoints:
-
-| Name | Min-width |
-|---|---|
-| `sm` | 420px |
-| `md` | 768px |
-| `lg` | 1024px |
-| `xl` | 1366px |
-| `xxl` | 1680px |
+Colours that change with the viewport are rare; colours that change with a theme are not. For those, override the CSS variables under a [colour mode](#dark-mode) — utilities read `var(--color-*)`, so they follow along with no rebuild. If one component genuinely needs a viewport-dependent colour, that is a media query in your own SCSS.
 
 ## Dark mode
 

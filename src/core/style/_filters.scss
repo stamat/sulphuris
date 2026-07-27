@@ -1,8 +1,5 @@
-@use '../utils/generators';
-
-@include generators.utility-class-generator((
-  prefix: 'filter',
-  property: 'filter',
-  values: (invert: 'invert(1)'),
-  responsive: false
-));
+// ponytail: one class, no generator — a filter family (grayscale, blur) can
+// grow back into a generator call the day a second value earns its place.
+.filter-invert {
+  filter: invert(1);
+}

@@ -53,10 +53,12 @@ Values from `$percent-sizes`: `5, 10, 15, 20, 25, 50, 75, 100`. Suffix: `p`.
 
 ### Viewport width scale
 
-Same `$percent-sizes` values. Suffix: `vw`. Only emitted for `width` (not `height`).
+Values from `$viewport-sizes`: `25, 50, 75, 100`. Suffix: `vw`. Only emitted for `width` (not `height`).
+
+Coarser than the percent scale on purpose — viewport sizing is used in quarters, not in 5% steps. Widen `$viewport-sizes` if a design needs the fine grain.
 
 ```css
-.w-5vw   { width: 5vw; }
+.w-25vw  { width: 25vw; }
 .w-50vw  { width: 50vw; }
 .w-100vw { width: 100vw; }
 ```
@@ -94,8 +96,10 @@ Property: `height`. Same value set as width, with two differences:
 
 ### Viewport height scale
 
+Values from `$viewport-sizes`: `25, 50, 75, 100`.
+
 ```css
-.h-5vh   { height: 5vh; }
+.h-25vh  { height: 25vh; }
 .h-50vh  { height: 50vh; }
 .h-100vh { height: 100vh; }
 ```
@@ -111,7 +115,8 @@ Property: `height`. Same value set as width, with two differences:
 
 Properties: `min-width`, `max-width`, `min-height`, `max-height`. Each family
 carries the same scale as `w` / `h` — pixel, percent and the matching viewport
-unit — so anything you can set as a width you can also set as a bound.
+unit (`$viewport-sizes`) — so anything you can set as a width you can also set
+as a bound.
 
 ```css
 .max-w-256  { max-width: 256px; }

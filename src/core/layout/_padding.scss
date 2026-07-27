@@ -10,5 +10,7 @@
 ));
 
 // Logical-property padding (RTL-aware). `.p-inline-16` => padding-inline: 16px
-@include generators.utility-class-generator('p-inline', 'padding-inline', config.$sizes, 'px');
-@include generators.utility-class-generator('p-block', 'padding-block', config.$sizes, 'px');
+@if config.$logical-properties {
+  @include generators.utility-class-generator('p-inline', 'padding-inline', config.$sizes, 'px');
+  @include generators.utility-class-generator('p-block', 'padding-block', config.$sizes, 'px');
+}
