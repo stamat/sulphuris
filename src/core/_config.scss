@@ -5,11 +5,12 @@
 // The RTL-aware logical pairs: `.m-inline-*`, `.p-block-*`, `.inset-inline-*`,
 // `.inset-block-*`. The physical families cover LTR-only projects.
 $logical-properties: false !default;
-// Emit px sizes as rem, so spacing tracks the reader's browser font-size
-// setting the way zoom already does (WCAG 1.4.4). Class names do not move —
-// `.pt-32` stays `.pt-32` and still renders 32px at the default root size, the
-// number is a token label. Border widths (fuzzy at fractional sizes), radii and
-// breakpoints stay px regardless. `false` reverts every size family to px.
+// Emit px sizes and breakpoint widths as rem, so the layout tracks the reader's
+// browser font-size setting the way zoom already does (WCAG 1.4.4). Class names
+// do not move — `.pt-32` stays `.pt-32` and still renders 32px at the default
+// root size, the number is a token label. Breakpoints are still *written* in px
+// below and converted on the way into the media query. Border widths (fuzzy at
+// fractional sizes) and radii stay px regardless. `false` reverts the lot.
 $rem-units: true !default;
 
 /*

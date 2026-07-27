@@ -43,6 +43,26 @@
 }
 
 /*
+ * A px length as it should be emitted. Under `config.$rem-units` it converts, so
+ * the value tracks the reader's browser font-size setting; otherwise it passes
+ * straight through.
+ *
+ * Sources stay px on purpose — gutter halves, container offsets and breakpoint
+ * range math all need to be in one unit, and mixing px with a relative unit is a
+ * hard Sass error. Convert once, at the point the value is written out.
+ *
+ * @param $value (string): e.g. `56px`
+ * @return (string): e.g. `3.5rem`
+ */
+@function emit-length($value) {
+  @if config.$rem-units {
+    @return toRem($value);
+  }
+
+  @return $value;
+}
+
+/*
  * Fluid value between two breakpoints via `clamp()`. Scales linearly with the
  * viewport from $min-vw to $max-vw, then clamps at both ends. px in, rem out.
  *

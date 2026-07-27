@@ -167,9 +167,9 @@ Border **width** classes are responsive. Insert the breakpoint name between the 
 Pattern: `.border-{bp}-{size}`
 
 ```
-.border-md-4         → border-width: 4px  (min-width: 768px)
-.border-lg-8         → border-width: 8px  (min-width: 1024px)
-.border-t-md-0       → border-top: 0      (min-width: 768px)
+.border-md-4         → border-width: 4px  (min-width: 48rem)
+.border-lg-8         → border-width: 8px  (min-width: 64rem)
+.border-t-md-0       → border-top: 0      (min-width: 48rem)
 ```
 
 Border **colour** classes are not responsive — `.border-md-primary` does not exist. See [Color](../color/#colour-does-not-vary-by-breakpoint).
@@ -178,11 +178,11 @@ Breakpoints (all min-width):
 
 | Name | Min-width |
 |---|---|
-| `sm` | 420px |
-| `md` | 768px |
-| `lg` | 1024px |
-| `xl` | 1366px |
-| `xxl` | 1680px |
+| `sm` | 26.25rem (420px) |
+| `md` | 48rem (768px) |
+| `lg` | 64rem (1024px) |
+| `xl` | 85.375rem (1366px) |
+| `xxl` | 105rem (1680px) |
 
 > [!NOTE]
 > Classes without a breakpoint segment apply at all viewport widths. Responsive variants layer on top via `min-width` media queries.

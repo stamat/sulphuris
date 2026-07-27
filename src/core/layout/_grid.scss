@@ -8,36 +8,39 @@
   flex-flow: row wrap;
 }
 
+// Gutter arithmetic stays in px — halves, and offsets minus halves — and only
+// the finished value converts, so the negative margin on the row and the padding
+// on its children can never round to different units. See helpers.emit-length.
 .grid-gutter {
-  margin-left: math.div(-(config.$grid-gutter-mobile), 2);
-  margin-right: math.div(-(config.$grid-gutter-mobile), 2);
+  margin-left: helpers.emit-length(math.div(-(config.$grid-gutter-mobile), 2));
+  margin-right: helpers.emit-length(math.div(-(config.$grid-gutter-mobile), 2));
 
   @include generators.breakpoint(config.$container-breakpoint) {
-    margin-left: math.div(-(config.$grid-gutter), 2);
-    margin-right: math.div(-(config.$grid-gutter), 2);
+    margin-left: helpers.emit-length(math.div(-(config.$grid-gutter), 2));
+    margin-right: helpers.emit-length(math.div(-(config.$grid-gutter), 2));
   }
 
   &.container {
     margin-left: auto;
     margin-right: auto;
-    padding-left: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2);
-    padding-right: config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2);
+    padding-left: helpers.emit-length(config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2));
+    padding-right: helpers.emit-length(config.$container-offset-mobile - math.div(config.$grid-gutter-mobile, 2));
 
     @include generators.breakpoint(config.$container-breakpoint) {
       margin-left: auto;
       margin-right: auto;
-      padding-left: config.$container-offset - math.div(config.$grid-gutter, 2);
-      padding-right: config.$container-offset - math.div(config.$grid-gutter, 2);
+      padding-left: helpers.emit-length(config.$container-offset - math.div(config.$grid-gutter, 2));
+      padding-right: helpers.emit-length(config.$container-offset - math.div(config.$grid-gutter, 2));
     }
   }
 
   > [class*='col-'] {
-    padding-left: math.div(config.$grid-gutter-mobile, 2);
-    padding-right: math.div(config.$grid-gutter-mobile, 2);
+    padding-left: helpers.emit-length(math.div(config.$grid-gutter-mobile, 2));
+    padding-right: helpers.emit-length(math.div(config.$grid-gutter-mobile, 2));
 
     @include generators.breakpoint(config.$container-breakpoint) {
-      padding-left: math.div(config.$grid-gutter, 2);
-      padding-right: math.div(config.$grid-gutter, 2);
+      padding-left: helpers.emit-length(math.div(config.$grid-gutter, 2));
+      padding-right: helpers.emit-length(math.div(config.$grid-gutter, 2));
     }
   }
 }

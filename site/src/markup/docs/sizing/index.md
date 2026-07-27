@@ -164,28 +164,29 @@ after the prefix:
 .{prefix}-{bp}-{key}{suffix}
 ```
 
-Breakpoints (min-width):
+Breakpoints (min-width). Written in px in the config, emitted in `rem` — see
+[`$rem-units`](../configuration/#feature-flags):
 
 | Token | Min-width |
 |-------|-----------|
-| `sm`  | 420px     |
-| `md`  | 768px     |
-| `lg`  | 1024px    |
-| `xl`  | 1366px    |
-| `xxl` | 1680px    |
+| `sm`  | 26.25rem (420px)     |
+| `md`  | 48rem (768px)     |
+| `lg`  | 64rem (1024px)    |
+| `xl`  | 85.375rem (1366px)    |
+| `xxl` | 105rem (1680px)    |
 
 Examples:
 
 ```css
-/* at 768px and up */
-@media only screen and (min-width: 768px) {
+/* at 48rem — 768px at the default root — and up */
+@media only screen and (min-width: 48rem) {
   .w-md-50p  { width: 50%; }
   .h-md-100p { height: 100%; }
   .w-md-auto { width: auto; }
 }
 
-/* at 1024px and up */
-@media only screen and (min-width: 1024px) {
+/* at 64rem — 1024px at the default root — and up */
+@media only screen and (min-width: 64rem) {
   .w-lg-100vw  { width: 100vw; }
   .h-lg-100vh  { height: 100vh; }
   .max-w-lg-none { max-width: none; }

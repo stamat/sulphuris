@@ -1,16 +1,21 @@
 @use '../config';
 @use '../utils/generators';
+@use '../utils/helpers';
 
+// The max-width converts alongside the breakpoints (see helpers.emit-length):
+// `$container-max-width` and the `xxl` breakpoint are the same 1680px, and they
+// have to stay the same width as the root font-size changes or the container
+// stops lining up with the breakpoint it was sized against.
 .container {
   margin-left: auto;
   margin-right: auto;
-  max-width: config.$container-max-width;
+  max-width: helpers.emit-length(config.$container-max-width);
 
-  padding-left: config.$container-offset-mobile;
-  padding-right: config.$container-offset-mobile;
+  padding-left: helpers.emit-length(config.$container-offset-mobile);
+  padding-right: helpers.emit-length(config.$container-offset-mobile);
 
   @include generators.breakpoint(config.$container-breakpoint) {
-    padding-left: config.$container-offset;
-    padding-right: config.$container-offset;
+    padding-left: helpers.emit-length(config.$container-offset);
+    padding-right: helpers.emit-length(config.$container-offset);
   }
 }

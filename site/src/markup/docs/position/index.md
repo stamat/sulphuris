@@ -102,7 +102,7 @@ Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages f
 .inset--16         → inset: -1rem
 .inset-50p         → inset: 50%
 .inset-auto        → inset: auto
-.inset-md-16       → inset: 16px  (min-width: 768px)
+.inset-md-16       → inset: 1rem  (min-width: 48rem)
 ```
 
 ## Logical inset (RTL-aware) — opt-in
@@ -128,7 +128,7 @@ Same scales as `inset`: `$sizes`, `$negative-sizes`, `$percent-sizes` (`p` suffi
 .inset-inline--8   → inset-inline: -0.5rem
 .inset-block-50p   → inset-block: 50%
 .inset-inline-auto → inset-inline: auto
-.inset-block-md-16 → inset-block: 16px  (min-width: 768px)
+.inset-block-md-16 → inset-block: 1rem  (min-width: 48rem)
 ```
 
 ## Z-index
@@ -211,22 +211,22 @@ All offset, position and z-index classes generate responsive variants. Insert a 
 Pattern: `.{prefix}-{bp}-{key}`
 
 ```
-.position-md-absolute  → position: absolute   (min-width: 768px)
-.t-lg-32               → top: 32px            (min-width: 1024px)
-.t-md--16              → top: -16px           (min-width: 768px)
-.l-xl-50p              → left: 50%            (min-width: 1366px)
-.z-md-10               → z-index: 10          (min-width: 768px)
+.position-md-absolute  → position: absolute   (min-width: 48rem)
+.t-lg-32               → top: 2rem            (min-width: 64rem)
+.t-md--16              → top: -1rem           (min-width: 48rem)
+.l-xl-50p              → left: 50%            (min-width: 85.375rem)
+.z-md-10               → z-index: 10          (min-width: 48rem)
 ```
 
 Breakpoints (all min-width):
 
 | Name  | Min-width |
 | ----- | --------- |
-| `sm`  | 420px     |
-| `md`  | 768px     |
-| `lg`  | 1024px    |
-| `xl`  | 1366px    |
-| `xxl` | 1680px    |
+| `sm`  | 26.25rem (420px)     |
+| `md`  | 48rem (768px)     |
+| `lg`  | 64rem (1024px)    |
+| `xl`  | 85.375rem (1366px)    |
+| `xxl` | 105rem (1680px)    |
 
 > [!NOTE]
 > Classes without a breakpoint segment apply at all viewport widths. Responsive variants layer on top via `min-width` media queries, so the base class is the mobile-first default.

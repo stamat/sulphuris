@@ -16,7 +16,7 @@ Margin and padding utilities are generated from the `$sizes` scale. Both support
 <!-- config: sizes -->
 
 ```scss
-// src/core/_config.scss:18
+// src/core/_config.scss:19
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 ```
 
@@ -62,7 +62,7 @@ Per-side variants also accept `auto`: `.mt-auto`, `.mx-auto`, etc.
 <!-- config: negative-sizes -->
 
 ```scss
-// src/core/_config.scss:19
+// src/core/_config.scss:20
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 ```
 
@@ -81,7 +81,7 @@ Prefix: `p`. Property: `padding`. Same `$sizes` scale. No negatives, no `auto`.
 **All sides**
 
 ```
-.p-{size}          → padding: {size}px
+.p-{size}          → padding: {size} in rem  (.p-16 → 1rem)
 ```
 
 **Per side / axis**
@@ -109,7 +109,7 @@ Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 .gap-16            → gap: 1rem
 .gap-x-8           → column-gap: 0.5rem
 .gap-y-24          → row-gap: 1.5rem
-.gap-md-16         → gap: 1rem  (min-width: 768px)
+.gap-md-16         → gap: 1rem  (min-width: 48rem)
 ```
 
 ## Logical spacing (RTL-aware) — opt-in
@@ -132,7 +132,7 @@ The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom)
 ```
 .m-inline-16       → margin-inline: 1rem
 .p-block-24        → padding-block: 1.5rem
-.m-inline-md-16    → margin-inline: 1rem  (min-width: 768px)
+.m-inline-md-16    → margin-inline: 1rem  (min-width: 48rem)
 ```
 
 Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`, documented under [Position](/docs/position/).
@@ -154,20 +154,20 @@ Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`
 Insert a breakpoint name between the prefix+orientation and the size value.
 
 ```
-.p-md-24           → padding: 1.5rem  (min-width: 768px)
-.mt-lg-48          → margin-top: 3rem  (min-width: 1024px)
-.mx-xl-auto        → margin-left/right: auto  (min-width: 1366px)
+.p-md-24           → padding: 1.5rem  (min-width: 48rem)
+.mt-lg-48          → margin-top: 3rem  (min-width: 64rem)
+.mx-xl-auto        → margin-left/right: auto  (min-width: 85.375rem)
 ```
 
 Breakpoints (all min-width):
 
 | Name  | Min-width |
 | ----- | --------- |
-| `sm`  | 420px     |
-| `md`  | 768px     |
-| `lg`  | 1024px    |
-| `xl`  | 1366px    |
-| `xxl` | 1680px    |
+| `sm`  | 26.25rem (420px)     |
+| `md`  | 48rem (768px)     |
+| `lg`  | 64rem (1024px)    |
+| `xl`  | 85.375rem (1366px)    |
+| `xxl` | 105rem (1680px)    |
 
 > [!NOTE]
 > Classes without a breakpoint segment apply at all viewport widths. Responsive variants layer on top via `min-width` media queries, so the base class is the mobile-first default.

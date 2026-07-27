@@ -19,12 +19,12 @@ They compose — a `.col-6` can be a `.d-grid`.
 
 ## Container
 
-`.container` centers content with `max-width: 1680px` and horizontal padding that switches at the `lg` breakpoint (1024px):
+`.container` centers content with `max-width: 105rem` (1680px at the default root — the same width as the `xxl` breakpoint, which is why the two convert together) and horizontal padding that switches at the `lg` breakpoint:
 
 | Viewport | Padding (each side) |
 |---|---|
-| below `lg` | 16px |
-| `lg` and up | 56px |
+| below `lg` | 1rem (16px) |
+| `lg` and up | 3.5rem (56px) |
 
 ```html
 <div class="container">…</div>
@@ -38,10 +38,10 @@ Add `.grid-gutter` to apply negative side margins that cancel the column padding
 
 | Viewport | Column padding (each side) | Row negative margin (each side) |
 |---|---|---|
-| below `lg` | 8px | -8px |
-| `lg` and up | 16px | -16px |
+| below `lg` | 0.5rem (8px) | -0.5rem |
+| `lg` and up | 1rem (16px) | -1rem |
 
-The full gutter values are `$grid-gutter-mobile: 16px` and `$grid-gutter: 32px` — each side gets half.
+The full gutter values are `$grid-gutter-mobile: 16px` and `$grid-gutter: 32px` — each side gets half. The halving happens in px and only the finished value converts to `rem`, so the row's negative margin and the column's padding can never round to different units.
 
 `.grid-gutter` and `.container` can be combined on the same element. When combined, the padding accounts for both the container offset and the half-gutter:
 
@@ -76,11 +76,11 @@ Each column class has a breakpoint variant that applies at `min-width`. Breakpoi
 
 | Name | Min-width |
 |---|---|
-| `sm` | 420px |
-| `md` | 768px |
-| `lg` | 1024px |
-| `xl` | 1366px |
-| `xxl` | 1680px |
+| `sm` | 26.25rem (420px) |
+| `md` | 48rem (768px) |
+| `lg` | 64rem (1024px) |
+| `xl` | 85.375rem (1366px) |
+| `xxl` | 105rem (1680px) |
 
 The base `.col-N` (no breakpoint) applies at all widths. Layer responsive classes on top for wider viewports:
 
@@ -132,9 +132,9 @@ Flex-only — `flex-direction` does nothing on a `.d-grid` container. Native gri
 
 ## Max-width columns — `.col-N-max`
 
-`.col-N-max` caps an element's `max-width` to the pixel equivalent of N columns at the largest breakpoint (`xxl`, 1680px), accounting for container offsets and gutters. Range: `1`–`11` (`.col-12-max` is not generated; use the container's full width instead).
+`.col-N-max` caps an element's `max-width` to N columns' worth of the largest breakpoint (`xxl`, 1680px), accounting for container offsets and gutters. Range: `1`–`11` (`.col-12-max` is not generated; use the container's full width instead).
 
-The value is computed from the max breakpoint width minus container padding on both sides plus one gutter unit, scaled by the column fraction:
+The value is computed in px from the max breakpoint width minus container padding on both sides plus one gutter unit, scaled by the column fraction, then converted once at the end:
 
 ```
 desktop: (1680 - 56×2 + 32) × (N/12)  →  1600 × (N/12)
@@ -144,9 +144,9 @@ mobile:  (1680 - 16×2 + 16) × (N/12)  →  1664 × (N/12)
 Examples (desktop):
 
 ```
-.col-6-max   → max-width: 800px
-.col-4-max   → max-width: ~533px
-.col-3-max   → max-width: 400px
+.col-6-max   → max-width: 50rem    (800px)
+.col-4-max   → max-width: ~33.3rem (~533px)
+.col-3-max   → max-width: 25rem    (400px)
 ```
 
 Use `.col-N-max` when you want an element to grow freely on small screens but never exceed the proportional column width at full desktop scale.

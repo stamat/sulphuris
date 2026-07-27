@@ -28,10 +28,17 @@ $breakpoints: config.$breakpoints;
  * @media. Used by `breakpoint` mixin.
  * @see utils/_config.scss $breakpoints. $breakpoints is a globally defined var.
  *
+ * Widths go through `helpers.emit-length()`, so under `$rem-units` the layout
+ * switch moves with the reader's browser font-size setting instead of firing at
+ * a fixed viewport width — in a media query `rem` resolves against that setting,
+ * not against the document's own `font-size`, which is the whole point. The
+ * `$breakpoints` map itself stays px: the `- 1` range math in
+ * `helpers.breakpoints()` is unit-naive (`26.25em - 1` is a 16px hole, not 1px).
+ *
  * @param $size: breakpoint map item name ('', sm, md, lg, xl, xxl)
  * @param $explicit: (boolean | optional) for generating min-max queries
  *
- * @return (string) e.g. `only screen and (min-width: 1366px)` or `only screen and (min-width: 1366px) and (max-width: 1679px)`
+ * @return (string) e.g. `only screen and (min-width: 85.375rem)` or `only screen and (min-width: 85.375rem) and (max-width: 104.9375rem)`
  */
 @function generate-breakpoint($size, $explicit: false) {
   $query: 'only screen';
@@ -39,12 +46,12 @@ $breakpoints: config.$breakpoints;
 
   @if $breakpoint != null {
     @if list.nth($breakpoint, 1) {
-      $query: '#{$query} and (min-width: #{list.nth($breakpoint, 1)})';
+      $query: '#{$query} and (min-width: #{helpers.emit-length(list.nth($breakpoint, 1))})';
     }
 
     @if $explicit {
       @if list.nth($breakpoint, 2) {
-        $query: '#{$query} and (max-width: #{list.nth($breakpoint, 2)})';
+        $query: '#{$query} and (max-width: #{helpers.emit-length(list.nth($breakpoint, 2))})';
       }
     }
   }
@@ -478,10 +485,10 @@ $breakpoints: config.$breakpoints;
   @for $i from 1 through $columns - 1 {
     .col-#{$i}-max {
       $width: $base * $i;
-      max-width: ($max-breakpoint-value - config.$container-offset-mobile * 2 + config.$grid-gutter-mobile) * math.div($width, 100);
+      max-width: helpers.emit-length(($max-breakpoint-value - config.$container-offset-mobile * 2 + config.$grid-gutter-mobile) * math.div($width, 100));
 
       @include breakpoint(config.$container-breakpoint) {
-        max-width: ($max-breakpoint-value - config.$container-offset * 2 + config.$grid-gutter) * math.div($width, 100);
+        max-width: helpers.emit-length(($max-breakpoint-value - config.$container-offset * 2 + config.$grid-gutter) * math.div($width, 100));
       }
     }
   }
