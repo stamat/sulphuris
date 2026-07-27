@@ -2,9 +2,9 @@
 layout: docs
 title: Typography
 navTitle: Typography
-description: Type scale, responsive heading sizes, font-family utilities, and text decoration/alignment helpers generated from the $typography config map.
+description: Type scale, responsive heading sizes, font-size and line-height utilities, font-family utilities, and text decoration/alignment helpers generated from the $typography config map.
 order: 10
-keywords: ["typography", "heading", "font", "text", "h1", "paragraph", "rem", "text-align", "list", "truncate", "ellipsis"]
+keywords: ["typography", "heading", "font", "text", "h1", "paragraph", "rem", "text-align", "list", "truncate", "ellipsis", "font-size", "line-height", "text-wrap", "balance"]
 ---
 
 # Typography
@@ -90,6 +90,55 @@ Non-heading entries use a single size set (no responsive switch). `letter-spacin
 <figcaption>Caption text (same as .p3)</figcaption>
 <small>Fine print (same as .p4)</small>
 <p class="supertitle">Label / eyebrow text</p>
+```
+
+---
+
+## Font size utilities — `.fs-*`
+
+Generated from `$font-sizes`. **px in the class name, rem in the output** — same
+convention as `.pt-32`, same `toRem()` conversion the type scale uses, so
+`.fs-24` and `.p1` land on exactly the same size.
+
+| Class | `font-size` | Matches |
+|---|---|---|
+| `.fs-12` | 0.75rem (12px) | `.p4`, `small` |
+| `.fs-14` | 0.875rem (14px) | `.p3`, `figcaption` |
+| `.fs-16` | 1rem (16px) | `p` |
+| `.fs-20` | 1.25rem (20px) | `.p2`, `h6` desktop |
+| `.fs-24` | 1.5rem (24px) | `.p1`, `h5` desktop |
+| `.fs-32` | 2rem (32px) | `h4` desktop |
+| `.fs-48` | 3rem (48px) | `h3` desktop |
+| `.fs-64` | 4rem (64px) | `h2` desktop |
+| `.fs-96` | 6rem (96px) | `h1` desktop |
+
+This is the nudge that does not need a new component class — the type scale
+still owns letter-spacing, line-height and weight, `.fs-*` changes size only.
+Responsive variants included:
+
+```html
+<h2 class="fs-32 fs-md-64">Smaller on phones</h2>
+```
+
+---
+
+## Line height utilities — `.lh-*`
+
+Generated from `$line-heights`. Unitless values on purpose: a unitless
+line-height inherits as a **ratio**, so children scale with their own font-size;
+a px one inherits as a frozen box and collapses nested type.
+
+| Class | `line-height` |
+|---|---|
+| `.lh-1` | `1` |
+| `.lh-tight` | `1.2` |
+| `.lh-normal` | `1.5` |
+| `.lh-loose` | `1.75` |
+
+Pairs with `.fs-*` — bumping size usually means loosening or tightening leading:
+
+```html
+<p class="fs-32 lh-tight">Display text needs less leading than body copy.</p>
 ```
 
 ---
@@ -197,6 +246,21 @@ Responsive variants available for all breakpoints.
 ```
 .text-nowrap            → white-space: nowrap
 ```
+
+## Text wrapping
+
+```
+.text-balance           → text-wrap: balance
+.text-pretty            → text-wrap: pretty
+```
+
+`balance` evens out line lengths across a block — the fix for a heading whose
+last line is one orphaned word. Browsers cap it at a handful of lines
+(4–6), so it is a **headline** tool, not a body-copy one. `pretty` is the body-copy
+counterpart: it only prevents orphans, with no line limit.
+
+Not responsive, and there is no `text-wrap: nowrap` class — `.text-nowrap` above
+is the `white-space` one, and two classes a character apart is a trap.
 
 ## Truncation
 

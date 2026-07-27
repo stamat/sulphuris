@@ -1,11 +1,22 @@
 @use '../utils/generators';
 
 @include generators.utility-class-generator('flex', 'flex-direction', ('row', 'row-reverse', 'column', 'column-reverse'));
-@include generators.utility-class-generator('flex', 'flex-wrap', ('wrap', 'nowrap'));
+@include generators.utility-class-generator('flex', 'flex-wrap', ('wrap', 'nowrap', 'wrap-reverse'));
+
+// The `flex` shorthand. `.flex-grow-1` is not the same thing — it leaves
+// `flex-basis: auto`, so children keep their content width and never come out
+// equal. `.flex-1` sets the `0%` basis that makes them equal.
+@include generators.utility-class-generator('flex', 'flex', (1: '1 1 0%', 'auto': '1 1 auto', 'none': 'none'));
+
 @include generators.utility-class-generator('flex-grow', 'flex-grow', (0, 1, 2, 3));
 // ponytail: flex-shrink 0/1 covers the common cases; grow the scale if a real need shows up
 @include generators.utility-class-generator('flex-shrink', 'flex-shrink', (0, 1));
-@include generators.utility-class-generator('align', 'align-items', ('normal', 'center', 'start', 'end', 'stretch'));
-@include generators.utility-class-generator('justify', 'justify-content', ('normal', 'center', 'start', 'end', 'space-between', 'space-around'));
-@include generators.utility-class-generator('align-self', 'align-self', ('normal', 'center', 'start', 'end', 'stretch'));
+@include generators.utility-class-generator('align', 'align-items', ('normal', 'center', 'start', 'end', 'baseline', 'stretch'));
+@include generators.utility-class-generator('justify', 'justify-content', ('normal', 'center', 'start', 'end', 'space-between', 'space-around', 'space-evenly'));
+@include generators.utility-class-generator('align-self', 'align-self', ('normal', 'center', 'start', 'end', 'baseline', 'stretch'));
 @include generators.utility-class-generator('justify-self', 'justify-self', ('normal', 'center', 'start', 'end', 'stretch'));
+
+// Visual order of flex/grid children. `first`/`last` are the escape hatch for
+// "before/after everything" without knowing the sibling count — the sentinel
+// values are what Tailwind uses for the same reason.
+@include generators.utility-class-generator('order', 'order', (-1: -1, 0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 'first': -9999, 'last': 9999));

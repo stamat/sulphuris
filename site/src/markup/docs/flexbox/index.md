@@ -4,7 +4,7 @@ title: Flexbox
 navTitle: Flexbox
 description: Utility classes for flex direction, wrapping, alignment, justification, grow, and shrink.
 order: 6
-keywords: ["flex", "flexbox", "justify-content", "align-items", "flex-direction", "flex-wrap", "gap"]
+keywords: ["flex", "flexbox", "justify-content", "align-items", "flex-direction", "flex-wrap", "gap", "order", "flex-1", "baseline"]
 ---
 
 # Flexbox
@@ -34,6 +34,26 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 |---|---|
 | `.flex-wrap` | `flex-wrap: wrap` |
 | `.flex-nowrap` | `flex-wrap: nowrap` |
+| `.flex-wrap-reverse` | `flex-wrap: wrap-reverse` |
+
+---
+
+## Flex shorthand
+
+**Prefix:** `flex`  **Property:** `flex`
+
+| Class | CSS |
+|---|---|
+| `.flex-1` | `flex: 1 1 0%` |
+| `.flex-auto` | `flex: 1 1 auto` |
+| `.flex-none` | `flex: none` |
+
+> [!NOTE]
+> `.flex-1` is not `.flex-grow-1`. `flex-grow` on its own leaves
+> `flex-basis: auto`, so children still start from their content width and come
+> out unequal. `.flex-1` sets the `0%` basis that makes siblings share the space
+> evenly regardless of content. `.flex-auto` is the "grow, but respect my
+> content" middle ground; `.flex-none` freezes an item at its content size.
 
 ---
 
@@ -71,7 +91,12 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 | `.align-center` | `align-items: center` |
 | `.align-start` | `align-items: start` |
 | `.align-end` | `align-items: end` |
+| `.align-baseline` | `align-items: baseline` |
 | `.align-stretch` | `align-items: stretch` |
+
+`.align-baseline` lines children up on their **text** baselines rather than their
+boxes — the right choice for a row mixing type sizes (a heading next to a
+label), where `.align-center` visibly staggers them.
 
 ---
 
@@ -87,6 +112,7 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 | `.justify-end` | `justify-content: end` |
 | `.justify-space-between` | `justify-content: space-between` |
 | `.justify-space-around` | `justify-content: space-around` |
+| `.justify-space-evenly` | `justify-content: space-evenly` |
 
 ---
 
@@ -100,6 +126,7 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 | `.align-self-center` | `align-self: center` |
 | `.align-self-start` | `align-self: start` |
 | `.align-self-end` | `align-self: end` |
+| `.align-self-baseline` | `align-self: baseline` |
 | `.align-self-stretch` | `align-self: stretch` |
 
 ---
@@ -115,6 +142,39 @@ Single-property utility classes generated from `src/core/layout/_flex.scss`. All
 | `.justify-self-start` | `justify-self: start` |
 | `.justify-self-end` | `justify-self: end` |
 | `.justify-self-stretch` | `justify-self: stretch` |
+
+---
+
+## Order
+
+**Prefix:** `order`  **Property:** `order`
+
+Visual order of flex **and** grid children, independent of source order.
+
+| Class | CSS |
+|---|---|
+| `.order--1` | `order: -1` |
+| `.order-0` … `.order-6` | `order: 0` … `order: 6` |
+| `.order-first` | `order: -9999` |
+| `.order-last` | `order: 9999` |
+
+`.order-first` / `.order-last` are the escape hatch for "before/after
+everything" when you do not know the sibling count. The sentinel numbers are
+arbitrary but conventional — same values Tailwind uses.
+
+```html
+<!-- source order keeps the heading first for screen readers,
+     visual order puts the image on top below md -->
+<div class="d-flex flex-column flex-md-row">
+  <h2 class="order-1 order-md-0">Title</h2>
+  <img class="order-0 order-md-1" src="…" alt="">
+</div>
+```
+
+> [!WARNING]
+> `order` moves the painted box, not the DOM. Focus order, screen-reader order,
+> and `Tab` still follow source order — which is the feature above, and a bug if
+> you use `order` to fix markup you could have written in the right sequence.
 
 ---
 
@@ -157,4 +217,4 @@ Every class above has responsive variants using the breakpoint infixes below. Br
 </div>
 ```
 
-All prefixes (`flex`, `flex-grow`, `flex-shrink`, `align`, `justify`, `align-self`, `justify-self`) generate the full set of responsive variants.
+All prefixes (`flex`, `flex-grow`, `flex-shrink`, `align`, `justify`, `align-self`, `justify-self`, `order`) generate the full set of responsive variants.

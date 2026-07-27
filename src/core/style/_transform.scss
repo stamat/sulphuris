@@ -1,0 +1,24 @@
+@use '../utils/generators';
+
+// The standalone `translate` / `rotate` / `scale` properties, not the
+// `transform` shorthand. They are three separate properties, so
+// `.rotate-45.scale-110` keeps both — a `transform`-based family would have
+// the second class silently overwrite the first. They also apply *before*
+// `transform`, so stacking one on `.absolute-center` still works.
+//
+// Value lists stay coarse on purpose: a transform step is a design decision,
+// not a spectrum, and every value costs 6 rules (base + 5 breakpoints).
+
+// ponytail: `translate` is one property for both axes, so `.translate-x-50`
+// and `.translate-y-50` on the same element is last-wins, not a sum. Combining
+// them means a var-composed `translate: var(--tx) var(--ty)` pair, which is
+// two declarations per class and a family the generator can't emit — write a
+// selector, or use `.absolute-center` for the -50%/-50% case it exists for.
+@include generators.utility-class-generator('translate-x', 'translate', (-100: '-100%', -50: '-50%', 0: '0', 50: '50%', 100: '100%'));
+@include generators.utility-class-generator('translate-y', 'translate', (-100: '0 -100%', -50: '0 -50%', 0: '0', 50: '0 50%', 100: '0 100%'));
+
+// `.scale-110` => scale: 1.1. Unitless — one value scales both axes.
+@include generators.utility-class-generator('scale', 'scale', (0: 0, 50: 0.5, 75: 0.75, 100: 1, 110: 1.1, 125: 1.25, 150: 1.5));
+
+// `.rotate-45` => rotate: 45deg, `.rotate--45` => rotate: -45deg
+@include generators.utility-class-generator('rotate', 'rotate', (-180: -180, -90: -90, -45: -45, 0: 0, 45: 45, 90: 90, 180: 180), 'deg');

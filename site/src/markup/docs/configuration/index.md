@@ -237,7 +237,7 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 
 ## Typography
 
-<!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps -->
+<!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
 // src/core/_config.scss:140
@@ -253,10 +253,24 @@ $paragraph-line-height: 1.5;
 
 // src/core/_config.scss:150
 $line-clamps: 1,2,3,4,5,6;
+
+// src/core/_config.scss:156
+$font-sizes: 12,14,16,20,24,32,48,64,96;
+
+// src/core/_config.scss:160
+$line-heights: (
+  1: 1,
+  'tight': 1.2,
+  'normal': 1.5,
+  'loose': 1.75
+);
 ```
 
 `$base-font-size` is the `1rem` reference; `$line-clamps` the line counts behind
-the `.line-clamp-*` family.
+the `.line-clamp-*` family. `$font-sizes` and `$line-heights` drive the `.fs-*`
+and `.lh-*` utilities — the per-element nudge that does not need a new component
+class. `$font-sizes` is px in, rem out, so it stays readable next to `.pt-32`
+while the emitted value still respects the user's root font-size.
 
 The `$typography` map defines the type scale — every heading and paragraph
 class. Each entry is
@@ -267,7 +281,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:157
+// src/core/_config.scss:172
 $typography: (
   'h1, .h1': (
     desktop: (96px, -1.5px, $heading-line-height, bold),
@@ -310,12 +324,12 @@ in the config uses pixels. See [Typography](../typography/).
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:190
+// src/core/_config.scss:205
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:194
+// src/core/_config.scss:209
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -327,7 +341,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:200
+// src/core/_config.scss:215
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -347,7 +361,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:208
+// src/core/_config.scss:223
 $button: (
   height: 56px,
   padding-x: 32px,

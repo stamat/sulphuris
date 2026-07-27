@@ -42,6 +42,6 @@
     "lint:js": "eslint \"site/src/js/**/*.ts\"",
     "lint": "npm run lint:css && npm run lint:js",
     "typecheck": "tsc --noEmit",
-    "test": "npm run typecheck && npm run build && node script/check-grid-css.mjs"
+    "test": "npm run typecheck && npm run build && node script/check-grid-css.mjs && node script/check-utility-css.mjs"
   }
 }

@@ -2,9 +2,9 @@
 layout: docs
 title: Effects
 navTitle: Effects
-description: Utility classes for box shadows, CSS filters and z-index, plus a SCSS transition mixin backed by configurable custom easings.
+description: Utility classes for box shadows, CSS filters, z-index and transforms, plus a SCSS transition mixin backed by configurable custom easings.
 order: 13
-keywords: ["shadow", "box-shadow", "filter", "blur", "opacity", "z-index", "transition", "easing"]
+keywords: ["shadow", "box-shadow", "filter", "blur", "opacity", "z-index", "transition", "easing", "transform", "translate", "rotate", "scale"]
 ---
 
 # Effects
@@ -104,6 +104,44 @@ Responsive pattern: `.z-{bp}-{value}`
 .z-md-10   → z-index: 10  (min-width: 768px)
 .z-lg-50   → z-index: 50  (min-width: 1024px)
 ```
+
+## Transform
+
+Prefixes: `translate-x`, `translate-y`, `scale`, `rotate`. Responsive.
+
+These emit the **standalone** `translate` / `rotate` / `scale` properties, not
+the `transform` shorthand. That is the whole point: they are three separate
+properties, so `.rotate-45 .scale-110` keeps both. A `transform`-based family
+would have the second class silently overwrite the first.
+
+| Class | CSS |
+|---|---|
+| `.translate-x--100` … `.translate-x-100` | `translate: -100%` … `translate: 100%` |
+| `.translate-y--100` … `.translate-y-100` | `translate: 0 -100%` … `translate: 0 100%` |
+| `.scale-0` | `scale: 0` |
+| `.scale-50` / `.scale-75` / `.scale-100` | `scale: 0.5` / `0.75` / `1` |
+| `.scale-110` / `.scale-125` / `.scale-150` | `scale: 1.1` / `1.25` / `1.5` |
+| `.rotate--180` … `.rotate-180` | `rotate: -180deg` … `rotate: 180deg` |
+
+Translate steps are `-100, -50, 0, 50, 100` (percent of the element's own box)
+on each axis; rotate steps are `-180, -90, -45, 0, 45, 90, 180`. Coarse on
+purpose — a transform step is a design decision, not a spectrum, and every value
+costs six rules once responsive variants are counted.
+
+```html
+<!-- composes: both apply -->
+<div class="rotate-45 scale-110">…</div>
+```
+
+> [!WARNING]
+> `translate` is **one** property covering both axes, so `.translate-x-50` and
+> `.translate-y-50` on the same element is last-wins, not a sum. For the
+> `-50%/-50%` centering case use `.absolute-center`; for anything else, write a
+> selector.
+
+Individual transform properties apply **before** `transform`, so stacking
+`.rotate-45` onto `.absolute-center` (which uses `transform: translate3d(…)`)
+works — the element rotates, then gets centered.
 
 ## Transition classes
 

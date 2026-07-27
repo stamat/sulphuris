@@ -18,7 +18,7 @@ It sits deliberately between two worlds:
 
 - **Old Primer / Bootstrap** — human-readable class names that map to CSS properties
   (`.pt-16` is `padding-top: 16px`), so your markup stays legible and portable.
-- **Tailwind** — but *without* authoring your styles inside `class="…"` soup, and without
+- **Tailwind** — but _without_ authoring your styles inside `class="…"` soup, and without
   a bespoke DSL. Sulphuris is plain SCSS and plain CSS. The classes are generated from a
   config, not hand-written one by one.
 
@@ -44,6 +44,7 @@ It sits deliberately between two worlds:
 - Not a component framework. There are a couple of primitives (`.btn`, `.container`,
   a grid), but Sulphuris is mostly low-level utilities and resets.
 - Not an atomic-CSS DSL. There is no `class="[padding-top:16px]"` arbitrary-value syntax.
+- Not a state-variant system. There is no `hover:`, `focus:` or `group-hover:` prefix.
 - Not zero-config magic. You get the most out of it by overriding the config for your
   project.
 

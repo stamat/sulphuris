@@ -1,5 +1,7 @@
 @use '../utils/generators';
 
-@include generators.utility-class-generator('overflow', 'overflow', ('hidden', 'visible', 'auto'));
-@include generators.utility-class-generator('overflow-x', 'overflow-x', ('hidden', 'visible', 'auto'));
-@include generators.utility-class-generator('overflow-y', 'overflow-y', ('hidden', 'visible', 'auto'));
+// `clip` is `hidden` without the scroll container — the element stops being
+// programmatically scrollable, which is what `hidden` is usually reached for.
+@include generators.utility-class-generator('overflow', 'overflow', ('hidden', 'visible', 'auto', 'clip', 'scroll'));
+@include generators.utility-class-generator('overflow-x', 'overflow-x', ('hidden', 'visible', 'auto', 'clip', 'scroll'));
+@include generators.utility-class-generator('overflow-y', 'overflow-y', ('hidden', 'visible', 'auto', 'clip', 'scroll'));

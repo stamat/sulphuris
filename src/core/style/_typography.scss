@@ -2,6 +2,8 @@
 @use '../utils/generators';
 @use '../utils/helpers';
 
+@use 'sass:map';
+
 //stylelint-disable color-named
 
 html {
@@ -80,6 +82,17 @@ h6 {
   font-weight: 900 !important;
 }
 
+// Font size. px class names like every other size family, rem values through
+// the same `toRem()` the $typography scale uses — `.fs-24` is `.p1`'s size.
+$font-size-map: ();
+
+@each $size in config.$font-sizes {
+  $font-size-map: map.merge($font-size-map, ($size: helpers.toRem($size * 1px)));
+}
+
+@include generators.utility-class-generator('fs', 'font-size', $font-size-map);
+@include generators.utility-class-generator('lh', 'line-height', config.$line-heights);
+
 @include generators.utility-class-generator('text', 'text-align', ('left', 'right', 'center'), '', '', false, true);
 
 .font-italic {
@@ -116,6 +129,10 @@ h6 {
 .text-nowrap {
   white-space: nowrap;
 }
+
+// `text-wrap`. No `.text-wrap-nowrap` on purpose — `.text-nowrap` above is the
+// `white-space` one, and two classes that close together is a trap.
+@include generators.utility-class-generator('text', 'text-wrap', ('balance', 'pretty'), '', '', false, false);
 
 // Single-line ellipsis. Needs a constrained width to do anything — a block
 // element gets one from its parent, an inline-flex child may need `.min-w-0`.

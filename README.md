@@ -17,7 +17,7 @@ Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/su
 
 ### Highlights
 
-- **Design tokens** - A single SCSS [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) containing the variables that dictate which utilities will be generated. You can wire your Figma design tokens to diectly override the config variables (with a bit of work, or simply use [poops](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens).
+- **Design tokens** - A single SCSS [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) containing the variables that dictate which utilities will be generated. You can wire your Figma design tokens to directly override the config variables (with a bit of work, or simply use [poops](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens).
 - **Less !important usage** - abstaining from `!important` usage as much as possible.
 - **Spacing size classes in pixels** - e.g. `.pt-32` results in `padding-top: 32px;`, and `.pt--32` results in `padding-top: -32px;`. **Note:** this might not be smart cause reusability of html like components, revise.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
@@ -126,9 +126,9 @@ If you have any ideas on how to improve Sulphuris, feel free to open an issue or
 
 ## Why
 
-It's 2021. After years of making websites I realized I'm copy/pasting a set of utilites that were growing as the time progressed. Primer and Bootstrap were a bit too stubborn for my taste just bedcause I wanted something like that but configurable to the extreme. Something that will adapt to every project that I embark on. So I made my own. 
+It's 2021. After years of making websites I realized I'm copy/pasting a set of utilities that were growing as the time progressed. Primer and Bootstrap were a bit too stubborn for my taste just because I wanted something like that but configurable to the extreme. Something that will adapt to every project that I embark on. So I made my own.
 
-P.S. I found out about Tailwind a while later. I'm not a guy who follows the news. And even then I prefered the old school, cause sometimes it gets hard to swim in Tailwind class soup.
+P.S. I found out about Tailwind a while later. I'm not a guy who follows the news. And even then I preferred the old school, cause sometimes it gets hard to swim in Tailwind class soup.
 
 ## Name
 

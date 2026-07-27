@@ -51,12 +51,28 @@ Prefix: `overflow`, `overflow-x`, `overflow-y`. Properties: `overflow`, `overflo
 | `.overflow-hidden` | `overflow: hidden` |
 | `.overflow-visible` | `overflow: visible` |
 | `.overflow-auto` | `overflow: auto` |
+| `.overflow-clip` | `overflow: clip` |
+| `.overflow-scroll` | `overflow: scroll` |
 | `.overflow-x-hidden` | `overflow-x: hidden` |
 | `.overflow-x-visible` | `overflow-x: visible` |
 | `.overflow-x-auto` | `overflow-x: auto` |
+| `.overflow-x-clip` | `overflow-x: clip` |
+| `.overflow-x-scroll` | `overflow-x: scroll` |
 | `.overflow-y-hidden` | `overflow-y: hidden` |
 | `.overflow-y-visible` | `overflow-y: visible` |
 | `.overflow-y-auto` | `overflow-y: auto` |
+| `.overflow-y-clip` | `overflow-y: clip` |
+| `.overflow-y-scroll` | `overflow-y: scroll` |
+
+> [!NOTE]
+> `clip` is usually what `hidden` was reached for: it crops the overflow without
+> turning the element into a scroll container, so nothing can scroll it
+> programmatically or by focusing a clipped child. `hidden` still creates that
+> container — pick it only when you intend to scroll it from script.
+>
+> `auto` shows scrollbars only when there is overflow; `scroll` reserves the
+> gutter permanently, which is the one that stops a layout jumping as content
+> grows past the box.
 
 ## Responsive
 
