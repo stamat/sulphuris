@@ -11,16 +11,24 @@
 // otherwise.
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import postcss from 'postcss'
+import { compile } from 'sass'
+
+// selector => declaration text, for single-declaration utility rules
+function singleDeclRules (root) {
+  const found = new Map()
+  root.walkRules((rule) => {
+    const decls = rule.nodes.filter((n) => n.type === 'decl')
+    if (decls.length === 1) found.set(rule.selector, `${decls[0].prop}: ${decls[0].value}`)
+  })
+  return found
+}
 
 const file = process.argv[2] ?? 'dist/sulphuris.css'
 const root = postcss.parse(await readFile(file, 'utf8'))
 
-const rules = new Map()
-root.walkRules((rule) => {
-  const decls = rule.nodes.filter((n) => n.type === 'decl')
-  if (decls.length === 1) rules.set(rule.selector, `${decls[0].prop}: ${decls[0].value}`)
-})
+const rules = singleDeclRules(root)
 
 const expected = {
   // px name in, rem value out, at $base-font-size: 16px
@@ -133,4 +141,37 @@ const colMax = []
 root.walkRules('.col-6-max', (rule) => rule.walkDecls('max-width', (d) => colMax.push(d.value)))
 assert.deepStrictEqual(colMax, ['52rem', '50rem'], '.col-6-max: 832px mobile, 800px from the container breakpoint')
 
-console.log(`[check] utilities ok: ${Object.keys(expected).length} assertions, ${transforms.length} transform selectors, ${queries.size} media queries`)
+// `$size-aliases` is off by default, so the shipped file is the proof it costs
+// nothing and the fixture build is the only place its output exists.
+const strayAliases = [...rules].filter(([s]) => /^\.(m|p|gap)[trblxy]?-(sm|lg)$/.test(s)).map(([s]) => s)
+assert.deepStrictEqual(strayAliases, [], '$size-aliases defaults to null — the shipped build carries no alias classes')
+
+// An alias is a second name for a step that already exists, so the alias class
+// and the px class have to be the same declaration, and the px name has to
+// survive. The fixture maps sm => 8, lg => 32.
+const aliased = singleDeclRules(postcss.parse(compile(path.join(import.meta.dirname, 'fixtures/size-aliases.scss')).css))
+
+const aliasExpected = {
+  '.p-sm': 'padding: 0.5rem',
+  '.p-8': 'padding: 0.5rem',
+  '.pt-lg': 'padding-top: 2rem',
+  '.pt-32': 'padding-top: 2rem',
+  '.m-lg': 'margin: 2rem',
+  '.mt-sm': 'margin-top: 0.5rem',
+  '.gap-lg': 'gap: 2rem',
+  '.gap-y-sm': 'row-gap: 0.5rem',
+  // responsive: the breakpoint still sits before the value, alias or not
+  '.p-md-lg': 'padding: 2rem',
+  '.gap-xxl-sm': 'gap: 0.5rem'
+}
+
+for (const [selector, decl] of Object.entries(aliasExpected)) {
+  assert.equal(aliased.get(selector), decl, `${selector} should be \`${decl}\` under $size-aliases`)
+}
+
+// Aliases are additive: nothing outside margin/padding/gap takes them, and no
+// step of the scale is replaced by one.
+assert.ok(!aliased.has('.t-sm'), 'position offsets take no aliases')
+assert.equal(aliased.get('.m-auto'), 'margin: auto', 'keywords survive the alias merge')
+
+console.log(`[check] utilities ok: ${Object.keys(expected).length} assertions, ${Object.keys(aliasExpected).length} alias assertions, ${transforms.length} transform selectors, ${queries.size} media queries`)

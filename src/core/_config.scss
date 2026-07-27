@@ -33,6 +33,16 @@ $viewport-sizes: 25,50,75,100 !default;
 // of dead weight — nobody reaches for `.z-md-15`. Stacking that needs a name
 // belongs in $z-layers below, not in a numeric utility.
 $z-index: -1,0,1,2,10,20,50,100 !default;
+// T-shirt names for steps of $sizes, added to the margin, padding and gap
+// families: `.pt-sm` next to `.pt-8`, same declaration twice. An alias never
+// introduces a value — point it at a step that exists or the build warns.
+// Numeric aliases are deliberately not on offer: `.pt-2` already means 2px
+// here and 8px in Bootstrap and Tailwind, so a shared name would mean three
+// different paddings depending on which library the markup came from.
+// `null` (the default) emits nothing. The names overlap the breakpoints, so
+// the responsive variant of `.gap-md` reads `.gap-md-md`.
+// e.g. ('xs': 4, 'sm': 8, 'md': 16, 'lg': 32, 'xl': 64, 'xxl': 96)
+$size-aliases: null !default;
 
 /*
  * Z-LAYERS - named stacking levels for the `z()` helper, so stacking is a

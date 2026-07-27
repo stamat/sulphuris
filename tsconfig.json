@@ -9,6 +9,9 @@
     "allowJs": true,
     "checkJs": false,
     "noEmit": true,
+    // script/*.mjs is in the program (allowJs), so a dependency's own .d.ts
+    // gets type-checked against a lib list that has no Node types in it.
+    "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "resolveJsonModule": true

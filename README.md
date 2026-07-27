@@ -19,7 +19,7 @@ Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/su
 
 - **Design tokens** - A single SCSS [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) containing the variables that dictate which utilities will be generated. You can wire your Figma design tokens to directly override the config variables (with a bit of work, or simply use [poops](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens).
 - **Less !important usage** - abstaining from `!important` usage as much as possible.
-- **Spacing size classes named in pixels** - e.g. `.pt-32` results in `padding-top: 2rem;` (32px at the default root), and `.pt--32` in `padding-top: -2rem;`. The number in the class name is a design token, not the unit.
+- **Spacing size classes named in pixels** - e.g. `.pt-32` results in `padding-top: 2rem;` (32px at the default root), and `.pt--32` in `padding-top: -2rem;`. The number in the class name is a design token, not the unit. Opt into `$size-aliases` and steps of the scale also answer to a t-shirt name — `.pt-sm` is `.pt-8`. Numeric aliases are deliberately not offered: `.pt-2` is 2px here and 8px in Bootstrap and Tailwind.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
 - **REM units** - sizes, font sizes, breakpoint widths and the container/grid metrics all emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). All of it is still *written* in px and converted at emit time, so config overrides stay px. Border widths stay px — 2px at a 20px root is 2.5px, straddling a device pixel. Nothing writes an absolute `font-size` to the root, so the reader's browser setting is what `rem` resolves against. `$rem-units: false` reverts the lot without moving a class name.
 
@@ -119,7 +119,7 @@ If you have any ideas on how to improve Sulphuris, feel free to open an issue or
 ### ToDo:
 
 - [ ] Sort out the resets, they need to be reactive to margin and padding utilities (and other utilities)
-- [ ] Aliases: Optional numerical utilities like bootstrap or primer (like pt-2 actually being padding-top: 8px)
+- [x] Aliases — shipped as `$size-aliases` (t-shirt names, opt-in). Numeric ones were dropped on purpose: `pt-2` already means 2px here and 8px in Bootstrap/Primer, so the same class in copied markup would mean two paddings
 - [ ] Inline links
 - [ ] Animations and transitions
 - [ ] Form elements

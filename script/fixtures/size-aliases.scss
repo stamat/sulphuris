@@ -1,0 +1,7 @@
+// $size-aliases ships off, so script/check-utility-css.mjs compiles this to see
+// any alias output at all. Only the three families that take aliases are pulled
+// in — the config has to be configured before anything else loads it.
+@use '../../src/core/config' with ($size-aliases: ('sm': 8, 'lg': 32));
+@use '../../src/core/layout/padding';
+@use '../../src/core/layout/margin';
+@use '../../src/core/layout/gap';

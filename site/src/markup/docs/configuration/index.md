@@ -87,7 +87,7 @@ these lists. Values are unitless numbers read as px, emitted as rem under
 `$rem-units` above — `16` is `1rem`, the same 16px at the default root — or as
 `%` where noted.
 
-<!-- config: sizes, negative-sizes, percent-sizes, negative-percent-sizes, viewport-sizes, z-index, border-sizes, border-radiuses -->
+<!-- config: sizes, negative-sizes, percent-sizes, negative-percent-sizes, viewport-sizes, z-index, size-aliases, border-sizes, border-radiuses -->
 
 ```scss
 // src/core/_config.scss:19
@@ -104,13 +104,33 @@ $viewport-sizes: 25,50,75,100;
 // src/core/_config.scss:35
 $z-index: -1,0,1,2,10,20,50,100;
 
-// src/core/_config.scss:55
+// src/core/_config.scss:45
+$size-aliases: null;
+
+// src/core/_config.scss:65
 $border-sizes:    2,3,4,6,8;
 $border-radiuses: 0,4,6,8,16,24,32;
 ```
 
 A negative value renders as a double dash in the class name: `-32` → `.mt--32`
 (`margin-top: -2rem`).
+
+### Size aliases — opt-in
+
+`$size-aliases` gives steps of `$sizes` a t-shirt name in the margin, padding and
+gap families, so `.pt-sm` and `.pt-8` are the same rule. Off by default; an alias
+has to point at a value the scale already carries, or the build warns.
+
+```scss
+@forward 'sulphuris/core/config' with (
+  $size-aliases: ('xs': 4, 'sm': 8, 'md': 16, 'lg': 32, 'xl': 64, 'xxl': 96)
+);
+```
+
+Numeric aliases are deliberately not offered: `.pt-2` already means 2px here and
+8px in Bootstrap and Tailwind, so the same class name in copied markup would
+mean three different paddings. The names overlap the breakpoints, so the `md`
+variant of `.gap-md` reads `.gap-md-md`. See [Spacing](../spacing/).
 
 ## Z-layers
 
@@ -121,7 +141,7 @@ scale used by the `.z-*` utility classes.
 <!-- config: z-layers -->
 
 ```scss
-// src/core/_config.scss:41
+// src/core/_config.scss:51
 $z-layers: (
   // Decorative pseudo-elements sitting under their own content. One negative
   // level is enough — a second means the stacking context is wrong.
@@ -144,7 +164,7 @@ The per-side suffixes shared by margin, padding, border, position, etc.
 <!-- config: orientations -->
 
 ```scss
-// src/core/_config.scss:61
+// src/core/_config.scss:71
 $orientations: (
   't': ('top'),
   'r': ('right'),
@@ -168,7 +188,7 @@ them to `rem` when the query is emitted (`768px` → `48rem`).
 <!-- config: breakpoints -->
 
 ```scss
-// src/core/_config.scss:73
+// src/core/_config.scss:83
 $breakpoints: (
   'xxl': 1680px,
   'xl': 1366px,
@@ -187,18 +207,18 @@ covers everything below the smallest breakpoint. A utility variant like
 <!-- config: container-max-width, container-offset, container-offset-mobile, container-breakpoint, grid-gutter, grid-gutter-mobile, columns, rows -->
 
 ```scss
-// src/core/_config.scss:84
+// src/core/_config.scss:94
 $container-max-width:     1680px;
 $container-offset:        56px;
 $container-offset-mobile: 16px;
 $container-breakpoint:    'lg';
 
-// src/core/_config.scss:89
+// src/core/_config.scss:99
 $grid-gutter:        32px;
 $grid-gutter-mobile: 16px;
 $columns:            12;
 
-// src/core/_config.scss:96
+// src/core/_config.scss:106
 $rows: 6;
 ```
 
@@ -219,7 +239,7 @@ expanded into 100–900 tint/shade scales.
 <!-- config: colors, palettes -->
 
 ```scss
-// src/core/_config.scss:101
+// src/core/_config.scss:111
 $colors: (
   foreground: #1a1a1d,
   background: #fff,
@@ -228,7 +248,7 @@ $colors: (
   primary: #f6c026
 );
 
-// src/core/_config.scss:109
+// src/core/_config.scss:119
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -252,7 +272,7 @@ Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
-// src/core/_config.scss:123
+// src/core/_config.scss:133
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
@@ -277,10 +297,10 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:147
+// src/core/_config.scss:157
 $base-font-size: 16px;
 
-// src/core/_config.scss:149
+// src/core/_config.scss:159
 $heading-font:          'Roboto', sans-serif;
 $paragraph-font:        'Nunito', sans-serif;
 $mono-font:             monospace;
@@ -288,13 +308,13 @@ $line-height:           1.2;
 $heading-line-height:   1;
 $paragraph-line-height: 1.5;
 
-// src/core/_config.scss:157
+// src/core/_config.scss:167
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:163
+// src/core/_config.scss:173
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 
-// src/core/_config.scss:167
+// src/core/_config.scss:177
 $line-heights: (
   1: 1,
   'tight': 1.2,
@@ -326,7 +346,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:179
+// src/core/_config.scss:189
 $typography: (
   'h1, .h1': (
     desktop: (96px, -1.5px, $heading-line-height, bold),
@@ -370,12 +390,12 @@ to `$base-font-size`. See [Typography](../typography/).
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:212
+// src/core/_config.scss:222
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:216
+// src/core/_config.scss:226
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -387,7 +407,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:222
+// src/core/_config.scss:232
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -407,7 +427,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:230
+// src/core/_config.scss:240
 $button: (
   height: 56px,
   padding-x: 32px,

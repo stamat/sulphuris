@@ -1,16 +1,19 @@
 @use '../config';
 @use '../utils/generators';
+@use '../utils/helpers';
+
+$padding-sizes: helpers.with-aliases(config.$sizes);
 
 @include generators.utility-class-generator((
   prefix: 'p',
   property: 'padding',
-  values: config.$sizes,
+  values: $padding-sizes,
   unit: 'px',
   orientations: config.$orientations
 ));
 
 // Logical-property padding (RTL-aware). `.p-inline-16` => padding-inline: 16px
 @if config.$logical-properties {
-  @include generators.utility-class-generator('p-inline', 'padding-inline', config.$sizes, 'px');
-  @include generators.utility-class-generator('p-block', 'padding-block', config.$sizes, 'px');
+  @include generators.utility-class-generator('p-inline', 'padding-inline', $padding-sizes, 'px');
+  @include generators.utility-class-generator('p-block', 'padding-block', $padding-sizes, 'px');
 }

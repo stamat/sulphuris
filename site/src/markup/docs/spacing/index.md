@@ -27,7 +27,7 @@ Prefix: `m`. Property: `margin`.
 <!-- generators: m -->
 
 ```scss
-// src/core/layout/_margin.scss:11
+// src/core/layout/_margin.scss:14
 @include generators.utility-class-generator((
   prefix: 'm',
   property: 'margin',
@@ -111,6 +111,35 @@ Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 .gap-y-24          → row-gap: 1.5rem
 .gap-md-16         → gap: 1rem  (min-width: 48rem)
 ```
+
+## Size aliases — opt-in
+
+T-shirt names for steps of `$sizes`, added to margin, padding and gap only. An
+alias is a second name for a step that already exists, so `.pt-sm` and `.pt-8`
+are the same rule and the px names keep working. Responsive like the rest.
+
+**Off by default.** Name the steps you want with [`$size-aliases`](../configuration/#size-aliases-opt-in):
+
+```scss
+@forward 'sulphuris/core/config' with (
+  $size-aliases: ('xs': 4, 'sm': 8, 'md': 16, 'lg': 32, 'xl': 64, 'xxl': 96)
+);
+```
+
+```
+.p-md              → padding: 1rem      (same rule as .p-16)
+.mx-lg             → margin-left: 2rem; margin-right: 2rem
+.gap-sm            → gap: 0.5rem
+.p-md-lg           → padding: 2rem      (min-width: 48rem)
+```
+
+The alias names overlap the breakpoint names, which is why the last one reads the
+way it does: breakpoint first, value second, as everywhere else.
+
+> [!NOTE]
+> There are no numeric aliases. `.pt-2` is `padding-top: 2px` here and 8px in
+> Bootstrap and Tailwind — one class name meaning three paddings is exactly what
+> the px names avoid.
 
 ## Logical spacing (RTL-aware) — opt-in
 

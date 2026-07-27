@@ -1,5 +1,6 @@
 @use '../config';
 @use '../utils/generators';
+@use '../utils/helpers';
 
 @use 'sass:list';
 
@@ -7,6 +8,8 @@ $margin-sizes: list.append(config.$sizes, 'auto');
 @if config.$negative-sizes {
   $margin-sizes: list.join($margin-sizes, config.$negative-sizes);
 }
+// Aliases merge last, so they name a step the list already carries.
+$margin-sizes: helpers.with-aliases($margin-sizes);
 
 @include generators.utility-class-generator((
   prefix: 'm',

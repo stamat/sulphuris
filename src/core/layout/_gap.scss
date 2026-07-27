@@ -1,7 +1,10 @@
 @use '../config';
 @use '../utils/generators';
+@use '../utils/helpers';
+
+$gap-sizes: helpers.with-aliases(config.$sizes);
 
 // Flex/grid gap. `.gap-16`, plus axis variants `.gap-x-*` (column) / `.gap-y-*` (row).
-@include generators.utility-class-generator('gap', 'gap', config.$sizes, 'px');
-@include generators.utility-class-generator('gap-x', 'column-gap', config.$sizes, 'px');
-@include generators.utility-class-generator('gap-y', 'row-gap', config.$sizes, 'px');
+@include generators.utility-class-generator('gap', 'gap', $gap-sizes, 'px');
+@include generators.utility-class-generator('gap-x', 'column-gap', $gap-sizes, 'px');
+@include generators.utility-class-generator('gap-y', 'row-gap', $gap-sizes, 'px');

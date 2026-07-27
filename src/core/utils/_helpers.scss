@@ -85,6 +85,41 @@
   @return clamp(#{toRem($min)}, #{toRem($intercept * 1px)} + #{$slope * 100}vw, #{toRem($max)});
 }
 
+/*
+ * A size list with `config.$size-aliases` merged in as extra keys, so a family
+ * emits `.pt-sm` alongside `.pt-8`. Aliases are second names for steps that
+ * already exist, never new values — pointing one at a value the list doesn't
+ * carry is a config typo, and warns.
+ *
+ * List in, map out: the generators key classes off a map's keys and off the
+ * values themselves for a list, and a name can only ride in as a key. Off
+ * ($size-aliases: null), the list is handed back untouched.
+ *
+ * @param $values (list): e.g. `0,1,2,4,8,…`
+ * @return (list | map): the input, or a map keyed by both numbers and names
+ */
+@function with-aliases($values) {
+  @if config.$size-aliases == null {
+    @return $values;
+  }
+
+  $map: ();
+
+  @each $value in $values {
+    $map: map.merge($map, ($value: $value));
+  }
+
+  @each $name, $value in config.$size-aliases {
+    @if not list.index($values, $value) {
+      @warn '🜍 Size alias `#{$name}` points at `#{$value}`, which is not in the size list! Please check your `_config.scss`.';
+    }
+
+    $map: map.merge($map, ($name: $value));
+  }
+
+  @return $map;
+}
+
 @function color($color) {
   @if map.has-key(config.$colors, $color) {
     @return var(--color-#{$color});
