@@ -66,10 +66,11 @@ const expected = {
   // values carrying their own unit are never touched
   '.w-50p': 'width: 50%',
   '.h-100vh': 'height: 100vh',
-  // opted out of rem: border widths go fuzzy at fractional sizes, and a corner
-  // radius is a fixed detail rather than something that scales with text
-  '.border-2': 'border-width: 2px',
-  '.rounded-8': 'border-radius: 8px'
+  // radii convert — a curve is antialiased, so nothing snaps
+  '.rounded-8': 'border-radius: 0.5rem',
+  // border widths are the one size family opted out: 2px at a 20px root is
+  // 2.5px, straddling a device pixel
+  '.border-2': 'border-width: 2px'
 }
 
 for (const [selector, decl] of Object.entries(expected)) {
@@ -84,6 +85,15 @@ assert.ok(!rules.has('.text-wrap-nowrap'), 'no text-wrap: nowrap class — it co
 const transforms = [...rules].filter(([s]) => /^\.(translate-[xy]|scale|rotate)-/.test(s))
 const shorthand = transforms.filter(([, d]) => d.startsWith('transform:')).map(([s]) => s)
 assert.deepStrictEqual(shorthand, [], 'transform families must use the standalone properties so they compose')
+
+// The load-bearing one. An author `font-size` on `html` overrides the reader's
+// browser default-size setting, which pins every rem in the stylesheet back to a
+// fixed px and silently cancels everything above. A percentage is fine — it
+// still scales — so only absolute units are rejected.
+const rootFontSize = []
+root.walkRules(/^html$/, (rule) => rule.walkDecls('font-size', (d) => rootFontSize.push(d.value)))
+const rootAbsolute = rootFontSize.filter((v) => /(px|pt|cm|in)$/.test(v))
+assert.deepStrictEqual(rootAbsolute, [], 'html must not set an absolute font-size — it pins every rem in the file')
 
 // The class names are the contract: `$rem-units` changes values only, so a px
 // name that stopped resolving means the conversion ate the name too.

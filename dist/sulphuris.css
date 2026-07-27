@@ -321,31 +321,31 @@
 }
 
 .rounded-0 {
-  border-radius: 0px;
+  border-radius: 0;
 }
 
 .rounded-4 {
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 .rounded-6 {
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
 .rounded-8 {
-  border-radius: 8px;
+  border-radius: 0.5rem;
 }
 
 .rounded-16 {
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .rounded-24 {
-  border-radius: 24px;
+  border-radius: 1.5rem;
 }
 
 .rounded-32 {
-  border-radius: 32px;
+  border-radius: 2rem;
 }
 
 .rounded-tl-0 {
@@ -1834,7 +1834,6 @@ ol.reset {
 }
 
 html {
-  font-size: 16px;
   line-height: 1.2;
 }
 

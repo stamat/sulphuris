@@ -21,7 +21,7 @@ Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/su
 - **Less !important usage** - abstaining from `!important` usage as much as possible.
 - **Spacing size classes named in pixels** - e.g. `.pt-32` results in `padding-top: 2rem;` (32px at the default root), and `.pt--32` in `padding-top: -2rem;`. The number in the class name is a design token, not the unit.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
-- **REM units** - sizes, font sizes, breakpoint widths and the container/grid metrics all emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). All of it is still *written* in px and converted at emit time, so config overrides stay px. Border widths and radii stay px, where fractional values render fuzzy. `$rem-units: false` reverts the lot without moving a class name.
+- **REM units** - sizes, font sizes, breakpoint widths and the container/grid metrics all emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). All of it is still *written* in px and converted at emit time, so config overrides stay px. Border widths stay px — 2px at a 20px root is 2.5px, straddling a device pixel. Nothing writes an absolute `font-size` to the root, so the reader's browser setting is what `rem` resolves against. `$rem-units: false` reverts the lot without moving a class name.
 
 ## 🚀 Getting Started
 

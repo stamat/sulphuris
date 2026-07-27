@@ -3,11 +3,25 @@
 @use '../utils/helpers';
 
 @use 'sass:map';
+@use 'sass:math';
 
 //stylelint-disable color-named
 
+// No absolute root font-size. An author `font-size` on `html` overrides the
+// reader's browser default-size setting, which would pin every rem in the
+// stylesheet — including everything `$rem-units` emits — back to a fixed px and
+// undo the point of emitting rem at all. Left alone, the root *is* the reader's
+// preference.
+//
+// `$base-font-size` keeps its real job: the divisor `toRem()` converts px design
+// values against. It only reaches the document when it differs from the 16px
+// browser default, and then as a percentage — which shifts the baseline while
+// still scaling with the reader's setting, unlike a px value.
 html {
-  font-size: config.$base-font-size;
+  @if config.$base-font-size != 16px {
+    font-size: math.percentage(math.div(config.$base-font-size, 16px));
+  }
+
   line-height: config.$line-height;
 }
 

@@ -76,10 +76,9 @@ is emitted. That is deliberate: gutter halves, offsets-minus-halves and
 breakpoint range math all have to happen in one unit, and mixing px with a
 relative unit is a hard Sass error. Overriding any of it stays a px job.
 
-Two families stay px regardless: **border widths**, because a sub-3px border in
-rem lands on a fractional device pixel and renders fuzzy, and **border radii**,
-where a corner is a fixed detail rather than something that should grow with
-text. Font sizes were already rem.
+**Border widths** are the one size family that stays px: 2px at a 20px root is
+2.5px, straddling a device pixel, so it renders fuzzy or drops out. Radii convert
+— a curve is antialiased, so nothing snaps. Font sizes were already rem.
 
 ## Sizes
 
@@ -304,7 +303,15 @@ $line-heights: (
 );
 ```
 
-`$base-font-size` is the `1rem` reference; `$line-clamps` the line counts behind
+`$base-font-size` is the `1rem` reference the px→rem conversion divides by. It is
+**not** written to the document as a root `font-size` — an author `font-size` on
+`html` overrides the reader's browser default-size setting, which would pin every
+rem in the stylesheet back to a fixed px and undo the point of emitting rem. Left
+alone, the root *is* the reader's preference. Change `$base-font-size` and the
+baseline shifts as a **percentage** (`18px` → `font-size: 112.5%`), which moves
+the scale while still tracking that setting.
+
+`$line-clamps` is the line counts behind
 the `.line-clamp-*` family. `$font-sizes` and `$line-heights` drive the `.fs-*`
 and `.lh-*` utilities — the per-element nudge that does not need a new component
 class. `$font-sizes` is px in, rem out, so it stays readable next to `.pt-32`

@@ -95,21 +95,27 @@ Grades: `100` (lightest) → `500` (base) → `900` (darkest).
 
 ## Border radius
 
-Generated from `$border-radiuses`: `0, 4, 6, 8, 16, 24, 32` (px). Prefix `rounded`. Not responsive. Radius only — these classes set `border-radius` and nothing else.
+Generated from `$border-radiuses`: `0, 4, 6, 8, 16, 24, 32` (px names). Prefix `rounded`. Not responsive. Radius only — these classes set `border-radius` and nothing else.
 
 ```
-.rounded-{size}  → border-radius: {size}px
+.rounded-{size}  → border-radius: {size} in rem  (.rounded-8 → 0.5rem)
 ```
 
 Examples:
 
 ```
 .rounded-0       → border-radius: 0
-.rounded-4       → border-radius: 4px
-.rounded-8       → border-radius: 8px
-.rounded-16      → border-radius: 16px
-.rounded-32      → border-radius: 32px
+.rounded-4       → border-radius: 0.25rem   (4px)
+.rounded-8       → border-radius: 0.5rem    (8px)
+.rounded-16      → border-radius: 1rem      (16px)
+.rounded-32      → border-radius: 2rem      (32px)
 ```
+
+Radii convert under [`$rem-units`](../configuration/#feature-flags) — a curve is
+antialiased, so the pixel-snapping problem that keeps border *widths* in px does
+not apply, and a corner on a box whose padding and text grew should grow with
+them. `.rounded-full` stays a literal `9999px` cap; it is a shape, not a step on
+the scale.
 
 **Full circle:**
 

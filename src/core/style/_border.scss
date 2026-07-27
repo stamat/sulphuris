@@ -53,9 +53,9 @@
 
 // stylelint-enable scss/at-extend-no-missing-placeholder, declaration-property-value-disallowed-list
 
-// `$rem: false` — border widths stay px under `$rem-units`. A sub-3px border in
-// rem lands on a fractional device pixel at non-default root sizes and renders
-// fuzzy or drops out; Tailwind keeps borders in px for the same reason.
+// `$rem: false` — border widths are the one size family that stays px. A 2px
+// border at a 20px root is 2.5px, straddling a device pixel, so it renders fuzzy
+// or drops out; Tailwind keeps border widths in px for the same reason.
 @include generators.utility-class-generator('border', 'border-width', config.$border-sizes, 'px', '', $rem: false);
 @include generators.utility-class-generator('border', 'border-style', ('solid', 'dashed', 'dotted'), '', '', false, false);
 @include generators.utility-class-generator('border-', 'border', (0), '', '', config.$orientations);
@@ -74,9 +74,11 @@
 // clipped shadows, dropdowns and focus rings on every element with a radius,
 // and matched `.rounded-tl-0` too. Clipping is opt-in via `.overflow-hidden`.
 
-// Radii stay px too: a corner is a fixed detail, not something that should grow
-// with the reader's font size.
-@include generators.utility-class-generator('rounded', 'border-radius', config.$border-radiuses, 'px', '', false, false, $rem: false);
+// Radii do convert, unlike the widths above: a curve is antialiased, so the
+// pixel-snapping problem that keeps hairlines in px doesn't apply, and a corner
+// on a box whose padding and text grew should grow with them. Tailwind ships
+// rem radii for the same reason.
+@include generators.utility-class-generator('rounded', 'border-radius', config.$border-radiuses, 'px', '', false, false);
 
 .rounded-tl-0 {
   border-top-left-radius: 0;
