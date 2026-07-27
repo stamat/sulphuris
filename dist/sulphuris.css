@@ -977,10 +977,12 @@ button.reset,
   color: transparent;
 }
 
+.text-inherit,
 .text-color-inherit {
   color: inherit;
 }
 
+.text-current,
 .text-color-current {
   color: currentColor;
 }

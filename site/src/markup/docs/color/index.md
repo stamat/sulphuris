@@ -83,9 +83,12 @@ Prefix: `text`. Property: `color`. Accepts any key from `$colors` or any palette
 
 ```
 .text-transparent      → color: transparent
-.text-color-inherit    → color: inherit
-.text-color-current    → color: currentColor
+.text-inherit          → color: inherit
+.text-current          → color: currentColor
 ```
+
+`.text-color-inherit` and `.text-color-current` are the pre-3.0 spellings and still
+work — they are aliases of the two above.
 
 ## Background colour
 

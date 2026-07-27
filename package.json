@@ -6,6 +6,19 @@
   "style": "dist/sulphuris.css",
   "sass": "src/index.scss",
   "main": "src/index.scss",
+  "exports": {
+    ".": {
+      "sass": "./src/index.scss",
+      "style": "./dist/sulphuris.css",
+      "default": "./dist/sulphuris.css"
+    },
+    "./core/*": {
+      "sass": "./src/core/*"
+    },
+    "./src/*": "./src/*",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist",
     "src"

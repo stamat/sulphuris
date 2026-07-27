@@ -26,10 +26,13 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
   color: transparent;
 }
 
+// `.text-color-*` are the pre-3.0 spellings, kept as aliases.
+.text-inherit,
 .text-color-inherit {
   color: inherit;
 }
 
+.text-current,
 .text-color-current {
   color: currentColor;
 }
