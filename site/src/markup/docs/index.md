@@ -17,7 +17,8 @@ map, and Sulphuris generates the utility classes for you: `.p-16`, `.d-flex`,
 It sits deliberately between two worlds:
 
 - **Old Primer / Bootstrap** — human-readable class names that map to CSS properties
-  (`.pt-16` is `padding-top: 16px`), so your markup stays legible and portable.
+  (`.pt-16` is `padding-top: 1rem` — 16px at the default root), so your markup stays
+  legible and portable.
 - **Tailwind** — but _without_ authoring your styles inside `class="…"` soup, and without
   a bespoke DSL. Sulphuris is plain SCSS and plain CSS. The classes are generated from a
   config, not hand-written one by one.
@@ -31,8 +32,9 @@ It sits deliberately between two worlds:
 - **Config-driven generation.** Almost every class comes out of
   [`src/core/_config.scss`](configuration/). Change a value there (or override it from your
   project), rebuild, and the whole utility set adapts.
-- **Pixels for spacing, rem only for type.** `.pt-32` is `padding-top: 32px`. Font sizes
-  use `rem` so they respect the user's root font-size.
+- **Pixel names, rem values.** `.pt-32` is `padding-top: 2rem` — the same 32px at the
+  default root, but it scales with the reader's browser font-size instead of ignoring it.
+  The number in the class name is a design token, not a unit.
 - **Restrained `!important`.** Utilities avoid `!important` wherever the cascade allows,
   so they stay overridable.
 - **Responsive by default.** Most utilities also emit breakpoint variants

@@ -16,7 +16,7 @@ Margin and padding utilities are generated from the `$sizes` scale. Both support
 <!-- config: sizes -->
 
 ```scss
-// src/core/_config.scss:12
+// src/core/_config.scss:18
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 ```
 
@@ -40,7 +40,7 @@ Prefix: `m`. Property: `margin`.
 **All sides**
 
 ```
-.m-{size}          → margin: {size}px
+.m-{size}          → margin: {size} in rem  (.m-16 → 1rem)
 .m-auto            → margin: auto
 ```
 
@@ -62,16 +62,16 @@ Per-side variants also accept `auto`: `.mt-auto`, `.mx-auto`, etc.
 <!-- config: negative-sizes -->
 
 ```scss
-// src/core/_config.scss:13
+// src/core/_config.scss:19
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 ```
 
 The leading `-` in the key becomes a second dash in the class name.
 
 ```
-.m--32             → margin: -32px
-.mt--16            → margin-top: -16px
-.mx--8             → margin-left: -8px; margin-right: -8px
+.m--32             → margin: -2rem
+.mt--16            → margin-top: -1rem
+.mx--8             → margin-left: -0.5rem; margin-right: -0.5rem
 ```
 
 ## Padding
@@ -106,10 +106,10 @@ Prefix: `gap`. Generated from the `$sizes` scale. Responsive.
 | `.gap-y-{size}` | `row-gap`    |
 
 ```
-.gap-16            → gap: 16px
-.gap-x-8           → column-gap: 8px
-.gap-y-24          → row-gap: 24px
-.gap-md-16         → gap: 16px  (min-width: 768px)
+.gap-16            → gap: 1rem
+.gap-x-8           → column-gap: 0.5rem
+.gap-y-24          → row-gap: 1.5rem
+.gap-md-16         → gap: 1rem  (min-width: 768px)
 ```
 
 ## Logical spacing (RTL-aware) — opt-in
@@ -130,9 +130,9 @@ The `x`/`y` axis shorthands above map to physical sides (left/right, top/bottom)
 | `.p-block-{size}`  | `padding-block`  |
 
 ```
-.m-inline-16       → margin-inline: 16px
-.p-block-24        → padding-block: 24px
-.m-inline-md-16    → margin-inline: 16px  (min-width: 768px)
+.m-inline-16       → margin-inline: 1rem
+.p-block-24        → padding-block: 1.5rem
+.m-inline-md-16    → margin-inline: 1rem  (min-width: 768px)
 ```
 
 Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`, documented under [Position](/docs/position/).
@@ -140,12 +140,12 @@ Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`
 ## Quick reference
 
 ```
-.pt-16             → padding-top: 16px
-.pb-0              → padding-bottom: 0px
-.px-24             → padding-left: 24px; padding-right: 24px
-.py-8              → padding-top: 8px; padding-bottom: 8px
-.m-32              → margin: 32px
-.mt--32            → margin-top: -32px
+.pt-16             → padding-top: 1rem
+.pb-0              → padding-bottom: 0
+.px-24             → padding-left: 1.5rem; padding-right: 1.5rem
+.py-8              → padding-top: 0.5rem; padding-bottom: 0.5rem
+.m-32              → margin: 2rem
+.mt--32            → margin-top: -2rem
 .mx-auto           → margin-left: auto; margin-right: auto
 ```
 
@@ -154,8 +154,8 @@ Positioning has the same pair — `.inset-inline-{size}` / `.inset-block-{size}`
 Insert a breakpoint name between the prefix+orientation and the size value.
 
 ```
-.p-md-24           → padding: 24px  (min-width: 768px)
-.mt-lg-48          → margin-top: 48px  (min-width: 1024px)
+.p-md-24           → padding: 1.5rem  (min-width: 768px)
+.mt-lg-48          → margin-top: 3rem  (min-width: 1024px)
 .mx-xl-auto        → margin-left/right: auto  (min-width: 1366px)
 ```
 

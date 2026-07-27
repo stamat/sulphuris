@@ -89,7 +89,7 @@ defaults.
 
 - `.container` — centred, max-width wrapper.
 - `.d-flex`, `.justify-space-between`, `.align-center` — flexbox layout.
-- `.p-24` — `padding: 24px`.
+- `.p-24` — `padding: 1.5rem` (24px at the default root).
 - `.h3` — heading-3 typography without an `<h3>` tag.
 - `.mb-0` — `margin-bottom: 0`.
 - `.text-primary` — your `primary` colour.

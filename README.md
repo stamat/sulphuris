@@ -19,9 +19,9 @@ Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/su
 
 - **Design tokens** - A single SCSS [`_config.scss`](https://github.com/stamat/sulphuris/blob/main/src/core/_config.scss) containing the variables that dictate which utilities will be generated. You can wire your Figma design tokens to directly override the config variables (with a bit of work, or simply use [poops](https://stamat.info/poops/docs/quick-start/transpiling-css.html#design-tokens).
 - **Less !important usage** - abstaining from `!important` usage as much as possible.
-- **Spacing size classes in pixels** - e.g. `.pt-32` results in `padding-top: 32px;`, and `.pt--32` results in `padding-top: -32px;`. **Note:** this might not be smart cause reusability of html like components, revise.
+- **Spacing size classes named in pixels** - e.g. `.pt-32` results in `padding-top: 2rem;` (32px at the default root), and `.pt--32` in `padding-top: -2rem;`. The number in the class name is a design token, not the unit.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
-- **REM units** - only for font sizes. **Note:** Do sizes really need rem units?
+- **REM units** - sizes and font sizes both emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). Border widths, radii and breakpoints stay px, where fractional values render fuzzy or unpredictably. `$rem-units: false` puts every size family back in px without moving a class name.
 
 ## 🚀 Getting Started
 

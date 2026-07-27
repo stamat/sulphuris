@@ -22,7 +22,7 @@ All classes are responsive by default.
 - **prefix** — `w`, `h`, `min-w`, `max-w`, `min-h`, `max-h`
 - **bp** — omitted for base styles; one of `sm`, `md`, `lg`, `xl`, `xxl` for responsive variants
 - **key** — the numeric value (e.g. `32`, `50`, `100`)
-- **suffix** — empty for `px` values; `p` for percent; `vw` for viewport width; `vh` for viewport height
+- **suffix** — empty for the px-named scale (output in `rem`); `p` for percent; `vw` for viewport width; `vh` for viewport height
 
 ## Width — `.w-*`
 
@@ -31,13 +31,14 @@ Property: `width`.
 ### Pixel scale
 
 Values from `$sizes`: `0, 1, 2, 3, 4, 6, 8, 12, 14, 16, 24, 32, 40, 48, 56, 64, 80, 96, 128, 256`.
-No suffix; unit is `px`.
+No suffix. The key is px, the value is `rem` — see
+[`$rem-units`](../configuration/#feature-flags).
 
 ```css
-.w-0   { width: 0px; }
-.w-16  { width: 16px; }
-.w-64  { width: 64px; }
-.w-256 { width: 256px; }
+.w-0   { width: 0; }
+.w-16  { width: 1rem; }
+.w-64  { width: 4rem; }
+.w-256 { width: 16rem; }
 ```
 
 ### Percent scale
@@ -80,10 +81,10 @@ Property: `height`. Same value set as width, with two differences:
 ### Pixel scale
 
 ```css
-.h-0   { height: 0px; }
-.h-16  { height: 16px; }
-.h-64  { height: 64px; }
-.h-256 { height: 256px; }
+.h-0   { height: 0; }
+.h-16  { height: 1rem; }
+.h-64  { height: 4rem; }
+.h-256 { height: 16rem; }
 ```
 
 ### Percent scale
@@ -119,11 +120,11 @@ unit (`$viewport-sizes`) — so anything you can set as a width you can also set
 as a bound.
 
 ```css
-.max-w-256  { max-width: 256px; }
+.max-w-256  { max-width: 16rem; }
 .max-w-50p  { max-width: 50%; }
 .max-w-100vw { max-width: 100vw; }
 
-.min-h-0    { min-height: 0px; }
+.min-h-0    { min-height: 0; }
 .min-h-100p { min-height: 100%; }
 .min-h-100vh { min-height: 100vh; }
 ```

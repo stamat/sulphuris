@@ -88,7 +88,28 @@ $breakpoints: config.$breakpoints;
   }
 }
 
-@mixin generic-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var: false) {
+/*
+ * The value half of one generated declaration. With `config.$rem-units` on, px
+ * values are emitted as rem so the utility scales with the reader's browser
+ * font-size; the class name is untouched, `.pt-32` still renders 32px at the
+ * default root size. Values carrying their own unit (`%`, `vw`) and keywords
+ * (`auto`, `inherit`) pass through either way.
+ *
+ * @param $value: (number | string) property value
+ * @param $unit: (string) value unit
+ * @param $rem: (boolean) whether this family opts into the conversion
+ *
+ * @return (string) e.g. `2rem`, `32px`, `50%`, `auto`
+ */
+@function utility-value($value, $unit, $rem: true) {
+  @if $rem and config.$rem-units and $unit == 'px' and meta.type-of($value) == 'number' {
+    @return helpers.toRem($value * 1px);
+  }
+
+  @return #{$value}#{$unit};
+}
+
+@mixin generic-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var: false, $rem: true) {
   $alias: '';
   $condition: ''; // if property is not the same as condition, it will be ignored
   $unit-copy: null;
@@ -139,13 +160,13 @@ $breakpoints: config.$breakpoints;
           #{$property}: var(--#{$property}-#{$key}#{$suff});
         }
       } @else {
-        #{$property}: #{$value}#{$unit};
+        #{$property}: #{utility-value($value, $unit, $rem)};
       }
     }
   }
 }
 
-@mixin orientated-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var: false) {
+@mixin orientated-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var: false, $rem: true) {
   $alias: '';
   $condition: ''; // if property is not the same as condition, it will be ignored
   $unit-copy: null;
@@ -199,7 +220,7 @@ $breakpoints: config.$breakpoints;
               #{$property}-#{$o-value}: var(--#{$property}-#{$o-name}#{$b-name}-#{$key}#{$suff}, var(--#{$property}-#{$key}#{$suff}));
             }
           } @else {
-            #{$property}-#{$o-value}: #{$value}#{$unit};
+            #{$property}-#{$o-value}: #{utility-value($value, $unit, $rem)};
           }
         }
       }
@@ -215,22 +236,23 @@ $breakpoints: config.$breakpoints;
   $unit: '',
   $suff: '',
   $orientations: false,
-  $var: false) {
+  $var: false,
+  $rem: true) {
 
   @if meta.type-of($values) == 'map' {
     @each $key, $value in $values {
-      @include generic-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var);
+      @include generic-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var, $rem);
 
       @if $orientations {
-        @include orientated-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var);
+        @include orientated-utility-class-generator($pref, $property, $b-name, $key, $value, $unit, $suff, $var, $rem);
       }
     }
   } @else {
     @each $value in $values {
-      @include generic-utility-class-generator($pref, $property, $b-name, $value, $value, $unit, $suff, $var);
+      @include generic-utility-class-generator($pref, $property, $b-name, $value, $value, $unit, $suff, $var, $rem);
 
       @if $orientations {
-        @include orientated-utility-class-generator($pref, $property, $b-name, $value, $value, $unit, $suff, $var);
+        @include orientated-utility-class-generator($pref, $property, $b-name, $value, $value, $unit, $suff, $var, $rem);
       }
     }
   }
@@ -250,6 +272,7 @@ $breakpoints: config.$breakpoints;
  * @param $suff: (string) generated class name suffix
  * @param $orientations: (map | optional) map of orientation property variations
  * @param $responsive: (boolean | optional) whether to generate responsive classes
+ * @param $rem: (boolean | optional) whether px values follow `config.$rem-units`
  */
 @mixin utility-class-generator(
   $pref,
@@ -259,7 +282,8 @@ $breakpoints: config.$breakpoints;
   $suff: '',
   $orientations: false,
   $responsive: true,
-  $var: false ) {
+  $var: false,
+  $rem: true ) {
 
   @if meta.type-of($pref) == 'map' {
     $property: map.get($pref, 'property');
@@ -289,17 +313,22 @@ $breakpoints: config.$breakpoints;
     } @else {
       $var: false;
     }
-    $pref: map.get($pref, 'prefix'); 
+    @if map.has-key($pref, 'rem') {
+      $rem: map.get($pref, 'rem');
+    } @else {
+      $rem: true;
+    }
+    $pref: map.get($pref, 'prefix');
   }
 
-  @include generic-and-orientated-utility-class-generator($pref, $property, null, $values, $unit, $suff, $orientations, $var);
+  @include generic-and-orientated-utility-class-generator($pref, $property, null, $values, $unit, $suff, $orientations, $var, $rem);
 
   // responsive variations
   @if $responsive {
     @each $b-name, $b-value in $breakpoints {
       @if $b-name != '' and $b-name != 'min' and $b-name != 'minimal' {
         @media #{generate-breakpoint($b-name)} {
-          @include generic-and-orientated-utility-class-generator($pref, $property, $b-name, $values, $unit, $suff, $orientations, $var);
+          @include generic-and-orientated-utility-class-generator($pref, $property, $b-name, $values, $unit, $suff, $orientations, $var, $rem);
         }
       }
     }

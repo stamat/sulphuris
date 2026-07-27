@@ -38,7 +38,7 @@ Prefix: `position`. Property: `position`.
 
 ## Offset (px)
 
-Each side has its own single-letter prefix. Unit: `px`.
+Each side has its own single-letter prefix. Px-named values, emitted in `rem` — see [`$rem-units`](../configuration/#feature-flags).
 
 | Prefix | Property |
 | ------ | -------- |
@@ -50,11 +50,11 @@ Each side has its own single-letter prefix. Unit: `px`.
 **Positive scale** — `$sizes`: `0, 1, 2, 3, 4, 6, 8, 12, 14, 16, 24, 32, 40, 48, 56, 64, 80, 96, 128, 256`
 
 ```
-.t-0               → top: 0px
-.t-16              → top: 16px
-.r-32              → right: 32px
-.b-8               → bottom: 8px
-.l-24              → left: 24px
+.t-0               → top: 0
+.t-16              → top: 1rem
+.r-32              → right: 2rem
+.b-8               → bottom: 0.5rem
+.l-24              → left: 1.5rem
 ```
 
 **Negative scale** — `$negative-sizes`: `-1, -2, -3, -4, -8, -12, -14, -16, -24, -32, -40, -48, -56, -64`
@@ -62,10 +62,10 @@ Each side has its own single-letter prefix. Unit: `px`.
 The key includes the minus sign, producing a double-dash in the class name.
 
 ```
-.t--16             → top: -16px
-.r--8              → right: -8px
-.b--32             → bottom: -32px
-.l--4              → left: -4px
+.t--16             → top: -1rem
+.r--8              → right: -0.5rem
+.b--32             → bottom: -2rem
+.l--4              → left: -0.25rem
 ```
 
 ## Offset (%)
@@ -98,8 +98,8 @@ Prefix: `inset`. Property: `inset`. Sets all four offsets at once — a shorthan
 Uses the standard `$sizes` scale, plus `$negative-sizes`, positive percentages from `$percent-sizes` (`p` suffix), and `auto`. Responsive variants exist. Unlike the single-side `t`/`r`/`b`/`l` utilities, `inset` is **not** fed `$negative-percent-sizes` — there is no `.inset--50p`.
 
 ```
-.inset-16          → inset: 16px
-.inset--16         → inset: -16px
+.inset-16          → inset: 1rem
+.inset--16         → inset: -1rem
 .inset-50p         → inset: 50%
 .inset-auto        → inset: auto
 .inset-md-16       → inset: 16px  (min-width: 768px)
@@ -123,9 +123,9 @@ Prefixes: `inset-inline`, `inset-block`. The physical `inset` above sets all fou
 Same scales as `inset`: `$sizes`, `$negative-sizes`, `$percent-sizes` (`p` suffix), and `auto`. Responsive.
 
 ```
-.inset-inline-0    → inset-inline: 0px
-.inset-block-16    → inset-block: 16px
-.inset-inline--8   → inset-inline: -8px
+.inset-inline-0    → inset-inline: 0
+.inset-block-16    → inset-block: 1rem
+.inset-inline--8   → inset-inline: -0.5rem
 .inset-block-50p   → inset-block: 50%
 .inset-inline-auto → inset-inline: auto
 .inset-block-md-16 → inset-block: 16px  (min-width: 768px)

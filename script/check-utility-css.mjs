@@ -5,7 +5,10 @@
 // `.fs-*` runs px through `toRem()`, `.order-*` relies on a numeric map key
 // rendering as a `--` class name, and the transform families use the standalone
 // `translate`/`rotate`/`scale` properties (not the `transform` shorthand) so
-// they compose. All three are silent when they break.
+// they compose. `$rem-units` is the same shape of risk: it runs every size
+// family through `toRem()` while the class names stay px-named, so a break
+// shows up as a wrong value under a right-looking selector. All silent
+// otherwise.
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import postcss from 'postcss'
@@ -49,7 +52,24 @@ const expected = {
   '.lh-lg-loose': 'line-height: 1.75',
   '.flex-xl-1': 'flex: 1 1 0%',
   '.order-sm-first': 'order: -9999',
-  '.rotate-xxl-90': 'rotate: 90deg'
+  '.rotate-xxl-90': 'rotate: 90deg',
+  // $rem-units: px class name, rem value, same rendered size at a 16px root
+  '.p-32': 'padding: 2rem',
+  '.pt-16': 'padding-top: 1rem',
+  '.p-0': 'padding: 0',
+  '.m--16': 'margin: -1rem',
+  '.m-auto': 'margin: auto',
+  '.gap-24': 'gap: 1.5rem',
+  '.t-8': 'top: 0.5rem',
+  '.max-w-256': 'max-width: 16rem',
+  '.p-md-24': 'padding: 1.5rem',
+  // values carrying their own unit are never touched
+  '.w-50p': 'width: 50%',
+  '.h-100vh': 'height: 100vh',
+  // opted out of rem: border widths go fuzzy at fractional sizes, and a corner
+  // radius is a fixed detail rather than something that scales with text
+  '.border-2': 'border-width: 2px',
+  '.rounded-8': 'border-radius: 8px'
 }
 
 for (const [selector, decl] of Object.entries(expected)) {
@@ -64,5 +84,10 @@ assert.ok(!rules.has('.text-wrap-nowrap'), 'no text-wrap: nowrap class — it co
 const transforms = [...rules].filter(([s]) => /^\.(translate-[xy]|scale|rotate)-/.test(s))
 const shorthand = transforms.filter(([, d]) => d.startsWith('transform:')).map(([s]) => s)
 assert.deepStrictEqual(shorthand, [], 'transform families must use the standalone properties so they compose')
+
+// The class names are the contract: `$rem-units` changes values only, so a px
+// name that stopped resolving means the conversion ate the name too.
+const strayRem = [...rules].filter(([s]) => /rem\b/.test(s)).map(([s]) => s)
+assert.deepStrictEqual(strayRem, [], 'size class names stay px-named under $rem-units')
 
 console.log(`[check] utilities ok: ${Object.keys(expected).length} assertions, ${transforms.length} transform selectors`)
