@@ -1,9 +1,0 @@
-#!/bin/bash
-# Build & serve the documentation site (site/) with Poops.
-# Pass -b to build once without serving:  script/docs -b
-cd "$(dirname "$0")/.."
-# docs/reference/ is generated from dist/sulphuris.css, so it has to exist first.
-node script/gen-reference.mjs
-# docs/configuration/ mirrors core/_config.scss.
-node script/gen-config-docs.mjs
-cd site && npx 💩 "$@"

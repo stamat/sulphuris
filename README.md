@@ -86,20 +86,17 @@ The build process is powered by [Poops](https://github.com/stamat/poops), a simp
 
 This project requires `node` and `npm` installed. To setup the project run `npm install`.
 
-The whole site — landing page and docs — is built from `site/`, and one command serves it:
+The whole site — landing page and docs — is built from `site/`, and one command runs everything:
 
 ```bash
-$ script/docs        # build + serve on :4041 with live reload
-$ script/docs -b     # build once, no server
+$ script/server      # build + serve on :4041 with live reload
+$ script/server -b   # build everything once, no server
 ```
 
-When you are editing the Sass, run the library watcher in a second terminal. It has no
-server of its own; it recompiles `dist/sulphuris.css`, and `script/docs` picks the new
-build up and reloads:
-
-```bash
-$ script/server
-```
+`script/server` runs two compilers side by side: one rebuilds `dist/sulphuris.css` from
+`src/**/*.scss`, the other rebuilds the site and serves it. So editing the Sass
+live-reloads the homepage — the new CSS is hot-swapped without a page refresh. Ctrl-C
+stops both. For only the library watcher there is still `npm run dev`.
 
 The **Class Reference** page is generated, not written — `script/gen-reference.mjs` parses the built `dist/sulphuris.css` and emits every selector with its declarations, so it cannot drift from what Sass actually produces.
 

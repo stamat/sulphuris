@@ -406,6 +406,25 @@ if (structural.length) {
 }
 
 await mkdir(new URL('.', new URL(outFile, `file://${process.cwd()}/`)), { recursive: true })
-await writeFile(outFile, out.join('\n'))
+
+// This script emits bare `<!-- config: … -->` markers; gen-config-docs then
+// expands each into a scss fence in place. Adopt the expanded blocks from the
+// file on disk, so a regeneration that changes nothing produces a byte-identical
+// file and the write can be skipped — this runs after every watch rebuild, and
+// an unconditional write would make the site watcher do a full markup rebuild
+// and page reload where a CSS hot-swap would have done. Markers that are new
+// (or whose variable list changed) stay bare; gen-config-docs runs right after
+// this script and fills them in.
+let next = out.join('\n')
+const prev = await readFile(outFile, 'utf8').catch(() => null)
+if (prev) {
+  const expanded = new Map()
+  // Same fence shape as gen-config-docs: optional, closing line anchored.
+  for (const m of prev.matchAll(/<!-- config: ([^>]*?) -->\n+```scss\n[\s\S]*?^```$/gm)) {
+    expanded.set(m[1], m[0])
+  }
+  next = next.replace(/<!-- config: ([^>]*?) -->/g, (bare, list) => expanded.get(list) ?? bare)
+}
+if (next !== prev) await writeFile(outFile, next)
 
 console.log(`[docs] reference generated: ${rows} classes, ${sorted.length} sections, ${structural.length} structural rules`)

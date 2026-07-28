@@ -67,7 +67,7 @@ in v4, for the same WCAG 1.4.4 argument; Bootstrap still ships px.
 **So do the container and grid metrics** — `$container-max-width`,
 both offsets, both gutters, and the computed `.col-N-max` caps. Left in px they
 would be the one thing that doesn't move: `$container-max-width` and the `xxl`
-breakpoint are the same 1680px, and they have to stay the same width as the root
+breakpoint are the same width, and they have to stay that way as the root
 font-size changes or the container stops lining up with the breakpoint it was
 sized against.
 

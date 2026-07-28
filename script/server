@@ -1,6 +1,36 @@
 #!/bin/bash
-# Watch src/ and rebuild dist/sulphuris.css. No server — the landing page and
-# the docs both live in site/, so `script/docs` is what serves them. Run this
-# alongside it when you are editing the Sass.
+# Build & serve everything: dist/sulphuris.css plus the site (site/) — landing
+# page at /, docs at /docs/ — on :4041 with live reload.
+# Pass -b to build once without serving:  script/server -b
+cd "$(dirname "$0")/.."
 
-npx 💩 "$@"
+# Build once and exit — no watchers, no server. The library build's exec step
+# regenerates docs/reference/ and docs/configuration/, so the site build that
+# follows picks them up.
+if [[ "$*" == *-b* ]]; then
+  node_modules/.bin/💩 -b
+  cd site && exec ../node_modules/.bin/💩 "$@"
+fi
+
+# docs/reference/ is generated from dist/sulphuris.css, so it has to exist first.
+node script/gen-reference.mjs
+# docs/configuration/ mirrors core/_config.scss.
+node script/gen-config-docs.mjs
+
+# Serving: two compilers at once. The library one rebuilds dist/sulphuris.css
+# from src/**/*.scss (--quiet: no second header, and it has no server lines to
+# hide); site/ watches ../dist, re-copies it and hot-swaps it into the page, so
+# editing the Sass live-reloads the homepage.
+#
+# Both are invoked as node_modules/.bin/💩 rather than through npx, and both are
+# backgrounded, so each is a direct child this script can kill. npx spawns node
+# as a grandchild that survives the trap and keeps holding the port.
+node_modules/.bin/💩 --quiet &
+lib_pid=$!
+(cd site && exec ../node_modules/.bin/💩 "$@") &
+site_pid=$!
+
+trap 'kill "$lib_pid" "$site_pid" 2>/dev/null' EXIT INT TERM
+
+# Exit when the server does, and carry its status out.
+wait "$site_pid"

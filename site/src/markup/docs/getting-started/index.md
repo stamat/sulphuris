@@ -119,14 +119,12 @@ If you are hacking on the library (not just consuming it):
 
 ```bash
 npm install       # install dev deps (Poops)
-script/server     # library + demo page, :4040
-script/docs       # demo + this documentation site, :4041
+script/server     # library + this site (landing at /, docs at /docs/), :4041
 ```
 
-Use `script/docs` for anything docs-related — it serves the same layout as the
-deployed site (demo at `/`, docs at `/docs/`) and watches `../src`, so library
-edits live-reload too. `script/server` serves the repo root, where `/docs/` does
-not exist until the docs build merges it in.
+One command runs everything: it rebuilds `dist/sulphuris.css` from the Sass and
+serves this site with live reload, so library edits hot-swap the CSS in the
+open page. `script/server -b` builds everything once, with no server.
 
 The [Class Reference](../reference/) page is generated from the built CSS by
-`script/gen-reference.mjs` — both commands above refresh it.
+`script/gen-reference.mjs` — `script/server` refreshes it on every rebuild.
