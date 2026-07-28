@@ -69,6 +69,8 @@ Heading elements also carry default bottom margins (applied to the tag, not the 
 
 Example — same visual output, different semantics:
 
+<!-- demo -->
+
 ```html
 <h2>Section title</h2>
 <div class="h2">Section title</div>
@@ -88,6 +90,8 @@ Non-heading entries use a single size set (no responsive switch). `letter-spacin
 | `.supertitle` | 0.875rem (14px) | 0.125rem (2px) | 1.6 |
 
 `.supertitle` additionally sets `font-weight: 500` and `text-transform: uppercase`.
+
+<!-- demo -->
 
 ```html
 <p class="p1">Large body copy</p>
@@ -144,6 +148,8 @@ a px one inherits as a frozen box and collapses nested type.
 `tight` and `normal` are not only utility values: `$heading-line-height` and `$paragraph-line-height` read them out of this map, so a change here moves the type scale with the classes.
 
 Pairs with `.fs-*` — bumping size usually means loosening or tightening leading:
+
+<!-- demo -->
 
 ```html
 <p class="fs-32 lh-tight">Display text needs less leading than body copy.</p>
@@ -280,6 +286,8 @@ Single-line ellipsis. The element needs a width to overflow against — a block
 element inherits one from its parent, but a flex or grid child does not shrink
 below its content by default, so pair it with `.min-w-0` there:
 
+<!-- demo -->
+
 ```html
 <div class="d-flex">
   <span class="truncate min-w-0">A very long label that gets cut off…</span>
@@ -320,6 +328,8 @@ ol.reset {
 ```
 
 The `.reset` class must be applied directly on the `<ul>` or `<ol>` element (qualified selector).
+
+<!-- demo -->
 
 ```html
 <ul class="reset">

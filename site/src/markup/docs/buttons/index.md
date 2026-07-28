@@ -39,6 +39,8 @@ background-color → foreground (#1a1a1d light / #ffffff dark)
 
 ## Usage
 
+<!-- demo -->
+
 ```html
 <!-- On an anchor -->
 <a href="/start" class="btn">Get started</a>
@@ -54,6 +56,8 @@ Swaps fill to `foreground` with hover reverting to `primary`.
 ```
 background-color: foreground  →  hover: primary
 ```
+
+<!-- demo -->
 
 ```html
 <a href="#" class="btn btn-inverted">Inverted</a>
@@ -71,6 +75,8 @@ Transparent background with a `2px` solid border. The padding is reduced by the 
 
 Hover fills with `foreground` and flips `color` to `background`.
 
+<!-- demo -->
+
 ```html
 <a href="#" class="btn btn-outline">Outline</a>
 ```
@@ -79,6 +85,8 @@ Hover fills with `foreground` and flips `color` to `background`.
 
 Border and text use `background` color (white on dark surfaces). Hover fills with `background` and sets `color` to `foreground`.
 
+<!-- demo -->
+
 ```html
 <a href="#" class="btn btn-outline btn-inverted">Outline inverted</a>
 ```
@@ -86,6 +94,8 @@ Border and text use `background` color (white on dark surfaces). Hover fills wit
 ## Composing with utilities
 
 `.btn` intentionally provides no typography, width, icon spacing, or shadow utilities — use the Sulphuris utility set for those:
+
+<!-- demo -->
 
 ```html
 <!-- Rounded pill shape -->

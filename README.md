@@ -100,6 +100,23 @@ stops both. For only the library watcher there is still `npm run dev`.
 
 The **Class Reference** page is generated, not written — `script/gen-reference.mjs` parses the built `dist/sulphuris.css` and emits every selector with its declarations, so it cannot drift from what Sass actually produces.
 
+**Live previews.** Put a `<!-- demo -->` marker on the line above an `html` code fence in
+any docs page and `script/gen-demos.mjs` renders that sample as a working preview above
+it:
+
+````markdown
+<!-- demo -->
+
+```html
+<a href="#" class="btn btn-outline">Outline</a>
+```
+````
+
+The preview is built from the fence's own markup, so the two cannot drift. It is an
+`<iframe>` because sulphuris cannot be loaded into the docs shell — `html`, `body`,
+`h1`–`h6` and `* { box-sizing }` are unlayered and would restyle the docs themselves —
+and the frame sizes itself to its content and follows the docs' light/dark toggle.
+
 ### Publishing
 
 ```bash

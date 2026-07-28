@@ -15,3 +15,37 @@
   --accent: #f6c026;
   --link: #f6c026;
 }
+
+// Live previews — see script/gen-demos.mjs. The theme gives every prose iframe
+// a 16/9 ratio, which is right for an embedded video and wrong for a preview
+// that sizes itself to its content, so both are unset here. `.prose` is on the
+// front to outweigh that `.prose iframe` rule, not to scope anything.
+//
+// `max-height` is load-bearing, not just taste: the frame sets its own height
+// from `scrollHeight`, so a sample sized in viewport units would otherwise
+// grow the frame, which grows the viewport, which grows the sample. Capping it
+// makes that converge on the first pass.
+.prose .demo {
+  display: block;
+  width: 100%;
+  aspect-ratio: auto;
+  max-height: 70vh;
+  border: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--bg);
+  margin: 1.75rem 0 0;
+}
+
+// The preview and the sample it was built from are one unit: the fence loses
+// the rounding and the gap where the two meet. Both siblings are matched
+// because docs.ts wraps every `pre` in a `.code-wrap` for the copy button, so
+// the element next to the preview changes once the script has run.
+.prose .demo + :is(pre, .code-wrap) {
+  margin-top: 0;
+}
+
+.prose .demo + pre,
+.prose .demo + .code-wrap > pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}

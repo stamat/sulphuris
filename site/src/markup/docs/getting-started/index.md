@@ -78,6 +78,8 @@ defaults.
 
 ## A first example
 
+<!-- demo -->
+
 ```html
 <div class="container">
   <div class="d-flex justify-space-between align-center p-24">

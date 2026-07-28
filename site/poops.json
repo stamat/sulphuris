@@ -55,7 +55,8 @@
   },
   "exec": {
     "markup": [
-      "node ../script/gen-config-docs.mjs"
+      "node ../script/gen-config-docs.mjs",
+      "node ../script/gen-demos.mjs"
     ]
   },
   "serve": {

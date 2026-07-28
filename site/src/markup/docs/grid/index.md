@@ -91,11 +91,13 @@ The base `.col-N` (no breakpoint) applies at all widths. Layer responsive classe
 
 Full responsive example:
 
+<!-- demo -->
+
 ```html
 <div class="grid grid-gutter container">
-  <div class="col-12 col-md-6 col-lg-4">Card A</div>
-  <div class="col-12 col-md-6 col-lg-4">Card B</div>
-  <div class="col-12 col-md-12 col-lg-4">Card C</div>
+  <div class="col-12 col-md-6 col-lg-4"><div class="bg-gray-200 p-16">Card A</div></div>
+  <div class="col-12 col-md-6 col-lg-4"><div class="bg-gray-200 p-16">Card B</div></div>
+  <div class="col-12 col-md-12 col-lg-4"><div class="bg-gray-200 p-16">Card C</div></div>
 </div>
 ```
 
@@ -112,9 +114,11 @@ Pushes a column right by adding `margin-left` as a percentage of the parent. Ran
 
 Responsive variants follow the same pattern: `.col-offset-{bp}-N`.
 
+<!-- demo -->
+
 ```html
 <div class="grid grid-gutter">
-  <div class="col-6 col-offset-3">Centered 6-column block</div>
+  <div class="col-6 col-offset-3"><div class="bg-gray-200 p-16">Centered 6-column block</div></div>
 </div>
 ```
 
@@ -124,9 +128,11 @@ Add `.grid-reverse` to a `.grid` row to set `flex-direction: row-reverse`. When 
 
 Flex-only — `flex-direction` does nothing on a `.d-grid` container. Native grid reverses with `direction: rtl` or explicit line placement.
 
+<!-- demo -->
+
 ```html
 <div class="grid grid-gutter grid-reverse">
-  <div class="col-4 col-offset-2">Pushed from the right</div>
+  <div class="col-4 col-offset-2"><div class="bg-gray-200 p-16">Pushed from the right</div></div>
 </div>
 ```
 
@@ -181,11 +187,13 @@ The `minmax(0, 1fr)` — rather than plain `1fr` — is what stops a long word o
 
 Pair with the `.gap-*` utilities for gutters.
 
+<!-- demo -->
+
 ```html
 <div class="d-grid grid-cols-1 grid-cols-md-3 gap-16">
-  <div>Cell A</div>
-  <div>Cell B</div>
-  <div>Cell C</div>
+  <div class="bg-gray-200 p-16">Cell A</div>
+  <div class="bg-gray-200 p-16">Cell B</div>
+  <div class="bg-gray-200 p-16">Cell C</div>
 </div>
 ```
 
@@ -210,11 +218,13 @@ Rows need a height to divide, so give the container one:
 
 `{n}` matches the track ranges — 1–12 for columns, 1–6 for rows. `-full` spans the first line to the last regardless of how many tracks the container has, which is the one that survives a change to `.grid-cols-*`.
 
+<!-- demo -->
+
 ```html
 <div class="d-grid grid-cols-3 gap-16">
-  <div class="grid-column-span-full">Full-width heading</div>
-  <div class="grid-column-span-2">Two thirds</div>
-  <div>One third</div>
+  <div class="grid-column-span-full bg-gray-200 p-16">Full-width heading</div>
+  <div class="grid-column-span-2 bg-gray-200 p-16">Two thirds</div>
+  <div class="bg-gray-200 p-16">One third</div>
 </div>
 ```
 
@@ -271,10 +281,12 @@ Controls where items land when they have no explicit placement.
 
 `place-items` aligns each item inside its own track; `place-content` aligns the track grid as a whole inside the container. Both prefixes generate responsive variants (`.place-md-center`, `.place-content-lg-start`).
 
+<!-- demo -->
+
 ```html
 <div class="d-grid grid-cols-3 gap-16 place-center">
-  <div>Centered in its cell</div>
-  <div>Centered in its cell</div>
-  <div>Centered in its cell</div>
+  <div class="bg-gray-200 p-16">Centered in its cell</div>
+  <div class="bg-gray-200 p-16">Centered in its cell</div>
+  <div class="bg-gray-200 p-16">Centered in its cell</div>
 </div>
 ```

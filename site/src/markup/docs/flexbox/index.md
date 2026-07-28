@@ -182,11 +182,13 @@ arbitrary but conventional — same values Tailwind uses.
 
 A centered card row that stacks vertically on small screens:
 
+<!-- demo -->
+
 ```html
 <div class="flex-row flex-sm-column align-center justify-space-between gap-16">
-  <div class="flex-grow-1">Card A</div>
-  <div class="flex-grow-1">Card B</div>
-  <div class="flex-shrink-0">Fixed</div>
+  <div class="flex-grow-1 bg-gray-200 p-16">Card A</div>
+  <div class="flex-grow-1 bg-gray-200 p-16">Card B</div>
+  <div class="flex-shrink-0 bg-gray-200 p-16">Fixed</div>
 </div>
 ```
 
