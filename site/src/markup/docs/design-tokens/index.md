@@ -3,7 +3,7 @@ layout: poops-docs-theme/docs
 title: Design Tokens
 navTitle: Design Tokens
 description: How Sulphuris expresses design tokens — the config maps are your compile-time tokens, and colours are additionally emitted as runtime CSS custom properties you can consume anywhere.
-order: 15
+order: 16
 keywords: ["design tokens", "tokens", "css variables", "custom properties", "config", "style dictionary", "figma", "poops"]
 ---
 

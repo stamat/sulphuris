@@ -1,0 +1,166 @@
+@use '../config';
+@use '../utils/helpers';
+
+// The one block in sulphuris that styles tags instead of handing out classes,
+// because it exists for markup nobody can put a class on: rendered markdown, a
+// CMS body field, an editor's output. Everything stays scoped under `.prose`,
+// so a tag rule can never reach an app layout.
+//
+// Deliberately not a docs theme. Admonitions, syntax colors, copy buttons and
+// heading anchors need markup and JS to go with them — that is poops-docs-theme
+// territory, not a stylesheet's. This is the part a renderer already emits:
+// headings, paragraphs, lists, tables, code, quotes, media.
+//
+// Surfaces are mixed out of the foreground color rather than added as tokens.
+// `foreground` already flips per color mode, so the derived tint follows it —
+// a `$colors` addition would be a second palette to keep in sync, and every
+// project's dark mode to get wrong. Mixing to `transparent` (not to a
+// background) keeps the tint composited over whatever it actually sits on.
+$line: color-mix(in srgb, #{helpers.color('foreground')} 15%, transparent);
+$surface: color-mix(in srgb, #{helpers.color('foreground')} 5%, transparent);
+$muted: color-mix(in srgb, #{helpers.color('foreground')} 65%, transparent);
+
+.prose {
+  max-width: helpers.toRem(config.$prose-measure);
+  // A bare URL, a long inline `code` span or an unbroken identifier is wider
+  // than the measure on a phone, and the block would push the page sideways
+  // rather than wrap it. Only breaks where the word does not fit — normal text
+  // still breaks between words.
+  overflow-wrap: break-word;
+
+  // Underlined and colored: color alone fails WCAG 1.4.1, which wants a second
+  // cue for anything distinguished by hue. Dropping the underline on hover is
+  // the feedback, so the cue is never absent while the link is at rest.
+  a {
+    color: helpers.color('link');
+    text-decoration: underline;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  // Rhythm in em, so one number covers the whole scale: the gap above a 48px h1
+  // comes out proportionally larger than the one above a 14px h6, and it tracks
+  // the responsive step down on mobile without a second rule. The bottom margin
+  // on the block elements replaces the UA's, including the 40px indent it puts
+  // on `blockquote` and `figure`.
+  :is(p, ul, ol, dl, pre, table, figure, blockquote) {
+    margin: 0 0 1em;
+  }
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    margin-top: 1.25em;
+  }
+
+  li {
+    margin: 0.25em 0;
+  }
+
+  // A nested list closes its parent item, so the 1em above would double up
+  // against the item's own spacing.
+  li > :is(ul, ol) {
+    margin-bottom: 0;
+  }
+
+  // The block owns its outer edges; the first and last child would otherwise
+  // push a gap past them that the surrounding layout has to cancel.
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  :is(img, video, iframe, embed, object, svg) {
+    max-width: 100%;
+  }
+
+  :is(img, video) {
+    height: auto;
+  }
+
+  // An iframe carries no intrinsic ratio, so the width cap above leaves its
+  // `height` attribute in place and a narrow screen squashes the embed. The
+  // attribute is only a presentational hint, which any CSS `height` outranks —
+  // that is what `auto` is doing here.
+  iframe {
+    width: 100%;
+    height: auto;
+  }
+
+  // 16/9 because in prose an iframe is a video far more often than it is
+  // anything else, and a renderer's embed arrives with no class to hook.
+  // `:not([class])` is the release valve: `.aspect-4x3` is (0,1,0) and would
+  // lose to a plain `.prose iframe`, so instead of fighting specificity the
+  // default steps aside the moment an author has classed the element at all.
+  iframe:not([class]) {
+    aspect-ratio: 16 / 9;
+  }
+
+  figcaption {
+    color: $muted;
+  }
+
+  // `display: block` + `width: max-content` is the only way a table narrower
+  // than the measure still shrink-wraps while a wide one scrolls instead of
+  // dragging the whole page sideways — there is no wrapper element to hang
+  // `overflow` on when the HTML comes from a renderer.
+  table {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  :is(th, td) {
+    padding: 0.5em 0.75em;
+    border: 1px solid $line;
+    text-align: left;
+  }
+
+  thead th {
+    background-color: $surface;
+  }
+
+  :is(pre, code, kbd, samp) {
+    font-family: config.$mono-font;
+  }
+
+  // Inline code only. A `code` inside `pre` is the block's own text, and would
+  // otherwise get a second background and a second size reduction on top of the
+  // block's.
+  :not(pre) > code {
+    padding: 0.15em 0.4em;
+    border: 1px solid $line;
+    border-radius: 4px;
+    background-color: $surface;
+    // `em`, not `rem`: the span shrinks against whatever it sits in, so code in
+    // an h2 stays heading-sized. A mono face at the same nominal size reads
+    // larger than the body face next to it, which is what this takes back.
+    font-size: 0.875em;
+  }
+
+  pre {
+    padding: 1em;
+    border: 1px solid $line;
+    border-radius: 6px;
+    overflow-x: auto;
+    background-color: $surface;
+    font-size: 0.875em;
+  }
+
+  blockquote {
+    padding-left: 1em;
+    border-left: 3px solid $line;
+    color: $muted;
+  }
+
+  hr {
+    margin: 2em 0;
+    border: 0;
+    border-top: 1px solid $line;
+  }
+}

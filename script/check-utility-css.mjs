@@ -36,7 +36,7 @@ const expected = {
   '.fs-16': 'font-size: 1rem',
   '.fs-96': 'font-size: 6rem',
   '.lh-1': 'line-height: 1',
-  '.lh-tight': 'line-height: 1.2',
+  '.lh-tight': 'line-height: 1.25',
   // `flex-grow` alone leaves basis auto — the shorthand is the point
   '.flex-1': 'flex: 1 1 0%',
   '.flex-auto': 'flex: 1 1 auto',

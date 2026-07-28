@@ -1,4 +1,4 @@
-/* sulphuris v3.0.0 | https://stamat.info/sulphuris | MIT License */
+/* sulphuris v4.0.0 | https://stamat.info/sulphuris | MIT License */
 @charset "UTF-8";
 .border, .border-y, .border-x, .border-r, .border-l, .border-b, .border-t {
   border-color: currentcolor;
@@ -456,6 +456,7 @@ button.reset,
   --color-black: #1a1a1d;
   --color-white: #fff;
   --color-primary: #f6c026;
+  --color-link: #0f4eb3;
   --color-gray-500: #8c8c8e;
   --color-gray-600: rgb(43.9215686275%, 43.9215686275%, 44.5490196078%);
   --color-gray-700: rgb(32.9411764706%, 32.9411764706%, 33.4117647059%);
@@ -575,6 +576,10 @@ button.reset,
 
 .text-primary {
   color: var(--color-primary);
+}
+
+.text-link {
+  color: var(--color-link);
 }
 
 .text-gray-500 {
@@ -1007,6 +1012,10 @@ button.reset,
   background-color: var(--color-primary);
 }
 
+.bg-link {
+  background-color: var(--color-link);
+}
+
 .bg-gray-500 {
   background-color: var(--color-gray-500);
 }
@@ -1423,6 +1432,10 @@ button.reset,
   border-color: var(--color-primary);
 }
 
+.border-link {
+  border-color: var(--color-link);
+}
+
 .border-gray-500 {
   border-color: var(--color-gray-500);
 }
@@ -1825,6 +1838,7 @@ button.reset,
   --color-black: #1a1a1d;
   --color-white: #fff;
   --color-primary: #3f00ff;
+  --color-link: #8ab4ff;
 }
 
 ul.reset,
@@ -1836,7 +1850,7 @@ ol.reset {
 }
 
 html {
-  line-height: 1.2;
+  line-height: 1.6;
 }
 
 body {
@@ -1848,129 +1862,98 @@ body {
 }
 
 h1, .h1 {
-  font-size: 4rem;
-  letter-spacing: -0.03125rem;
-  line-height: 1;
+  font-size: 2rem;
+  line-height: 1.25;
   font-weight: bold;
 }
 @media only screen and (min-width: 64rem) {
   h1, .h1 {
-    font-size: 6rem;
-    letter-spacing: -0.09375rem;
-    line-height: 1;
+    font-size: 3rem;
+    line-height: 1.25;
     font-weight: bold;
   }
 }
 
 h2, .h2 {
-  font-size: 3rem;
-  letter-spacing: 0;
-  line-height: 1;
+  font-size: 1.5rem;
+  line-height: 1.25;
   font-weight: bold;
 }
 @media only screen and (min-width: 64rem) {
   h2, .h2 {
-    font-size: 4rem;
-    letter-spacing: -0.03125rem;
-    line-height: 1;
+    font-size: 2rem;
+    line-height: 1.25;
     font-weight: bold;
   }
 }
 
 h3, .h3 {
-  font-size: 2rem;
-  letter-spacing: 0.015625rem;
-  line-height: 1;
+  font-size: 1.25rem;
+  line-height: 1.25;
   font-weight: bold;
 }
 @media only screen and (min-width: 64rem) {
   h3, .h3 {
-    font-size: 3rem;
-    letter-spacing: 0;
-    line-height: 1;
+    font-size: 1.5rem;
+    line-height: 1.25;
     font-weight: bold;
   }
 }
 
 h4, .h4 {
-  font-size: 1.5rem;
-  letter-spacing: 0;
-  line-height: 1;
+  font-size: 1.125rem;
+  line-height: 1.25;
   font-weight: bold;
 }
 @media only screen and (min-width: 64rem) {
   h4, .h4 {
-    font-size: 2rem;
-    letter-spacing: 0.015625rem;
-    line-height: 1;
+    font-size: 1.25rem;
+    line-height: 1.25;
     font-weight: bold;
   }
 }
 
 h5, .h5 {
-  font-size: 1.25rem;
-  letter-spacing: 0.009375rem;
-  line-height: 1;
+  font-size: 1rem;
+  line-height: 1.25;
   font-weight: bold;
-}
-@media only screen and (min-width: 64rem) {
-  h5, .h5 {
-    font-size: 1.5rem;
-    letter-spacing: 0;
-    line-height: 1;
-    font-weight: bold;
-  }
 }
 
 h6, .h6 {
-  font-size: 1rem;
-  letter-spacing: 0.009375rem;
-  line-height: 1;
+  font-size: 0.875rem;
+  line-height: 1.25;
   font-weight: bold;
-}
-@media only screen and (min-width: 64rem) {
-  h6, .h6 {
-    font-size: 1.25rem;
-    letter-spacing: 0.009375rem;
-    line-height: 1;
-    font-weight: bold;
-  }
 }
 
 .p1 {
   font-size: 1.5rem;
-  letter-spacing: 0.01875rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .p2 {
   font-size: 1.25rem;
-  letter-spacing: 0.0125rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 p {
   font-size: 1rem;
-  letter-spacing: 0.0125rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .p3, figcaption {
   font-size: 0.875rem;
-  letter-spacing: 0.025rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .p4, small {
   font-size: 0.75rem;
-  letter-spacing: 0.0375rem;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .supertitle {
   font-size: 0.875rem;
   letter-spacing: 0.125rem;
-  line-height: 1.5;
+  line-height: 1.6;
   font-weight: 500;
   text-transform: uppercase;
 }
@@ -2218,11 +2201,11 @@ h6 {
 }
 
 .lh-tight {
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .lh-normal {
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .lh-loose {
@@ -2234,10 +2217,10 @@ h6 {
     line-height: 1;
   }
   .lh-sm-tight {
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .lh-sm-normal {
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .lh-sm-loose {
     line-height: 1.75;
@@ -2248,10 +2231,10 @@ h6 {
     line-height: 1;
   }
   .lh-md-tight {
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .lh-md-normal {
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .lh-md-loose {
     line-height: 1.75;
@@ -2262,10 +2245,10 @@ h6 {
     line-height: 1;
   }
   .lh-lg-tight {
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .lh-lg-normal {
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .lh-lg-loose {
     line-height: 1.75;
@@ -2276,10 +2259,10 @@ h6 {
     line-height: 1;
   }
   .lh-xl-tight {
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .lh-xl-normal {
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .lh-xl-loose {
     line-height: 1.75;
@@ -2290,10 +2273,10 @@ h6 {
     line-height: 1;
   }
   .lh-xxl-tight {
-    line-height: 1.2;
+    line-height: 1.25;
   }
   .lh-xxl-normal {
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .lh-xxl-loose {
     line-height: 1.75;
@@ -2668,6 +2651,95 @@ h6 {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;
   line-clamp: 6;
+}
+
+.prose {
+  max-width: 45rem;
+  overflow-wrap: break-word;
+}
+.prose a {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+.prose a:hover {
+  text-decoration: none;
+}
+.prose :is(p, ul, ol, dl, pre, table, figure, blockquote) {
+  margin: 0 0 1em;
+}
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  margin-top: 1.25em;
+}
+.prose li {
+  margin: 0.25em 0;
+}
+.prose li > :is(ul, ol) {
+  margin-bottom: 0;
+}
+.prose > :first-child {
+  margin-top: 0;
+}
+.prose > :last-child {
+  margin-bottom: 0;
+}
+.prose :is(img, video, iframe, embed, object, svg) {
+  max-width: 100%;
+}
+.prose :is(img, video) {
+  height: auto;
+}
+.prose iframe {
+  width: 100%;
+  height: auto;
+}
+.prose iframe:not([class]) {
+  aspect-ratio: 16/9;
+}
+.prose figcaption {
+  color: color-mix(in srgb, var(--color-foreground) 65%, transparent);
+}
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+.prose :is(th, td) {
+  padding: 0.5em 0.75em;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  text-align: left;
+}
+.prose thead th {
+  background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+}
+.prose :is(pre, code, kbd, samp) {
+  font-family: monospace;
+}
+.prose :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  border-radius: 4px;
+  background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+  font-size: 0.875em;
+}
+.prose pre {
+  padding: 1em;
+  border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  border-radius: 6px;
+  overflow-x: auto;
+  background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
+  font-size: 0.875em;
+}
+.prose blockquote {
+  padding-left: 1em;
+  border-left: 3px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+  color: color-mix(in srgb, var(--color-foreground) 65%, transparent);
+}
+.prose hr {
+  margin: 2em 0;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
 }
 
 .filter-invert {

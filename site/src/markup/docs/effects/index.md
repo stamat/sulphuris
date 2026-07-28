@@ -3,7 +3,7 @@ layout: poops-docs-theme/docs
 title: Effects
 navTitle: Effects
 description: Utility classes for box shadows, CSS filters, z-index and transforms, plus a SCSS transition mixin backed by configurable custom easings.
-order: 13
+order: 14
 keywords: ["shadow", "box-shadow", "filter", "blur", "opacity", "z-index", "transition", "easing", "transform", "translate", "rotate", "scale"]
 ---
 

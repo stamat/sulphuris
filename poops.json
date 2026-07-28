@@ -17,7 +17,7 @@
   },
   "serve" : {
     "port": 4040,
-    "base": "/"
+    "base": "."
   },
   "livereload": true,
   "watch": [

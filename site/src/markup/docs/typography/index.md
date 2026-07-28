@@ -27,9 +27,11 @@ Default line-heights:
 
 | Variable | Value |
 |---|---|
-| `$line-height` | `1.2` (html root) |
-| `$heading-line-height` | `1` |
-| `$paragraph-line-height` | `1.5` |
+| `$line-height` | `1.6` (html root) — `$line-heights.normal` |
+| `$heading-line-height` | `1.25` — `$line-heights.tight` |
+| `$paragraph-line-height` | `1.6` — `$line-heights.normal` |
+
+All three read out of the `$line-heights` map rather than carrying their own number, so retuning the map moves the type scale and the `.lh-*` utilities together. Override a variable directly to break one out of the map.
 
 ---
 
@@ -37,18 +39,22 @@ Default line-heights:
 
 ### Headings
 
-Headings have two size sets: **mobile** (default, no media query) and **desktop** (`min-width: 1024px`, the `lg` breakpoint). The semantic tag and its class equivalent share identical rules — `.h1` gives heading styling without the `<h1>` element.
+`h1`–`h3` have two size sets: **mobile** (default, no media query) and **desktop** (`min-width: 1024px`, the `lg` breakpoint). `h4`–`h6` have one — at 20px and below there is nothing to give back on a small screen. The semantic tag and its class equivalent share identical rules — `.h1` gives heading styling without the `<h1>` element.
 
 Each heading entry: `(font-size, letter-spacing, line-height, font-weight)`. All sizes output as rem.
 
-| Selector | Desktop size | Desktop letter-spacing | Mobile size | Mobile letter-spacing | line-height | font-weight |
-|---|---|---|---|---|---|---|
-| `h1, .h1` | 6rem (96px) | -0.09375rem (-1.5px) | 4rem (64px) | -0.03125rem (-0.5px) | 1 | bold |
-| `h2, .h2` | 4rem (64px) | -0.03125rem (-0.5px) | 3rem (48px) | 0 | 1 | bold |
-| `h3, .h3` | 3rem (48px) | 0 | 2rem (32px) | 0.015625rem (0.25px) | 1 | bold |
-| `h4, .h4` | 2rem (32px) | 0.015625rem (0.25px) | 1.5rem (24px) | 0 | 1 | bold |
-| `h5, .h5` | 1.5rem (24px) | 0 | 1.25rem (20px) | 0.009375rem (0.15px) | 1 | bold |
-| `h6, .h6` | 1.25rem (20px) | 0.009375rem (0.15px) | 1rem (16px) | 0.009375rem (0.15px) | 1 | bold |
+| Selector | Desktop size | Mobile size | line-height | font-weight |
+|---|---|---|---|---|
+| `h1, .h1` | 3rem (48px) | 2rem (32px) | 1.25 | bold |
+| `h2, .h2` | 2rem (32px) | 1.5rem (24px) | 1.25 | bold |
+| `h3, .h3` | 1.5rem (24px) | 1.25rem (20px) | 1.25 | bold |
+| `h4, .h4` | 1.25rem (20px) | — | 1.25 | bold |
+| `h5, .h5` | 1rem (16px) | — | 1.25 | bold |
+| `h6, .h6` | 0.875rem (14px) | — | 1.25 | bold |
+
+This is a reading ladder, not a poster one: it opens a document rather than a hero. `h5` sits at body size and `h6` below it, carrying their level through weight and family instead of scale — the same collapse GitHub's and most docs renderers' prose use. For display type, reach for `.fs-64` / `.fs-96`, which are still in `$font-sizes`.
+
+No `letter-spacing` is set on any heading or paragraph. Tracking corrects a specific face at a specific size; applied blind across a scale it fights whatever `$paragraph-font` is actually set to. `.supertitle` is the exception, since capitals are drawn to be set apart.
 
 Heading elements also carry default bottom margins (applied to the tag, not the class):
 
@@ -74,12 +80,12 @@ Non-heading entries use a single size set (no responsive switch). `letter-spacin
 
 | Selector | font-size | letter-spacing | line-height |
 |---|---|---|---|
-| `.p1` | 1.5rem (24px) | 0.01875rem (0.3px) | 1.5 |
-| `.p2` | 1.25rem (20px) | 0.0125rem (0.2px) | 1.5 |
-| `p` | 1rem (16px) | 0.0125rem (0.2px) | 1.5 |
-| `.p3, figcaption` | 0.875rem (14px) | 0.025rem (0.4px) | 1.5 |
-| `.p4, small` | 0.75rem (12px) | 0.0375rem (0.6px) | 1.5 |
-| `.supertitle` | 0.875rem (14px) | 0.125rem (2px) | 1.5 |
+| `.p1` | 1.5rem (24px) | — | 1.6 |
+| `.p2` | 1.25rem (20px) | — | 1.6 |
+| `p` | 1rem (16px) | — | 1.6 |
+| `.p3, figcaption` | 0.875rem (14px) | — | 1.6 |
+| `.p4, small` | 0.75rem (12px) | — | 1.6 |
+| `.supertitle` | 0.875rem (14px) | 0.125rem (2px) | 1.6 |
 
 `.supertitle` additionally sets `font-weight: 500` and `text-transform: uppercase`.
 
@@ -105,12 +111,12 @@ convention as `.pt-32`, same `toRem()` conversion the type scale uses, so
 | `.fs-12` | 0.75rem (12px) | `.p4`, `small` |
 | `.fs-14` | 0.875rem (14px) | `.p3`, `figcaption` |
 | `.fs-16` | 1rem (16px) | `p` |
-| `.fs-20` | 1.25rem (20px) | `.p2`, `h6` desktop |
-| `.fs-24` | 1.5rem (24px) | `.p1`, `h5` desktop |
-| `.fs-32` | 2rem (32px) | `h4` desktop |
-| `.fs-48` | 3rem (48px) | `h3` desktop |
-| `.fs-64` | 4rem (64px) | `h2` desktop |
-| `.fs-96` | 6rem (96px) | `h1` desktop |
+| `.fs-20` | 1.25rem (20px) | `.p2`, `h4` |
+| `.fs-24` | 1.5rem (24px) | `.p1`, `h3` desktop |
+| `.fs-32` | 2rem (32px) | `h2` desktop |
+| `.fs-48` | 3rem (48px) | `h1` desktop |
+| `.fs-64` | 4rem (64px) | display only |
+| `.fs-96` | 6rem (96px) | display only |
 
 This is the nudge that does not need a new component class — the type scale
 still owns letter-spacing, line-height and weight, `.fs-*` changes size only.
@@ -131,9 +137,11 @@ a px one inherits as a frozen box and collapses nested type.
 | Class | `line-height` |
 |---|---|
 | `.lh-1` | `1` |
-| `.lh-tight` | `1.2` |
-| `.lh-normal` | `1.5` |
+| `.lh-tight` | `1.25` — headings |
+| `.lh-normal` | `1.6` — body copy, `html` root |
 | `.lh-loose` | `1.75` |
+
+`tight` and `normal` are not only utility values: `$heading-line-height` and `$paragraph-line-height` read them out of this map, so a change here moves the type scale with the classes.
 
 Pairs with `.fs-*` — bumping size usually means loosening or tightening leading:
 

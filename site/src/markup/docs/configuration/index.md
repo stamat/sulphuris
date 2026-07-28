@@ -36,10 +36,10 @@ the API stays where it is.
 <!-- config: logical-properties, rem-units -->
 
 ```scss
-// src/core/_config.scss:7
+// src/core/_config.scss:9
 $logical-properties: false;
 
-// src/core/_config.scss:14
+// src/core/_config.scss:16
 $rem-units: true;
 ```
 
@@ -90,24 +90,24 @@ these lists. Values are unitless numbers read as px, emitted as rem under
 <!-- config: sizes, negative-sizes, percent-sizes, negative-percent-sizes, viewport-sizes, z-index, size-aliases, border-sizes, border-radiuses -->
 
 ```scss
-// src/core/_config.scss:19
+// src/core/_config.scss:21
 $sizes:          0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 $percent-sizes:  5,10,15,20,25,50,75,100;
 
-// src/core/_config.scss:27
+// src/core/_config.scss:29
 $negative-percent-sizes: -25,-50,-75,-100;
 
-// src/core/_config.scss:31
+// src/core/_config.scss:33
 $viewport-sizes: 25,50,75,100;
 
-// src/core/_config.scss:35
+// src/core/_config.scss:37
 $z-index: -1,0,1,2,10,20,50,100;
 
-// src/core/_config.scss:45
+// src/core/_config.scss:47
 $size-aliases: null;
 
-// src/core/_config.scss:65
+// src/core/_config.scss:67
 $border-sizes:    2,3,4,6,8;
 $border-radiuses: 0,4,6,8,16,24,32;
 ```
@@ -141,7 +141,7 @@ scale used by the `.z-*` utility classes.
 <!-- config: z-layers -->
 
 ```scss
-// src/core/_config.scss:51
+// src/core/_config.scss:53
 $z-layers: (
   // Decorative pseudo-elements sitting under their own content. One negative
   // level is enough — a second means the stacking context is wrong.
@@ -164,7 +164,7 @@ The per-side suffixes shared by margin, padding, border, position, etc.
 <!-- config: orientations -->
 
 ```scss
-// src/core/_config.scss:71
+// src/core/_config.scss:73
 $orientations: (
   't': ('top'),
   'r': ('right'),
@@ -188,7 +188,7 @@ them to `rem` when the query is emitted (`768px` → `48rem`).
 <!-- config: breakpoints -->
 
 ```scss
-// src/core/_config.scss:83
+// src/core/_config.scss:85
 $breakpoints: (
   'xxl': 1680px,
   'xl': 1366px,
@@ -207,18 +207,18 @@ covers everything below the smallest breakpoint. A utility variant like
 <!-- config: container-max-width, container-offset, container-offset-mobile, container-breakpoint, grid-gutter, grid-gutter-mobile, columns, rows -->
 
 ```scss
-// src/core/_config.scss:94
+// src/core/_config.scss:96
 $container-max-width:     1680px;
 $container-offset:        56px;
 $container-offset-mobile: 16px;
 $container-breakpoint:    'lg';
 
-// src/core/_config.scss:99
+// src/core/_config.scss:101
 $grid-gutter:        32px;
 $grid-gutter-mobile: 16px;
 $columns:            12;
 
-// src/core/_config.scss:106
+// src/core/_config.scss:108
 $rows: 6;
 ```
 
@@ -239,16 +239,21 @@ expanded into 100–900 tint/shade scales.
 <!-- config: colors, palettes -->
 
 ```scss
-// src/core/_config.scss:111
+// src/core/_config.scss:113
 $colors: (
   foreground: #1a1a1d,
   background: #fff,
   black: #1a1a1d,
   white: #fff,
-  primary: #f6c026
+  primary: #f6c026,
+  // Its own token rather than `primary`, because a link has a contrast floor a
+  // brand color does not: `primary` is free to be a yellow that only ever sits
+  // behind text, while this has to stay readable as text on `background`.
+  // 8.6:1 here, 8:1 on the dark counterpart below.
+  link: #0f4eb3
 );
 
-// src/core/_config.scss:119
+// src/core/_config.scss:126
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -272,7 +277,7 @@ Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
-// src/core/_config.scss:133
+// src/core/_config.scss:140
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
@@ -281,7 +286,8 @@ $color-modes: (
       background: #1a1a1d,
       black: #1a1a1d,
       white: #fff,
-      primary: #3f00ff
+      primary: #3f00ff,
+      link: #8ab4ff
     )
     // palettes: ( ... )
   )
@@ -297,28 +303,28 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:157
+// src/core/_config.scss:165
 $base-font-size: 16px;
 
-// src/core/_config.scss:159
-$heading-font:          'Roboto', sans-serif;
-$paragraph-font:        'Nunito', sans-serif;
-$mono-font:             monospace;
-$line-height:           1.2;
-$heading-line-height:   1;
-$paragraph-line-height: 1.5;
-
 // src/core/_config.scss:167
+$heading-font:   'Roboto', sans-serif;
+$paragraph-font: 'Nunito', sans-serif;
+$mono-font:      monospace;
+
+// src/core/_config.scss:191
+$line-height:           map.get($line-heights, 'normal') or 1.6;
+$heading-line-height:   map.get($line-heights, 'tight') or 1.25;
+$paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
+
+// src/core/_config.scss:196
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:173
+// src/core/_config.scss:202
 $font-sizes: 12,14,16,20,24,32,48,64,96;
-
-// src/core/_config.scss:177
 $line-heights: (
   1: 1,
-  'tight': 1.2,
-  'normal': 1.5,
+  'tight': 1.25,
+  'normal': 1.6,
   'loose': 1.75
 );
 ```
@@ -346,37 +352,31 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:189
+// src/core/_config.scss:231
 $typography: (
   'h1, .h1': (
-    desktop: (96px, -1.5px, $heading-line-height, bold),
-    mobile: (64px, -0.5px, $heading-line-height, bold)
+    desktop: (48px, null, $heading-line-height, bold),
+    mobile: (32px, null, $heading-line-height, bold)
   ),
   'h2, .h2': (
-    desktop: (64px, -0.5px, $heading-line-height, bold),
-    mobile: (48px, 0, $heading-line-height, bold)
+    desktop: (32px, null, $heading-line-height, bold),
+    mobile: (24px, null, $heading-line-height, bold)
   ),
   'h3, .h3': (
-    desktop: (48px, 0, $heading-line-height, bold),
-    mobile: (32px, 0.25px, $heading-line-height, bold)
+    desktop: (24px, null, $heading-line-height, bold),
+    mobile: (20px, null, $heading-line-height, bold)
   ),
   'h4, .h4': (
-    desktop: (32px, 0.25px, $heading-line-height, bold),
-    mobile: (24px, 0, $heading-line-height, bold)
+    desktop: (20px, null, $heading-line-height, bold),
+    mobile: (18px, null, $heading-line-height, bold)
   ),
-  'h5, .h5': (
-    desktop: (24px, 0, $heading-line-height, bold),
-    mobile: (20px, 0.15px, $heading-line-height, bold)
-  ),
-  'h6, .h6': (
-    desktop: (20px, 0.15px, $heading-line-height, bold),
-    mobile: (16px, 0.15px, $heading-line-height, bold)
-  ),
-  '.p1': (24px, 0.3px, $paragraph-line-height),
-  '.p2': (20px, 0.2px, $paragraph-line-height),
-  'p': ($base-font-size, 0.2px, $paragraph-line-height),
-  '.p3, figcaption': (14px, 0.4px, $paragraph-line-height),
-  '.p4, small': (12px, 0.6px, $paragraph-line-height),
+  'h5, .h5': ($base-font-size, null, $heading-line-height, bold),
+  'h6, .h6': (14px, null, $heading-line-height, bold),
+  '.p1': (24px, null, $paragraph-line-height),
+  '.p2': (20px, null, $paragraph-line-height),
+  'p': ($base-font-size, null, $paragraph-line-height),
+  '.p3, figcaption': (14px, null, $paragraph-line-height),
+  '.p4, small': (12px, null, $paragraph-line-height),
   '.supertitle': (14px, 2px, $paragraph-line-height, 500, uppercase)
 );
 ```
@@ -385,17 +385,27 @@ The config is written in px throughout; font sizes and — under
 [`$rem-units`](#feature-flags) — the size families are output in `rem`, relative
 to `$base-font-size`. See [Typography](../typography/).
 
+`$prose-measure` is the reading width of the `.prose` block — the tag-level
+defaults for markup you cannot put classes on. See [Prose](../prose/):
+
+<!-- config: prose-measure -->
+
+```scss
+// src/core/_config.scss:260
+$prose-measure: 720px;
+```
+
 ## Transitions & easings
 
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:222
+// src/core/_config.scss:262
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:226
+// src/core/_config.scss:266
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -407,7 +417,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:232
+// src/core/_config.scss:272
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -427,7 +437,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:240
+// src/core/_config.scss:280
 $button: (
   height: 56px,
   padding-x: 32px,

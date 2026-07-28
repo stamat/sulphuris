@@ -3,7 +3,7 @@ layout: poops-docs-theme/docs
 title: Borders & Radius
 navTitle: Borders & Radius
 description: Utility classes for border width, border style, border colour, and border radius — including per-side shorthands and responsive variants.
-order: 11
+order: 12
 keywords: ["border", "border-radius", "rounded", "rounded-full", "pill", "border-color", "border-width"]
 ---
 

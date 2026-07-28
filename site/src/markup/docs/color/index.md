@@ -23,7 +23,14 @@ Every colour key becomes `--color-{name}` on `:root`.
 --color-black:      #1a1a1d;
 --color-white:      #ffffff;
 --color-primary:    #f6c026;
+--color-link:       #0f4eb3;
 ```
+
+`link` is separate from `primary` because it carries a contrast floor a brand
+colour does not: `primary` only ever sits behind text, `link` has to stay
+readable *as* text on `background` (8.6:1 light, 8:1 dark). It is what
+[`.prose`](../prose/) colours anchors with, and `.text-link` puts the same
+colour on a link the rest of the app owns.
 
 **From `$palettes` (example: `blue`):**
 
@@ -143,6 +150,7 @@ The built-in `dark` mode re-emits `$colors` overrides under `[data-color-scheme=
   --color-black:      #1a1a1d;
   --color-white:      #ffffff;
   --color-primary:    #3F00FF;
+  --color-link:       #8ab4ff;
 }
 ```
 

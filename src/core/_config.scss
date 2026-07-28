@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 /*
  * FEATURE FLAGS - whole families that cost a lot of rules for a niche win, so
  * they ship off and are one `true` away.
@@ -113,7 +115,12 @@ $colors: (
   background: #fff,
   black: #1a1a1d,
   white: #fff,
-  primary: #f6c026
+  primary: #f6c026,
+  // Its own token rather than `primary`, because a link has a contrast floor a
+  // brand color does not: `primary` is free to be a yellow that only ever sits
+  // behind text, while this has to stay readable as text on `background`.
+  // 8.6:1 here, 8:1 on the dark counterpart below.
+  link: #0f4eb3
 ) !default;
 
 $palettes: (
@@ -138,7 +145,8 @@ $color-modes: (
       background: #1a1a1d,
       black: #1a1a1d,
       white: #fff,
-      primary: #3f00ff
+      primary: #3f00ff,
+      link: #8ab4ff
     )
     // palettes: ( ... )
   )
@@ -159,9 +167,30 @@ $base-font-size: 16px !default;
 $heading-font: 'Roboto', sans-serif !default;
 $paragraph-font: 'Nunito', sans-serif !default;
 $mono-font: monospace !default;
-$line-height: 1.2 !default;
-$heading-line-height: 1 !default;
-$paragraph-line-height: 1.5 !default;
+
+// Steps for the `.lh-*` family, and the only place a line-height number is
+// written — everything below reads out of this map, so retuning the reading
+// rhythm is one edit here. Unitless on purpose: a unitless line-height
+// inherits as a ratio, a px one inherits as a frozen box.
+$line-heights: (
+  1: 1,
+  'tight': 1.25,
+  'normal': 1.6,
+  'loose': 1.75
+) !default;
+
+// Defaults are set for reading, not for posters: 'normal' is loose enough that
+// a paragraph of body copy does not fuse into a block, 'tight' keeps a two-line
+// heading from opening a gap in the middle of itself. Both are keys, not
+// numbers — override $line-heights and these follow.
+//
+// The literal after `or` is the floor for a $line-heights that renames those
+// keys: `map.get` would hand back `null`, the generator skips a null, and every
+// heading would silently lose its line-height. Set the variable directly to
+// override — the fallback only catches a missing key.
+$line-height: map.get($line-heights, 'normal') or 1.6 !default;
+$heading-line-height: map.get($line-heights, 'tight') or 1.25 !default;
+$paragraph-line-height: map.get($line-heights, 'normal') or 1.6 !default;
 
 // Line counts for the `.line-clamp-*` family. See style/_typography.scss.
 $line-clamps: 1,2,3,4,5,6 !default;
@@ -172,52 +201,63 @@ $line-clamps: 1,2,3,4,5,6 !default;
 // the knob for nudging one element without inventing a component class.
 $font-sizes: 12,14,16,20,24,32,48,64,96 !default;
 
-// Steps for the `.lh-*` family. Unitless on purpose: a unitless line-height
-// inherits as a ratio, a px one inherits as a frozen box.
-$line-heights: (
-  1: 1,
-  'tight': 1.2,
-  'normal': 1.5,
-  'loose': 1.75
-) !default;
-
 /*
  * Breakpoint: $container-breakpoint
  *
  * (font-size, letter-spacing, line-height, font-weight, text-transform)
  */
+/*
+ * A reading ladder, not a poster ladder. The top used to open at 96px, which is
+ * a hero headline — it reads as art direction and has to be overridden the
+ * moment the page is prose. 48px opens a document instead, and the steps below
+ * it are close enough together that a heading reads as the next level down
+ * rather than as a different design.
+ *
+ * The bottom of a prose ladder collapses on purpose: h5/h6 sit at or below body
+ * size and carry their level through weight, family and the margins in
+ * style/_typography.scss, so they need no mobile step of their own — a size
+ * that is already at body size has nothing to give back on a small screen.
+ * h4 is the exception, and only because h3's mobile step lands on 20px: without
+ * a step of its own it would render identically to the level above it, and the
+ * few px of trailing margin between them is not a visible difference.
+ *
+ * Letter-spacing is gone from every line except `.supertitle`. Tracking is a
+ * correction for a specific face at a specific size; applied blind across a
+ * scale it fights whatever $paragraph-font is actually set to. Uppercase is
+ * the one case that needs it unconditionally, since capitals are drawn to be
+ * set apart. `null` skips the declaration — `0` would emit `letter-spacing: 0`
+ * and beat an inherited value.
+ */
 $typography: (
   'h1, .h1': (
-    desktop: (96px, -1.5px, $heading-line-height, bold),
-    mobile: (64px, -0.5px, $heading-line-height, bold)
+    desktop: (48px, null, $heading-line-height, bold),
+    mobile: (32px, null, $heading-line-height, bold)
   ),
   'h2, .h2': (
-    desktop: (64px, -0.5px, $heading-line-height, bold),
-    mobile: (48px, 0, $heading-line-height, bold)
+    desktop: (32px, null, $heading-line-height, bold),
+    mobile: (24px, null, $heading-line-height, bold)
   ),
   'h3, .h3': (
-    desktop: (48px, 0, $heading-line-height, bold),
-    mobile: (32px, 0.25px, $heading-line-height, bold)
+    desktop: (24px, null, $heading-line-height, bold),
+    mobile: (20px, null, $heading-line-height, bold)
   ),
   'h4, .h4': (
-    desktop: (32px, 0.25px, $heading-line-height, bold),
-    mobile: (24px, 0, $heading-line-height, bold)
+    desktop: (20px, null, $heading-line-height, bold),
+    mobile: (18px, null, $heading-line-height, bold)
   ),
-  'h5, .h5': (
-    desktop: (24px, 0, $heading-line-height, bold),
-    mobile: (20px, 0.15px, $heading-line-height, bold)
-  ),
-  'h6, .h6': (
-    desktop: (20px, 0.15px, $heading-line-height, bold),
-    mobile: (16px, 0.15px, $heading-line-height, bold)
-  ),
-  '.p1': (24px, 0.3px, $paragraph-line-height),
-  '.p2': (20px, 0.2px, $paragraph-line-height),
-  'p': ($base-font-size, 0.2px, $paragraph-line-height),
-  '.p3, figcaption': (14px, 0.4px, $paragraph-line-height),
-  '.p4, small': (12px, 0.6px, $paragraph-line-height),
+  'h5, .h5': ($base-font-size, null, $heading-line-height, bold),
+  'h6, .h6': (14px, null, $heading-line-height, bold),
+  '.p1': (24px, null, $paragraph-line-height),
+  '.p2': (20px, null, $paragraph-line-height),
+  'p': ($base-font-size, null, $paragraph-line-height),
+  '.p3, figcaption': (14px, null, $paragraph-line-height),
+  '.p4, small': (12px, null, $paragraph-line-height),
   '.supertitle': (14px, 2px, $paragraph-line-height, 500, uppercase)
 ) !default;
+
+// Reading measure for the `.prose` block — the width past which the eye starts
+// losing the return sweep to the next line. ~70 characters at $base-font-size.
+$prose-measure: 720px !default;
 
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
