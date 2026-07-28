@@ -37,16 +37,12 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      # Compile dist/sulphuris.css first — the site's copy step pulls it in.
-      - name: Build library CSS
-        run: npm run build
-
-      # Build the docs site. --base-url lets Poops resolve absolute links
-      # (sitemap, search index) under the Pages deploy path, which for a
-      # project site is /<repo-name>.
-      - name: Build docs
-        run: npx poops -b --base-url "/${{ github.event.repository.name }}"
-        working-directory: site
+      # One script builds everything: dist/sulphuris.css first (its exec step
+      # regenerates the reference and configuration docs), then the site.
+      # --base-url lets Poops resolve absolute links (sitemap, search index)
+      # under the Pages deploy path, which for a project site is /<repo-name>.
+      - name: Build site
+        run: script/server -b --base-url "/${{ github.event.repository.name }}"
 
       - uses: actions/upload-pages-artifact@v3
         with:
