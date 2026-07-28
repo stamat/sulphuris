@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 # Build once and exit — no watchers, no server. The library build's exec step
 # regenerates docs/reference/ and docs/configuration/, so the site build that
 # follows picks them up.
-if [[ "$*" == *-b* ]]; then
+if [[ " $* " == *" -b "* ]]; then
   node_modules/.bin/💩 -b
   cd site && exec ../node_modules/.bin/💩 "$@"
 fi
