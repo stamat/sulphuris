@@ -1,9 +1,20 @@
+@use 'sass:meta';
+
 @forward 'border';
 @forward 'button';
 @forward 'color';
 @forward 'list';
 @forward 'typography';
-@forward 'prose';
 @forward 'filters';
 @forward 'transform';
 @forward 'effects';
+
+// `.prose` is the one block here that styles tags, so it sits in the `base`
+// layer with normalize instead of alongside the utility classes. Layered CSS
+// loses to unlayered CSS at any specificity, which is what lets a single
+// utility class override a `.prose thead th` without an `!important` or a
+// selector fight. `load-css()` rather than `@forward`: the layer wraps emitted
+// CSS, and `@forward` can only sit at the root.
+@layer base {
+  @include meta.load-css('prose');
+}

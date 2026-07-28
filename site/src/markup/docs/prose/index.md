@@ -30,8 +30,7 @@ Everything is scoped under the class, so a tag rule can never reach the rest of 
 | `li` | `margin: 0.25em 0`, nested lists lose the bottom gap |
 | first / last child | margin collapsed to `0` |
 | `img, video, iframe, embed, object, svg` | `max-width: 100%` (`img`/`video` also `height: auto`) |
-| `iframe` | `width: 100%`, `height: auto` |
-| `iframe:not([class])` | `aspect-ratio: 16 / 9` |
+| `iframe` | `width: 100%`, `height: auto`, `aspect-ratio: 16 / 9` |
 | `table` | `display: block`, `width: max-content`, `max-width: 100%`, `overflow-x: auto`, `border-collapse: collapse` |
 | `th, td` | `padding: 0.5em 0.75em`, `1px` border, `text-align: left` |
 | `thead th` | tinted background |
@@ -72,7 +71,7 @@ A non-video embed takes any [aspect utility](../sizing/):
 <iframe class="aspect-4x3" src="…"></iframe>
 ```
 
-That works because the ratio default is scoped to `iframe:not([class])`. `.aspect-4x3` is a single class (0,1,0) and would lose a specificity fight with `.prose iframe`, so rather than escalate, the default stands down as soon as an author has classed the element at all — which a renderer's output never is.
+That works because `.prose` sits in a cascade layer and `.aspect-4x3` does not — see [below](#every-rule-here-loses-to-a-utility).
 
 Borders and tinted surfaces are mixed out of the foreground color, not added as new tokens:
 
@@ -97,7 +96,7 @@ $muted:   color-mix(in srgb, var(--color-foreground) 65%, transparent);
 
 720px is roughly 70 characters at `$base-font-size` — past that the eye starts losing the return sweep to the next line.
 
-Per instance, any width utility overrides it. `.prose` and `.max-w-*` are both single-class (0,1,0), and the layout families are emitted after the style ones, so the utility wins on source order alone:
+Per instance, any width utility overrides it:
 
 ```html
 <article class="prose max-w-none">…</article>   <!-- full-bleed, keeps the typography -->
@@ -105,6 +104,31 @@ Per instance, any width utility overrides it. `.prose` and `.max-w-*` are both s
 ```
 
 That is also the answer to why there is no separate `.prose-container`: a second class that sets one property is what the utility set is for, and the common case would then need two classes to get the default right.
+
+## Every rule here loses to a utility
+
+`.prose` styles tags, so its selectors are descendant selectors — `.prose thead th` is (0,1,2) and would beat any single utility class in a straight specificity fight. It does not get one. The block is emitted inside a cascade layer, and every utility class in Sulphuris is emitted outside one:
+
+```css
+@layer base {
+  /* normalize, the h1–h6 margins, and all of .prose */
+}
+
+/* every utility class — .max-w-none, .bg-white, .aspect-4x3, .mb-0 */
+```
+
+An unlayered rule beats a layered one whatever its specificity, so a single class always wins over `.prose`, however deep the selector it is overriding:
+
+```html
+<article class="prose max-w-none">…</article>
+<table class="bg-white">…</table>
+<iframe class="aspect-4x3" src="…"></iframe>
+```
+
+Inside the layer, ordinary specificity still applies — which is how `.prose pre` overrides normalize's `pre`, and how `.prose > :last-child` zeroes the bottom margin [Typography](../typography/) puts on a trailing heading. That is why those heading margins are in the layer too, and not next to the font-size utilities they otherwise sit beside.
+
+> [!NOTE]
+> The same rule applies to your own CSS: an unlayered `p { margin: 0 }` in your stylesheet beats `.prose p`, even though it is less specific. Put your reset in a layer of its own if you want `.prose` to keep winning inside the block. Cascade layers need Chrome 99+, Safari 15.4+, Firefox 97+.
 
 ## What it deliberately does not do
 
@@ -133,4 +157,4 @@ Long URLs and identifiers are handled at the block level with `overflow-wrap: br
 <article class="prose mx-auto py-48 text-gray-800">…</article>
 ```
 
-Anything inside that you *can* reach still takes utilities normally — the tag rules are all single-class specificity (`0,1,1`) and carry no `!important`.
+Anything inside that you *can* reach still takes utilities normally — the tag rules are layered and carry no `!important`, so a class on the element wins.

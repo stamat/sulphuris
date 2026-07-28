@@ -94,6 +94,41 @@ const transforms = [...rules].filter(([s]) => /^\.(translate-[xy]|scale|rotate)-
 const shorthand = transforms.filter(([, d]) => d.startsWith('transform:')).map(([s]) => s)
 assert.deepStrictEqual(shorthand, [], 'transform families must use the standalone properties so they compose')
 
+// The cascade split: tag defaults (`.prose`, normalize, heading margins) live in
+// `@layer base`, every utility class stays unlayered. An unlayered rule beats a
+// layered one at any specificity, so `.bg-white` overrides `.prose thead th`
+// without an `!important` — and that holds however deep a `.prose` selector
+// gets. A utility that slipped into the layer would lose to the tag rules it is
+// meant to override.
+function layered (rule) {
+  for (let node = rule.parent; node; node = node.parent) {
+    if (node.type === 'atrule' && node.name === 'layer') return true
+  }
+  return false
+}
+
+const unlayeredProse = []
+const layeredUtilities = []
+
+root.walkRules((rule) => {
+  const isProse = rule.selectors.some((s) => s.startsWith('.prose'))
+  if (isProse) {
+    if (!layered(rule)) unlayeredProse.push(rule.selector)
+    return
+  }
+  if (layered(rule) && rule.selectors.some((s) => /^\.[\w-]+$/.test(s))) layeredUtilities.push(rule.selector)
+})
+
+assert.deepStrictEqual(unlayeredProse, [], '.prose rules must stay inside @layer base')
+assert.deepStrictEqual(layeredUtilities, [], 'utility classes must stay unlayered — a layered one loses to every tag default')
+
+// Heading margins are the one place a tag default and `.prose` touch the same
+// property: `.prose > :last-child` zeroes the bottom margin of a trailing
+// heading, which it can only do from inside the same layer.
+const headingMargins = []
+root.walkRules('h1', (rule) => rule.walkDecls('margin-bottom', () => headingMargins.push(layered(rule))))
+assert.deepStrictEqual(headingMargins, [true], 'h1 margin-bottom belongs in @layer base')
+
 // The load-bearing one. An author `font-size` on `html` overrides the reader's
 // browser default-size setting, which pins every rem in the stylesheet back to a
 // fixed px and silently cancels everything above. A percentage is fine — it

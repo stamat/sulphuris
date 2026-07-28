@@ -1,5 +1,6 @@
+@use 'sass:meta';
+
 @use 'misc';
-@use 'normalize';
 
 @use 'grid';
 @use 'display';
@@ -13,3 +14,13 @@
 @use 'aspect';
 @use 'container';
 @use 'flex';
+
+// Normalize styles tags, so it goes in the `base` layer with `.prose`. An
+// unlayered rule beats every layered one whatever its specificity, and every
+// utility class in sulphuris is unlayered — that is the whole ordering.
+// `load-css()` instead of `@use`, because a layer has to wrap the emitted CSS
+// and `@use` can only sit at the root — which is also why it lands here at the
+// end of the file rather than next to the other tag-level import.
+@layer base {
+  @include meta.load-css('normalize');
+}

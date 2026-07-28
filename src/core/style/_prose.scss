@@ -4,7 +4,9 @@
 // The one block in sulphuris that styles tags instead of handing out classes,
 // because it exists for markup nobody can put a class on: rendered markdown, a
 // CMS body field, an editor's output. Everything stays scoped under `.prose`,
-// so a tag rule can never reach an app layout.
+// so a tag rule can never reach an app layout. `style/index.scss` puts the
+// whole block in the `base` cascade layer, which is what keeps every rule below
+// every utility class no matter how many elements deep its selector goes.
 //
 // Deliberately not a docs theme. Admonitions, syntax colors, copy buttons and
 // heading anchors need markup and JS to go with them — that is poops-docs-theme
@@ -85,17 +87,12 @@ $muted: color-mix(in srgb, #{helpers.color('foreground')} 65%, transparent);
   // `height` attribute in place and a narrow screen squashes the embed. The
   // attribute is only a presentational hint, which any CSS `height` outranks —
   // that is what `auto` is doing here.
+  // 16/9 because in prose an iframe is a video far more often than it is
+  // anything else, and a renderer's embed arrives with no class to hook.
+  // `.aspect-4x3` still wins — it is unlayered, this block is not.
   iframe {
     width: 100%;
     height: auto;
-  }
-
-  // 16/9 because in prose an iframe is a video far more often than it is
-  // anything else, and a renderer's embed arrives with no class to hook.
-  // `:not([class])` is the release valve: `.aspect-4x3` is (0,1,0) and would
-  // lose to a plain `.prose iframe`, so instead of fighting specificity the
-  // default steps aside the moment an author has classed the element at all.
-  iframe:not([class]) {
     aspect-ratio: 16 / 9;
   }
 
