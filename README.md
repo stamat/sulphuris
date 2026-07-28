@@ -22,7 +22,7 @@ Sulphuris is built around a single [`_config.scss`](https://github.com/stamat/su
 - **Spacing size classes named in pixels** - e.g. `.pt-32` results in `padding-top: 2rem;` (32px at the default root), and `.pt--32` in `padding-top: -2rem;`. The number in the class name is a design token, not the unit. Opt into `$size-aliases` and steps of the scale also answer to a t-shirt name — `.pt-sm` is `.pt-8`. Numeric aliases are deliberately not offered: `.pt-2` is 2px here and 8px in Bootstrap and Tailwind.
 - **XXL screen breakpoint** - from 1680px. Or even larger. You can add any number of breakpoints.
 - **Docs that cannot drift** - the [Class Reference](https://stamat.github.io/sulphuris/docs/reference/) page is generated, not written: `script/gen-reference.mjs` parses the built `dist/sulphuris.css` and emits every selector with its declarations, so what is documented is literally what Sass produced.
-- **REM units** - sizes, font sizes, breakpoint widths and the container/grid metrics all emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). All of it is still *written* in px and converted at emit time, so config overrides stay px. Border widths stay px — 2px at a 20px root is 2.5px, straddling a device pixel. Nothing writes an absolute `font-size` to the root, so the reader's browser setting is what `rem` resolves against. `$rem-units: false` reverts the lot without moving a class name.
+- **REM units** - sizes, font sizes, breakpoint widths and the container/grid metrics all emit `rem`, so a layout scales with the reader's browser font-size setting instead of ignoring it (px only responds to zoom). All of it is still _written_ in px and converted at emit time, so config overrides stay px. Border widths stay px — 2px at a 20px root is 2.5px, straddling a device pixel. Nothing writes an absolute `font-size` to the root, so the reader's browser setting is what `rem` resolves against. `$rem-units: false` reverts the lot without moving a class name.
 
 ## 🚀 Getting Started
 
@@ -86,19 +86,19 @@ The build process is powered by [Poops](https://github.com/stamat/poops), a simp
 
 This project requires `node` and `npm` installed. To setup the project run `npm install`.
 
-```bash
-$ script/server
-```
-
-Will start a local development server. It will also watch for the changes and rebuild the project when necessary. `script/server` only serves the repo root, where `/docs/` does not exist yet.
-
-### Generating docs
-
-To develop or build the docs use either following:
+The whole site — landing page and docs — is built from `site/`, and one command serves it:
 
 ```bash
 $ script/docs        # build + serve on :4041 with live reload
 $ script/docs -b     # build once, no server
+```
+
+When you are editing the Sass, run the library watcher in a second terminal. It has no
+server of its own; it recompiles `dist/sulphuris.css`, and `script/docs` picks the new
+build up and reloads:
+
+```bash
+$ script/server
 ```
 
 The **Class Reference** page is generated, not written — `script/gen-reference.mjs` parses the built `dist/sulphuris.css` and emits every selector with its declarations, so it cannot drift from what Sass actually produces.
@@ -127,7 +127,7 @@ If you have any ideas on how to improve Sulphuris, feel free to open an issue or
 
 ## Why
 
-It's 2021. After years of making websites I realized I'm copy/pasting a set of utilities that were growing as the time progressed. Primer and Bootstrap were a bit too stubborn for my taste just because I wanted something like that but configurable to the extreme. Something that will adapt to every project that I embark on. So I made my own.
+It's early 2021. After years of making websites I realized I'm copy/pasting a set of utilities that were growing as the time progressed. Primer and Bootstrap were a bit too stubborn for my taste just because I wanted something like that but configurable to the extreme. Something that will adapt to every project that I embark on. So I made my own.
 
 P.S. I found out about Tailwind a while later. I'm not a guy who follows the news. And even then I preferred the old school, cause sometimes it gets hard to swim in Tailwind class soup.
 

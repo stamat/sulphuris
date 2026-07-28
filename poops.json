@@ -15,11 +15,6 @@
       "node script/gen-config-docs.mjs"
     ]
   },
-  "serve" : {
-    "port": 4040,
-    "base": "."
-  },
-  "livereload": true,
   "watch": [
     "src"
   ]

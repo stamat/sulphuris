@@ -1,3 +1,6 @@
 #!/bin/bash
+# Watch src/ and rebuild dist/sulphuris.css. No server — the landing page and
+# the docs both live in site/, so `script/docs` is what serves them. Run this
+# alongside it when you are editing the Sass.
 
 npx 💩 "$@"

@@ -1,183 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sulphuris | An adaptable CSS ultility library</title>
-    <meta name="description" content="Sulphuris aims to be the soul of your next front-end project. Inspired by Bootstrap and Primer, but tailored to suit your everyday front-end development needs.">
-    <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto:400,700" rel="stylesheet">
-    <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="dist/sulphuris.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="shortcut icon" type="image/png" href="favicon.png">
-
-    <style>
-      pre {
-        border: 1px solid black;
-        box-shadow: 10px 10px black;
-      }
-
-      .switch {
-        align-items: center;
-        -webkit-appearance: none;
-        appearance: none;
-        background: none;
-        border: 2px solid var(--color-foreground);
-        padding: 0;
-        text-decoration: none;
-        color: inherit;
-        height: 32px;
-        width: 58px;
-        border-radius: 16px;
-        background: var(--color-black);
-        position: relative;
-        transition: background 0.25s ease-in-out;
-        cursor: pointer;
-      }
-
-      .switch[aria-checked="true"] {
-        background: var(--color-primary);
-      }
-
-      .switch::before {
-        display: block;
-        content: '';
-        border-radius: 14px;
-        border: 2px solid var(--color-background);
-        width: 24px;
-        height: 24px;
-        background: var(--color-foreground);
-        transition: transform 0.25s ease-in-out, background 0.25s ease-in-out, border 0.25s ease-in-out;
-      }
-
-      .switch[aria-checked="true"]::before {
-        transform: translateX(26px);
-        border-color: var(--color-primary);
-      }
-
-      .switch .icon-lightmode {
-        opacity: 0;
-        transition: opacity 0.25s ease-in-out;
-      }
-
-      .switch[aria-checked="true"] .icon-lightmode {
-        opacity: 1;
-      }
-
-      .switch[aria-checked="true"] .icon-darkmode {
-        opacity: 0;
-      }
-
-      .switch .icon-darkmode {
-        opacity: 1;
-        color: var(--color-foreground);
-        transition: opacity 0.25s ease-in-out;
-      }
-
-      [data-color-scheme="dark"] .darkmode-invert {
-        filter: invert(1);
-      }
-
-      .npm-install-snippet pre code::before {
-        content: '$';
-        color: var(--color-black);
-        margin-right: 8px;
-      }
-
-      .opacity-hover {
-        transition: opacity 0.25s ease-in-out;
-      }
-
-      @media only screen and (min-width: 1024px) {
-        .opacity-hover:hover {
-          opacity: 0.5;
-        }
-      }
-    </style>
-  </head>
-  <body class="bg-primary">
-    <div class="background h-100vh position-fixed t-0 l-0 r-0 z--1" style="opacity: 0.5;">
-      <div class="container grid grid-gutter h-100p">
-        <div class="col-3 col-lg-1 h-100p">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-3 col-lg-1 h-100p">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-3 col-lg-1 h-100p">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-3 col-lg-1 h-100p">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-        <div class="col-1 h-100p d-none d-lg-block">
-          <div class="h-100p border border-dashed border-y-0"></div>
-        </div>
-      </div>
-    </div>
-
-    <!--[if IE]>
-      <div class="outdated-browser-warning" style="background:red;color:white;padding:10px 16px;font-size:18px;text-align:center;">
-        <div class="center">
-          ⚠️ You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" style="color: inherit;">upgrade your browser</a> to improve your experience.
-        </div>
-      </div>
-    <![endif]-->
-
-    <header class="bg-primary border-b">
-      <div class="container py-24 d-flex align-center">
-        <div class="h5 d-flex align-center"><img src="sulphuris-logo.svg" alt="🜍" height="22" width="18" class="w-100p h-auto mr-8 darkmode-invert" style="max-width: 18px;"> Sulphuris <a href="https://www.npmjs.com/package/sulphuris"><img class="ml-8 ml-lg-16 d-block" src="https://img.shields.io/npm/v/sulphuris" alt="npm version" data-canonical-src="https://img.shields.io/npm/v/sulphuris" style="max-width: 100%;"></a></div>
-        <div class="ml-auto h6 d-flex align-center">
-          <a href="docs/" class="opacity-hover text-foreground font-bold text-none d-flex align-center ml-lg-24 ml-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z" fill="currentColor"></path></svg> <span class="ml-4 border-b border-2 pb-2">Docs</span></a>
-          <a href="https://github.com/stamat/sulphuris" class="opacity-hover text-foreground font-bold text-none d-flex align-center ml-lg-24 ml-16"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" fill="currentColor"></path></svg> <span class="ml-4 border-b border-2 pb-2">Repo</span></a>
-          <button class="js-darkmode-toggle switch ml-lg-24 ml-16" aria-checked="true" role="checkbox">
-            <svg class="icon-lightmode absolute-center-vertical l-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-1.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm5.657-8.157a.75.75 0 0 1 0 1.061l-1.061 1.06a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734l1.06-1.06a.75.75 0 0 1 1.06 0Zm-9.193 9.193a.75.75 0 0 1 0 1.06l-1.06 1.061a.75.75 0 1 1-1.061-1.06l1.06-1.061a.75.75 0 0 1 1.061 0ZM8 0a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0V.75A.75.75 0 0 1 8 0ZM3 8a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 3 8Zm13 0a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 16 8Zm-8 5a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 8 13Zm3.536-1.464a.75.75 0 0 1 1.06 0l1.061 1.06a.75.75 0 0 1-1.06 1.061l-1.061-1.06a.75.75 0 0 1 0-1.061ZM2.343 2.343a.75.75 0 0 1 1.061 0l1.06 1.061a.751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018l-1.06-1.06a.75.75 0 0 1 0-1.06Z" fill="currentColor"></path></svg>
-            <svg class="icon-darkmode absolute-center-vertical r-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M9.598 1.591a.749.749 0 0 1 .785-.175 7.001 7.001 0 1 1-8.967 8.967.75.75 0 0 1 .961-.96 5.5 5.5 0 0 0 7.046-7.046.75.75 0 0 1 .175-.786Zm1.616 1.945a7 7 0 0 1-7.678 7.678 5.499 5.499 0 1 0 7.678-7.678Z" fill="currentColor"></path></svg>
-          </button>
-          <script>
-            document.querySelector('.js-darkmode-toggle').addEventListener('click', function() {
-              if (this.getAttribute('aria-checked') === 'true') {
-                this.setAttribute('aria-checked', 'false');
-                document.documentElement.setAttribute('data-color-scheme', 'dark');
-              } else {
-                this.setAttribute('aria-checked', 'true');
-                document.documentElement.setAttribute('data-color-scheme', 'light');
-              }
-            });
-          </script>
-        </div>
-      </div>
-    </header>
-
-    <main role="main">
+---
+layout: base
+title: Sulphuris | An adaptable CSS utility library
+description: Sulphuris is an adaptable, self-generating CSS utility library. You describe your design tokens — sizes, breakpoints, colours, typography — and Sulphuris emits the utility classes.
+keywords: ["sulphuris", "css", "utility", "scss", "sass", "utility classes", "grid system"]
+---
       <div class="container text-center py-32 d-flex align-center justify-center mb-128">
         <div class="text-center">
-          <img src="sulphuris-logo.svg" alt="🜍" height="538" width="432" class="w-100p h-auto mt-32 mt-lg-64 darkmode-invert" style="max-width: 200px;">
-          <h1 class="hello my-32 fs-96 lh-1">An <span class="text-underline">adaptable</span> CSS<br class="d-none d-sm-block"> ultility library.</h1>
+          <img src="{{ relativePathPrefix }}sulphuris-logo.svg" alt="🜍" height="538" width="432" class="w-100p h-auto mt-32 mt-lg-64 darkmode-invert" style="max-width: 200px;">
+          <h1 class="hello my-32 fs-96 lh-1">An <span class="text-underline">adaptable</span> CSS<br class="d-none d-sm-block"> utility library.</h1>
           <p class="col-8-max mx-auto p1">Imagine how awesome it would be if you could quickly personalize your own utility library for every project you do? Well, you don't have to imagine anymore.</p>
 
           <div class="position-relative npm-install-snippet">
@@ -204,7 +34,7 @@
             <code>class="&hellip;"</code> soup, and without a bespoke DSL. Sulphuris is plain SCSS and
             plain CSS. Utilities read like the CSS they produce; if you know CSS, you already know
             Sulphuris.</p>
-          <p class="font-bold mt-16">Read the full guides in the <a href="docs/" class="text-underline">documentation</a>.</p>
+          <p class="font-bold mt-16">Read the full guides in the <a href="{{ relativePathPrefix }}docs/" class="text-underline">documentation</a>.</p>
         </div>
       </div>
 
@@ -237,8 +67,8 @@
 @use "sulphuris";</code></pre>
           <p class="mt-24">Rebuild, and the whole utility set adapts &mdash; your spacing scale, your
             colours, your breakpoints. You only list the variables you want to change; everything you
-            omit keeps its default. See <a href="docs/getting-started/" class="text-underline">Getting Started</a>
-            and <a href="docs/configuration/" class="text-underline">Configuration</a> for the full list.</p>
+            omit keeps its default. See <a href="{{ relativePathPrefix }}docs/getting-started/" class="text-underline">Getting Started</a>
+            and <a href="{{ relativePathPrefix }}docs/configuration/" class="text-underline">Configuration</a> for the full list.</p>
         </div>
       </div>
 
@@ -841,17 +671,3 @@
         </div>
       </div>
 
-      <div class="container text-center py-64 border-t mt-64">
-        <p class="p2 mb-8">Ready to make it yours?</p>
-        <p class="mb-24"><a href="docs/getting-started/" class="text-underline font-bold">Get started</a> &middot; <a href="docs/" class="text-underline font-bold">Read the docs</a> &middot; <a href="https://github.com/stamat/sulphuris" class="text-underline font-bold">GitHub</a> &middot; <a href="https://www.npmjs.com/package/sulphuris" class="text-underline font-bold">npm</a></p>
-        <p class="p4">Sulphuris &mdash; an adaptable CSS utility library. MIT licensed. 🜍</p>
-      </div>
-    </main>
-
-
-    <!-- livereload script-->
-    <script>
-      (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-    </script>
-  </body>
-</html>

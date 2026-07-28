@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang or site.lang or 'en' }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title or site.title }}</title>
+    <meta name="description" content="{{ page.description or site.description }}">
+    {{ page | canonical(site) }}
+    {{ page | og(site) }}
+    {{ page | jsonld(site) }}
+    <link href="https://fonts.googleapis.com/css?family=Nunito|Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="{{ relativePathPrefix }}dist/sulphuris.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ relativePathPrefix }}favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ relativePathPrefix }}favicon-16x16.png">
+    <link rel="shortcut icon" href="{{ relativePathPrefix }}favicon.ico">
+
+    {# Stamp the colour mode before first paint, so the page never flashes the
+       wrong theme. `theme` is the same localStorage key poops-docs-theme uses,
+       so a preference set in the docs carries over to here and back. Sulphuris
+       reads [data-color-scheme]; the docs theme reads [data-theme]. #}
+    <script>(function(){try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-color-scheme',t);}catch(e){}})();</script>
+
+    {# ponytail: page-specific CSS stays inline — one page, one request saved.
+       Move it to site/src/scss/ if a second Sulphuris-styled page appears. #}
+    <style>
+      pre {
+        border: 1px solid black;
+        box-shadow: 10px 10px black;
+      }
+
+      .switch {
+        align-items: center;
+        -webkit-appearance: none;
+        appearance: none;
+        border: 2px solid var(--color-foreground);
+        padding: 0;
+        text-decoration: none;
+        color: inherit;
+        height: 32px;
+        width: 58px;
+        border-radius: 16px;
+        background: var(--color-primary);
+        position: relative;
+        transition: background 0.25s ease-in-out;
+        cursor: pointer;
+      }
+
+      .switch::before {
+        display: block;
+        content: '';
+        border-radius: 14px;
+        border: 2px solid var(--color-primary);
+        width: 24px;
+        height: 24px;
+        background: var(--color-foreground);
+        transform: translateX(26px);
+        transition: transform 0.25s ease-in-out, background 0.25s ease-in-out, border 0.25s ease-in-out;
+      }
+
+      .switch .icon-lightmode {
+        opacity: 1;
+        transition: opacity 0.25s ease-in-out;
+      }
+
+      .switch .icon-darkmode {
+        opacity: 0;
+        color: var(--color-foreground);
+        transition: opacity 0.25s ease-in-out;
+      }
+
+      /* Dark state is derived from the document attribute, not from a JS-held
+         class — the boot script above sets it before paint, so no flicker. */
+      [data-color-scheme="dark"] .switch {
+        background: var(--color-black);
+      }
+
+      [data-color-scheme="dark"] .switch::before {
+        transform: none;
+        border-color: var(--color-background);
+      }
+
+      [data-color-scheme="dark"] .switch .icon-lightmode {
+        opacity: 0;
+      }
+
+      [data-color-scheme="dark"] .switch .icon-darkmode {
+        opacity: 1;
+      }
+
+      [data-color-scheme="dark"] .darkmode-invert {
+        filter: invert(1);
+      }
+
+      .npm-install-snippet pre code::before {
+        content: '$';
+        color: var(--color-black);
+        margin-right: 8px;
+      }
+
+      .opacity-hover {
+        transition: opacity 0.25s ease-in-out;
+      }
+
+      @media only screen and (min-width: 1024px) {
+        .opacity-hover:hover {
+          opacity: 0.5;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-primary">
+    {% include "background.html" %}
+    {% include "header.html" %}
+
+    <main role="main">
+      {% block content %}{% endblock %}
+      {% include "footer.html" %}
+    </main>
+
+    {# Toggle + aria sync. The switch's looks come from CSS above; this only
+       flips the attribute, persists the choice, and keeps aria-checked honest. #}
+    <script>
+      (function () {
+        var root = document.documentElement
+        var btn = document.querySelector('.js-theme-switch')
+        if (!btn) return
+        var sync = function () { btn.setAttribute('aria-checked', String(root.getAttribute('data-color-scheme') === 'dark')) }
+        sync()
+        btn.addEventListener('click', function () {
+          var next = root.getAttribute('data-color-scheme') === 'dark' ? 'light' : 'dark'
+          root.setAttribute('data-color-scheme', next)
+          try { localStorage.setItem('theme', next) } catch (e) { /* private mode */ }
+          sync()
+        })
+      })()
+    </script>
+
+    {% if livereload_port %}
+    <script>document.write('<script src="http://'
+      + (location.host || 'localhost').split(':')[0]
+      + ':{{ livereload_port }}/livereload.js?snipver=1"></'
+      + 'script>')</script>
+    {% endif %}
+  </body>
+</html>

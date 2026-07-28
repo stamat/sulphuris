@@ -1,8 +1,9 @@
 name: Deploy to GitHub Pages
 
-# Builds the demo index (repo root) and the generated docs (site/) and
-# publishes them together to GitHub Pages. The demo lands at the site root
-# and the docs at /docs/, which is where the header "Docs" nav link points.
+# Builds the library CSS, then the site (site/) — landing page at the root,
+# docs at /docs/, which is where the header "Docs" nav link points. Poops'
+# copy step pulls the favicons, the logo and dist/ into site/dist, so that
+# directory is the finished artifact and needs no assembling.
 
 on:
   push:
@@ -36,7 +37,7 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      # Compile dist/sulphuris.css that the demo index links to.
+      # Compile dist/sulphuris.css first — the site's copy step pulls it in.
       - name: Build library CSS
         run: npm run build
 
@@ -47,19 +48,9 @@ jobs:
         run: npx poops -b --base-url "/${{ github.event.repository.name }}"
         working-directory: site
 
-      # Assemble the artifact: demo at the root, docs merged in so the docs
-      # landing sits at /docs/ (where the demo's "docs/" nav link points) and
-      # its assets at /css, /js.
-      - name: Assemble site
-        run: |
-          mkdir -p _site
-          cp index.html favicon.ico favicon-16x16.png favicon-32x32.png sulphuris-logo.svg _site/
-          cp -r dist _site/dist
-          cp -r site/dist/. _site/
-
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: site/dist
 
   deploy:
     needs: build
