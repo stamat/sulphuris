@@ -11,6 +11,12 @@
       "in": "../node_modules/poops-docs-theme/src/docs.ts",
       "out": "dist/js/docs.js",
       "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
+    },
+    {
+      "//": "The <code-preview> element behind the live demos. The `-hljs` entry, not the default one: poops highlights fences at build time, so a docs page ships no runtime highlight.js for the element to borrow, and editing a sample would stop recolouring. Linked by script/gen-demos.mjs into the pages that have a demo.",
+      "in": "../node_modules/code-preview-element/src/code-preview-hljs.ts",
+      "out": "dist/js/code-preview.js",
+      "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
     }
   ],
   "markup": {
@@ -49,7 +55,8 @@
       "../favicon-16x16.png",
       "../favicon-32x32.png",
       "../sulphuris-logo.svg",
-      "../dist"
+      "../dist",
+      "../node_modules/code-preview-element/dist/code-preview.min.css"
     ],
     "out": "dist"
   },

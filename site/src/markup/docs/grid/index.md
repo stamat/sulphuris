@@ -91,7 +91,7 @@ The base `.col-N` (no breakpoint) applies at all widths. Layer responsive classe
 
 Full responsive example:
 
-<!-- demo -->
+<!-- demo 1024 -->
 
 ```html
 <div class="grid grid-gutter container">
@@ -187,7 +187,7 @@ The `minmax(0, 1fr)` — rather than plain `1fr` — is what stops a long word o
 
 Pair with the `.gap-*` utilities for gutters.
 
-<!-- demo -->
+<!-- demo 768 -->
 
 ```html
 <div class="d-grid grid-cols-1 grid-cols-md-3 gap-16">

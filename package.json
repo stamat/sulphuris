@@ -39,6 +39,7 @@
   "homepage": "https://stamat.info/sulphuris",
   "private": false,
   "devDependencies": {
+    "code-preview-element": "0.1.0",
     "poops": "^1.9.4",
     "poops-docs-theme": "^1.1.2",
     "postcss": "^8.5.23",

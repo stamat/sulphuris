@@ -78,7 +78,7 @@ defaults.
 
 ## A first example
 
-<!-- demo -->
+<!-- demo 1024 -->
 
 ```html
 <div class="container">
