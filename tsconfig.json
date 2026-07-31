@@ -4,7 +4,9 @@
     "target": "es2020",
     "module": "es2020",
     "lib": ["es2020", "dom", "dom.iterable"],
-    "moduleResolution": "node",
+    // "node" meant node10 resolution, which TypeScript 6 removed. "bundler" is
+    // what poops resolves these imports with anyway.
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
     "checkJs": false,
