@@ -10,43 +10,45 @@
     {
       "in": "../node_modules/poops-docs-theme/src/docs.ts",
       "out": "dist/js/docs.js",
-      "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
+      "options": { "minify": true, "justMinified": true, "format": "iife" }
     },
     {
       "//": "The <code-preview> element behind the live demos. The `-hljs` entry, not the default one: poops highlights fences at build time, so a docs page ships no runtime highlight.js for the element to borrow, and editing a sample would stop recolouring. Linked by script/gen-demos.mjs into the pages that have a demo.",
       "in": "../node_modules/code-preview-element/src/code-preview-hljs.ts",
       "out": "dist/js/code-preview.js",
-      "options": { "minify": true, "justMinified": true, "format": "iife", "target": "es2019" }
+      "options": { "minify": true, "justMinified": true, "format": "iife" }
     }
   ],
   "markup": {
     "in": "src/markup",
     "out": "dist",
-    "site": {
-      "title": "🜍 Sulphuris",
-      "brand": "Sulphuris",
-      "brandMark": "🜍",
-      "description": "An adaptable, self-generating CSS utility library.",
-      "url": "https://stamat.info/sulphuris",
-      "lang": "en",
-      "author": "Stamat",
-      "logo": "sulphuris-logo.svg",
-      "repo": "https://github.com/stamat/sulphuris",
-      "branch": "main"
-    },
-    "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
-    "data": ["../../../package.json"],
-    "searchIndex": "search-index.json",
-    "sitemap": "sitemap.xml",
-    "llms": {
-      "output": "llms.txt",
-      "description": "An adaptable, self-generating CSS utility library. You describe your design tokens, Sulphuris emits the utility classes.",
-      "full": true
-    },
-    "nav": {
-      "output": "nav.json",
-      "root": "docs",
-      "collections": "index"
+    "options": {
+      "site": {
+        "title": "🜍 Sulphuris",
+        "brand": "Sulphuris",
+        "brandMark": "🜍",
+        "description": "An adaptable, self-generating CSS utility library.",
+        "url": "https://stamat.info/sulphuris",
+        "lang": "en",
+        "author": "Stamat",
+        "logo": "sulphuris-logo.svg",
+        "repo": "https://github.com/stamat/sulphuris",
+        "branch": "main"
+      },
+      "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
+      "data": ["../../../package.json"],
+      "searchIndex": "search-index.json",
+      "sitemap": "sitemap.xml",
+      "llms": {
+        "out": "llms.txt",
+        "description": "An adaptable, self-generating CSS utility library. You describe your design tokens, Sulphuris emits the utility classes.",
+        "full": true
+      },
+      "nav": {
+        "out": "nav.json",
+        "root": "docs",
+        "collections": "index"
+      }
     }
   },
   "copy": {
@@ -67,8 +69,7 @@
     ]
   },
   "serve": {
-    "port": 4041,
-    "base": "/dist"
+    "port": 4041
   },
   "livereload": true,
   "watch": ["src", "../src", "../dist"]
