@@ -1,0 +1,80 @@
+name: Bug report
+description: Something behaves differently than it says it does
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time. The fastest fixes come from reports that
+        someone else can run — a few lines that reproduce it beat a paragraph
+        describing it.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you ran, and what you got.
+      placeholder: |
+        `.grid-3` collapses to one column at 900px, not at the breakpoint I configured.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >
+        The smallest markup and SCSS that shows it — a CodePen, a snippet, or
+        the config override you applied. Say whether you import the SCSS source
+        or the built CSS, since the two go through different code.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Sulphuris version
+      description: A release, a tag, or `main` at a commit.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browsers
+      description: Where it happens and where it doesn't — a CSS bug that is everywhere and one that is Safari-only are different bugs.
+      placeholder: "Safari 26 and iOS 26; fine in Chrome 150 and Firefox 152"
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Compiled CSS, or the Sass error
+      description: The rule as it came out of the build, or the error Sass printed. Paste it whole.
+      render: css
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before you file
+      options:
+        - label: I searched the existing issues, open and closed
+          required: true
+        - label: I can reproduce this on the latest release
+          required: false
+        - label: I agree to follow this project's [Code of Conduct](https://github.com/stamat/sulphuris/blob/main/CODE_OF_CONDUCT.md)
+          required: true
