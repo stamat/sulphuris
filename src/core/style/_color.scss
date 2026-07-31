@@ -71,11 +71,25 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
     $selector: helpers.str-replace(config.$color-modes-selector, 'VALUE', $key);
     $mode-colors: map.get($mode, 'colors');
 
-    @if map.has-key($mode, 'palettes') {
-      $mode-palettes: map.get($mode, 'palettes');
-      $mode-colors: generators.generate-color-palettes($mode-colors, $mode-palettes);
+    // A mode may re-seed the palettes, re-ladder them, or both. `grades` alone
+    // is the common one — same hues, read against the other ground — so the
+    // seeds fall back to the global map rather than making a mode restate all
+    // eleven to change the ladder they sit on.
+    @if map.has-key($mode, 'palettes') or map.has-key($mode, 'grades') {
+      $mode-palettes: config.$palettes;
+      $mode-grades: config.$palette-grades;
+
+      @if map.has-key($mode, 'palettes') {
+        $mode-palettes: map.get($mode, 'palettes');
+      }
+      @if map.has-key($mode, 'grades') {
+        $mode-grades: map.get($mode, 'grades');
+      }
+
+      $mode-colors: generators.generate-color-palettes($mode-colors, $mode-palettes, $mode-grades);
     }
-    
+
+
     #{$selector} {
       @include generators.css-variable-generator('color', $mode-colors);
     }

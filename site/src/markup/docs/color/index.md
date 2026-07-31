@@ -161,7 +161,26 @@ palette — retune a seed past them and the build fails.
 
 ## Palettes
 
-Seeds in `$palettes`, and the ladder each one produces:
+One ladder, end to end. Flip the theme switch and it reverses — see
+[dark mode](#the-dark-ladder-is-the-light-one-inverted):
+
+<!-- demo -->
+
+```html
+<div class="d-grid grid-cols-9 gap-4 text-center fs-12">
+  <div><div class="bg-blue-100 p-24 rounded-4 mb-8"></div>100</div>
+  <div><div class="bg-blue-200 p-24 rounded-4 mb-8"></div>200</div>
+  <div><div class="bg-blue-300 p-24 rounded-4 mb-8"></div>300</div>
+  <div><div class="bg-blue-400 p-24 rounded-4 mb-8"></div>400</div>
+  <div><div class="bg-blue-500 p-24 rounded-4 mb-8"></div>500</div>
+  <div><div class="bg-blue-600 p-24 rounded-4 mb-8"></div>600</div>
+  <div><div class="bg-blue-700 p-24 rounded-4 mb-8"></div>700</div>
+  <div><div class="bg-blue-800 p-24 rounded-4 mb-8"></div>800</div>
+  <div><div class="bg-blue-900 p-24 rounded-4 mb-8"></div>900</div>
+</div>
+```
+
+Seeds in `$palettes`, and the light-mode ladder each one produces:
 
 | Palette | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -262,12 +281,12 @@ The built-in `dark` mode re-emits `$colors` overrides under `[data-color-scheme=
   --color-background: #1a1a1d;
   --color-black:      #1a1a1d;
   --color-white:      #ffffff;
-  --color-primary:    #3F00FF;
+  --color-primary:    #3f00ff;
   --color-link:       #8ab4ff;
-  --color-danger:     #ef717e;
-  --color-success:    #10af2e;
-  --color-warning:    #f4912a;
-  --color-info:       #6f95d1;
+  --color-danger:     #fd746c;
+  --color-success:    #2bc53f;
+  --color-warning:    #e78b30;
+  --color-info:       #83a6df;
 }
 ```
 
@@ -279,15 +298,60 @@ Because utilities reference `var(--color-*)`, they respond to the attribute auto
 </body>
 ```
 
-Dark mode can also carry a `palettes` key to override specific palette grades.
+### The dark ladder is the light one, inverted
+
+A mode can carry a `grades` key as well as `colors`, and the shipped `dark`
+mode uses it to read the same eleven seeds **bottom-up** — 100 is the darkest
+grade there and 900 the lightest, each swapped with its opposite number:
+
+```scss
+dark: (
+  colors: ( … ),
+  grades: (
+    100: (22%, 0.7),    // light mode's 900
+    200: (32%, 0.85),
+    // …
+    800: (90%, 0.7),
+    900: (96%, 0.5)     // light mode's 100
+  )
+)
+```
+
+That turns a grade from an absolute lightness into a **role** that survives the
+theme switch. `bg-blue-100` is the faint ground in both modes and
+`text-blue-700` is readable body text on it in both, so a component picks its
+grades once and never restates them per theme — 7.8:1 on light, 10.0:1 on dark,
+from the same two classes:
+
+<!-- demo -->
+
+```html
+<div class="bg-blue-100 border-2 border-solid border-blue-300 rounded-8 p-16">
+  <p class="font-bold text-blue-700 mb-8">Same two classes, either theme</p>
+  <p class="text-blue-600">Toggle the theme switch above — the ladder flips under it.</p>
+</div>
+```
+
+The contrast table above holds in dark mode too, because the ladder is a
+mirror: grade 600 is the AA text grade against `background` on either ground,
+700 the AAA one, 100 the faint fill. `npm test` asserts both directions.
+
+**The cost is that a grade is no longer an absolute colour.** Reach for
+`bg-gray-900` wanting near-black and dark mode hands you near-white. If a
+colour has to stay put across themes, that is what a flat `$colors` entry is
+for — which is why `link` is one. Drop the `grades` key to keep the light
+ladder in both modes, and re-pick every grade per mode by hand instead.
+
+A `palettes` key may sit alongside to re-seed the hues as well; omitted, the
+global `$palettes` carry over.
 
 ## SCSS helpers
 
 Two functions in `_helpers.scss` let you reference colours inside your own SCSS:
 
 ```scss
-// Returns var(--color-{name}), with the raw value as fallback if the key
-// is not found in $colors.
+// Returns var(--color-{name}), with the argument itself as fallback if the
+// key is not found in $colors.
 color($name)
 
 // Returns the raw Sass colour value from $colors (or a mode's colors map).
@@ -295,12 +359,16 @@ color($name)
 get-color($name, $mode: '')
 ```
 
+Both read `$colors`, not the generated map, so a palette grade is only known to
+`color()` — which emits the custom property regardless — and `get-color()`
+returns `null` for one. Grades exist at run time, not at compile time.
+
 **Usage:**
 
 ```scss
 .my-component {
   color: color(primary);              // → var(--color-primary)
-  background: color(blue-100);        // → var(--color-blue-100, #0F4EB3)
+  background: color(blue-100);        // → var(--color-blue-100, blue-100)
   border-color: get-color(foreground, dark); // → #ffffff (Sass compile-time)
 }
 ```

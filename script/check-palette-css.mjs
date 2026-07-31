@@ -71,55 +71,73 @@ for (const key of light.keys()) {
 }
 assert.ok(palettes.size >= 11, `expected the 11 shipped palettes, found ${palettes.size}`)
 
+// Dark mode reads the same seeds bottom-up, so its ladder is the light one
+// with the lightnesses swapped end for end. Written out rather than derived:
+// the point is to pin the mirror, and a check that computes the reverse of
+// what it is checking would pass however the config drifts.
+const darkGrades = { 100: 22, 200: 32, 300: 42, 400: 52, 500: 62, 600: 72, 700: 82, 800: 90, 900: 96 }
+
 // The ladder itself: every palette hits every grade's lightness. The gamut fit
 // trades a little lightness to hold on to chroma at the edges, so allow 2
 // points — enough for that, far too tight for a step that has actually moved.
-for (const palette of palettes) {
-  let previous = Infinity
-  for (const [grade, target] of Object.entries(grades)) {
-    const value = light.get(`${palette}-${grade}`)
-    assert.ok(value, `--color-${palette}-${grade} is missing`)
+for (const [map, ladder, mode, ordered] of [
+  [light, grades, 'light', (a, b) => a < b],
+  [dark, darkGrades, 'dark', (a, b) => a > b]
+]) {
+  for (const palette of palettes) {
+    let previous = null
+    for (const [grade, target] of Object.entries(ladder)) {
+      const value = map.get(`${palette}-${grade}`)
+      assert.ok(value, `${mode} --color-${palette}-${grade} is missing`)
 
-    const lightness = okLightness(srgb(value)) * 100
-    assert.ok(
-      Math.abs(lightness - target) <= 2,
-      `--color-${palette}-${grade} sits at ${lightness.toFixed(1)}% OkLCh lightness, ladder says ${target}%`
-    )
-    assert.ok(lightness < previous, `--color-${palette}-${grade} is not darker than the grade above it`)
-    previous = lightness
+      const lightness = okLightness(srgb(value)) * 100
+      assert.ok(
+        Math.abs(lightness - target) <= 2,
+        `${mode} --color-${palette}-${grade} sits at ${lightness.toFixed(1)}% OkLCh lightness, ladder says ${target}%`
+      )
+      assert.ok(
+        previous === null || ordered(lightness, previous),
+        `${mode} --color-${palette}-${grade} does not continue the ladder's direction`
+      )
+      previous = lightness
+    }
   }
 }
 
-// What the ladder is for. Grade 600 is where the light-mode status roles are
-// cut from and 400 is the dark-mode set, so those two have to clear AA text
-// contrast in *every* palette, not just in the four that happen to be used
-// today — otherwise retuning a seed silently ships an inaccessible role.
-for (const [grade, ground, mode] of [
-  [600, light.get('background'), 'light'],
-  [400, dark.get('background'), 'dark']
+// What the ladder is for. A grade has to mean the same *role* in both modes,
+// which is the whole reason dark mode inverts rather than re-picking: grade
+// 600 is the AA text grade on either ground, and grade 100 the faint fill.
+// Assert that across every palette, not just the four wired up as status
+// roles today — otherwise retuning a seed silently ships an inaccessible one.
+for (const [map, ground, mode] of [
+  [light, light.get('background'), 'light'],
+  [dark, dark.get('background'), 'dark']
 ]) {
   assert.ok(ground, `no --color-background for ${mode} mode`)
   for (const palette of palettes) {
     if (palette === 'gray') continue // a grey ladder is not a status hue
-    const ratio = contrast(srgb(light.get(`${palette}-${grade}`)), srgb(ground))
-    assert.ok(
-      ratio >= 4.5,
-      `${palette}-${grade} is ${ratio.toFixed(2)}:1 on the ${mode} background, AA text needs 4.5:1`
-    )
+
+    const text = contrast(srgb(map.get(`${palette}-600`)), srgb(ground))
+    assert.ok(text >= 4.5, `${mode} ${palette}-600 is ${text.toFixed(2)}:1 on the background, AA text needs 4.5:1`)
+
+    const fill = contrast(srgb(map.get(`${palette}-100`)), srgb(ground))
+    assert.ok(fill <= 1.6, `${mode} ${palette}-100 is ${fill.toFixed(2)}:1 on the background, too loud for a faint fill`)
   }
 }
 
-// And the roles actually wired up in $colors resolve to the grade claimed —
+// And the roles wired up in $colors resolve to grade 600 of their own mode —
 // they are written as hex literals, so compare channels, not spelling.
 const roles = [['danger', 'red'], ['success', 'green'], ['warning', 'orange'], ['info', 'blue']]
-for (const [map, grade, mode] of [[light, 600, 'light'], [dark, 400, 'dark']]) {
+for (const [map, mode] of [[light, 'light'], [dark, 'dark']]) {
   for (const [role, palette] of roles) {
     assert.deepEqual(
       srgb(map.get(role)),
-      srgb(light.get(`${palette}-${grade}`)),
-      `${mode} --color-${role} should be ${palette}-${grade}`
+      srgb(map.get(`${palette}-600`)),
+      `${mode} --color-${role} should be ${mode} ${palette}-600`
     )
   }
 }
 
-console.log(`[check] palette ok: ${palettes.size} palettes × ${Object.keys(grades).length} grades on the shared ladder`)
+console.log(
+  `[check] palette ok: ${palettes.size} palettes × ${Object.keys(grades).length} grades, light ladder and its dark mirror`
+)

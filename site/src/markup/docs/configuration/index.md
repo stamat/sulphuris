@@ -339,15 +339,38 @@ $color-modes: (
       white: #fff,
       primary: #3f00ff,
       link: #8ab4ff,
-      // Same roles, same ladders, mirrored across the ladder for the dark
-      // background: 4.5:1 on #1a1a1d instead of on #fff. One grade again,
-      // 400 to the light set's 600.
-      danger: #fd746c,   // red-400,    6.5:1
-      success: #2bc53f,  // green-400,  7.6:1
-      warning: #e78b30,  // orange-400, 6.7:1
-      info: #83a6df      // blue-400,   7.0:1
+      // Same roles, same seeds, same grade — 600 here as on white. The hexes
+      // differ because `grades` below flips the ladder, so `red-600` resolves
+      // against this ground instead of against #fff. Contrast on #1a1a1d:
+      danger: #fd746c,   // red-600,    6.5:1
+      success: #2bc53f,  // green-600,  7.6:1
+      warning: #e78b30,  // orange-600, 6.7:1
+      info: #83a6df      // blue-600,   7.0:1
+    ),
+    // The same eleven seeds read bottom-up: 100 is the darkest grade here and
+    // 900 the lightest, each pair swapped with its opposite number. That is
+    // what makes a grade portable across modes and not just across hues —
+    // `bg-blue-100` is the faint ground and `text-blue-700` is readable body
+    // text on it under both schemes, so a component picks a grade once.
+    //
+    // The cost is that a grade names a *role*, not an absolute colour: reach
+    // for `bg-gray-900` wanting near-black and dark mode hands you near-white.
+    // Drop this key to keep the light ladder in both modes, at the price of
+    // re-picking every grade per mode by hand.
+    //
+    // `palettes` may sit alongside to re-seed the hues too; omitted, the
+    // global $palettes carry over.
+    grades: (
+      100: (22%, 0.7),
+      200: (32%, 0.85),
+      300: (42%, 0.95),
+      400: (52%, 1),
+      500: (62%, 1),
+      600: (72%, 0.95),
+      700: (82%, 0.85),
+      800: (90%, 0.7),
+      900: (96%, 0.5)
     )
-    // palettes: ( ... )
   )
 );
 ```
@@ -361,26 +384,26 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, tab-size, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:253
+// src/core/_config.scss:276
 $base-font-size: 16px;
 
-// src/core/_config.scss:255
+// src/core/_config.scss:278
 $heading-font:   'Roboto', sans-serif;
 $paragraph-font: 'Nunito', sans-serif;
 $mono-font:      monospace;
 
-// src/core/_config.scss:262
+// src/core/_config.scss:285
 $tab-size: 2;
 
-// src/core/_config.scss:284
+// src/core/_config.scss:307
 $line-height:           map.get($line-heights, 'normal') or 1.6;
 $heading-line-height:   map.get($line-heights, 'tight') or 1.25;
 $paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
 
-// src/core/_config.scss:289
+// src/core/_config.scss:312
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:295
+// src/core/_config.scss:318
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 $line-heights: (
   1: 1,
@@ -413,7 +436,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:324
+// src/core/_config.scss:347
 $typography: (
   'h1, .h1': (
     desktop: (48px, null, $heading-line-height, bold),
@@ -452,7 +475,7 @@ defaults for markup you cannot put classes on. See [Prose](../prose/):
 <!-- config: prose-measure -->
 
 ```scss
-// src/core/_config.scss:353
+// src/core/_config.scss:376
 $prose-measure: 720px;
 ```
 
@@ -461,12 +484,12 @@ $prose-measure: 720px;
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:355
+// src/core/_config.scss:378
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:359
+// src/core/_config.scss:382
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -478,7 +501,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:365
+// src/core/_config.scss:388
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -498,7 +521,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:373
+// src/core/_config.scss:396
 $button: (
   height: 56px,
   padding-x: 32px,
