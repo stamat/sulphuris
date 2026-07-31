@@ -255,6 +255,11 @@ $base-font-size: 16px !default;
 $heading-font: 'Roboto', sans-serif !default;
 $paragraph-font: 'Nunito', sans-serif !default;
 $mono-font: monospace !default;
+// Columns a literal tab renders as, wherever preformatted text keeps one —
+// `<pre>`, `<textarea>`, `white-space: pre` prose. The CSS initial value is 8,
+// which is nobody's editor setting; this is the normalize entry that picks a
+// number instead of correcting a browser.
+$tab-size: 2 !default;
 
 // Steps for the `.lh-*` family, and the only place a line-height number is
 // written — everything below reads out of this map, so retuning the reading

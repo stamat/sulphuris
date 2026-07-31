@@ -358,7 +358,7 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 
 ## Typography
 
-<!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
+<!-- config: base-font-size, heading-font, paragraph-font, mono-font, tab-size, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
 // src/core/_config.scss:253
@@ -369,15 +369,18 @@ $heading-font:   'Roboto', sans-serif;
 $paragraph-font: 'Nunito', sans-serif;
 $mono-font:      monospace;
 
-// src/core/_config.scss:279
+// src/core/_config.scss:262
+$tab-size: 2;
+
+// src/core/_config.scss:284
 $line-height:           map.get($line-heights, 'normal') or 1.6;
 $heading-line-height:   map.get($line-heights, 'tight') or 1.25;
 $paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
 
-// src/core/_config.scss:284
+// src/core/_config.scss:289
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:290
+// src/core/_config.scss:295
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 $line-heights: (
   1: 1,
@@ -410,7 +413,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:319
+// src/core/_config.scss:324
 $typography: (
   'h1, .h1': (
     desktop: (48px, null, $heading-line-height, bold),
@@ -449,7 +452,7 @@ defaults for markup you cannot put classes on. See [Prose](../prose/):
 <!-- config: prose-measure -->
 
 ```scss
-// src/core/_config.scss:348
+// src/core/_config.scss:353
 $prose-measure: 720px;
 ```
 
@@ -458,12 +461,12 @@ $prose-measure: 720px;
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:350
+// src/core/_config.scss:355
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:354
+// src/core/_config.scss:359
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -475,7 +478,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:360
+// src/core/_config.scss:365
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -495,7 +498,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:368
+// src/core/_config.scss:373
 $button: (
   height: 56px,
   padding-x: 32px,

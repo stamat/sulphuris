@@ -24995,6 +24995,7 @@ h6 {
    *  that v8.0.1 predates. */
   html {
     -webkit-text-size-adjust: 100%;
+    tab-size: 2;
   }
   body {
     margin: 0;

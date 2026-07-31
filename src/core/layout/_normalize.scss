@@ -3,15 +3,21 @@
  *  correction is gone — and topped up with the fixes modern-normalize carries
  *  that v8.0.1 predates. */
 /* stylelint-disable */
+@use '../config';
+
 /* Document
    ========================================================================== */
 
 /**
- * Prevent adjustments of font size after orientation changes in iOS.
+ * 1. Prevent adjustments of font size after orientation changes in iOS.
+ * 2. Use a tighter tab size than the 8-column default (opinionated, `$tab-size`).
+ *    Unprefixed only — Firefox has understood `tab-size` since 91, well below
+ *    the ESR in .browserslistrc.
  */
 
 html {
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; /* 1 */
+  tab-size: config.$tab-size; /* 2 */
 }
 
 /* Sections
