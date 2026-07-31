@@ -2,18 +2,63 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [22, 24]
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # typecheck, build, then the three check-*.mjs scripts over the emitted
+      # CSS — this is where a generator bug shows up
+      - name: Test
+        run: npm test
+
+      # dist/ is committed because the package ships it, so a source change
+      # without its rebuilt CSS is an incomplete change. `npm test` has just
+      # rebuilt it; if that produced a diff, the commit was missing one.
+      #
+      # The .map is excluded on purpose: Sass writes `file:///` source paths
+      # into it, so it differs between any two checkouts and can never match.
+      - name: Verify dist is up to date
+        shell: bash
+        run: |
+          git diff --exit-code -- dist/sulphuris.css dist/sulphuris.min.css || {
+            echo "dist/ does not match src/ — run script/build and commit the result" >&2
+            exit 1
+          }
+
+      # The generators rewrite the reference page and the marked config blocks
+      # on every build. A source change that leaves them stale is a docs bug
+      # that nobody would notice until the site rebuilt.
+      - name: Verify generated docs are up to date
+        shell: bash
+        run: |
+          git diff --exit-code -- site/src/markup/docs || {
+            echo "generated docs are stale — run script/build and commit the result" >&2
+            exit 1
+          }
