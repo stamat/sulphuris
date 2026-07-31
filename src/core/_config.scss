@@ -120,7 +120,19 @@ $colors: (
   // brand color does not: `primary` is free to be a yellow that only ever sits
   // behind text, while this has to stay readable as text on `background`.
   // 8.6:1 here, 8:1 on the dark counterpart below.
-  link: #0f4eb3
+  link: #0f4eb3,
+  // Status roles. Every value is a grade that $palettes already generates —
+  // these name one, they do not add a hue, so a project that retunes `red`
+  // and re-picks `danger` from the new ladder stays in one palette.
+  // Picked for the same contrast floor as `link`: they are label and body
+  // text on `background`, not just a border on a tinted callout, so each
+  // clears 4.5:1 in its own mode. That is why the light set sits low on the
+  // ladder (a mid-tone amber cannot pass on white) and the dark set sits
+  // high — see the `dark` entry in $color-modes below.
+  danger: #e41328,   // red-500,    4.8:1
+  success: #0a691c,  // green-700,  6.9:1
+  warning: #925719,  // orange-700, 5.8:1
+  info: #0f4eb3      // blue-500,   7.6:1 — the `link` blue, wearing a second name
 ) !default;
 
 $palettes: (
@@ -137,6 +149,35 @@ $palettes: (
   lime: #a4c400,
 ) !default;
 
+/*
+ * COLOR ALIASES - 'emitted property': 'color key'
+ *
+ * A second, unprefixed custom property for a color that already exists:
+ * `--danger` next to `--color-danger`. The point is handing an outside
+ * stylesheet the name it already reaches for. Themes tend not to namespace —
+ * poops-docs-theme is all bare `--accent`, `--link`, `--bg`, and paints its
+ * admonitions off a local `--adm` set from hardcoded hex — so an alias is how
+ * Sulphuris feeds one without that theme learning the `--color-` prefix or
+ * the color being written down twice.
+ *
+ * Emitted as `var()` indirection, not as a copy, and only on `:root`. That is
+ * what keeps it one line: the alias resolves through `--color-{key}`, so it
+ * follows $color-modes into dark mode for free and never needs re-emitting
+ * per mode. It also means an alias is a *pointer*, so the right-hand side has
+ * to be a key that exists — a $colors name or a palette grade (`blue-500`).
+ * Pointing one at a name that doesn't warns.
+ *
+ * The identity mapping below is the common case, not the only one: the left
+ * side is the property to emit and the right side is where it reads from, so
+ * `(error: danger, brand: primary)` is equally valid. `()` emits nothing.
+ */
+$color-aliases: (
+  danger: danger,
+  success: success,
+  warning: warning,
+  info: info
+) !default;
+
 $color-modes-selector: '[data-color-scheme="VALUE"]' !default;
 $color-modes: (
   dark: (
@@ -146,7 +187,14 @@ $color-modes: (
       black: #1a1a1d,
       white: #fff,
       primary: #3f00ff,
-      link: #8ab4ff
+      link: #8ab4ff,
+      // Same roles, re-picked off the same ladders for the dark background:
+      // 4.5:1 on #1a1a1d instead of on #fff. `info` stops tracking `link`
+      // here — the dark link is a much lighter blue than blue-300.
+      danger: #ef717e,   // red-300,    6.1:1
+      success: #10af2e,  // green-500,  6.0:1
+      warning: #f4912a,  // orange-500, 7.4:1
+      info: #6f95d1      // blue-300,   5.7:1
     )
     // palettes: ( ... )
   )

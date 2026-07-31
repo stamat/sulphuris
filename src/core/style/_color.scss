@@ -9,6 +9,19 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
 
 :root {
   @include generators.css-variable-generator('color', $colors);
+
+  // Unprefixed second names — `--danger` reading through `--color-danger`.
+  // $colors here is the generated map, so an alias can point at a flat color
+  // or at a palette grade; either is a key by the time this runs. Deliberately
+  // `var()` and deliberately only here: the indirection is what makes the
+  // alias track $color-modes without being re-emitted under every selector.
+  @each $alias, $key in config.$color-aliases {
+    @if map.has-key($colors, $key) {
+      --#{$alias}: var(--color-#{$key});
+    } @else {
+      @warn '🜍 Color alias `#{$alias}` points at `#{$key}`, which is not a color or palette grade! Please check your `_config.scss`.';
+    }
+  }
 }
 
 @include generators.utility-class-generator((

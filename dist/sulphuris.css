@@ -457,6 +457,10 @@ button.reset,
   --color-white: #fff;
   --color-primary: #f6c026;
   --color-link: #0f4eb3;
+  --color-danger: #e41328;
+  --color-success: #0a691c;
+  --color-warning: #925719;
+  --color-info: #0f4eb3;
   --color-gray-500: #8c8c8e;
   --color-gray-600: rgb(43.9215686275%, 43.9215686275%, 44.5490196078%);
   --color-gray-700: rgb(32.9411764706%, 32.9411764706%, 33.4117647059%);
@@ -556,6 +560,10 @@ button.reset,
   --color-lime-200: rgb(85.7254901961%, 90.7450980392%, 60%);
   --color-lime-300: rgb(78.5882352941%, 86.1176470588%, 40%);
   --color-lime-400: rgb(71.4509803922%, 81.4901960784%, 20%);
+  --danger: var(--color-danger);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --info: var(--color-info);
 }
 
 .text-foreground {
@@ -580,6 +588,22 @@ button.reset,
 
 .text-link {
   color: var(--color-link);
+}
+
+.text-danger {
+  color: var(--color-danger);
+}
+
+.text-success {
+  color: var(--color-success);
+}
+
+.text-warning {
+  color: var(--color-warning);
+}
+
+.text-info {
+  color: var(--color-info);
 }
 
 .text-gray-500 {
@@ -1016,6 +1040,22 @@ button.reset,
   background-color: var(--color-link);
 }
 
+.bg-danger {
+  background-color: var(--color-danger);
+}
+
+.bg-success {
+  background-color: var(--color-success);
+}
+
+.bg-warning {
+  background-color: var(--color-warning);
+}
+
+.bg-info {
+  background-color: var(--color-info);
+}
+
 .bg-gray-500 {
   background-color: var(--color-gray-500);
 }
@@ -1436,6 +1476,22 @@ button.reset,
   border-color: var(--color-link);
 }
 
+.border-danger {
+  border-color: var(--color-danger);
+}
+
+.border-success {
+  border-color: var(--color-success);
+}
+
+.border-warning {
+  border-color: var(--color-warning);
+}
+
+.border-info {
+  border-color: var(--color-info);
+}
+
 .border-gray-500 {
   border-color: var(--color-gray-500);
 }
@@ -1839,6 +1895,10 @@ button.reset,
   --color-white: #fff;
   --color-primary: #3f00ff;
   --color-link: #8ab4ff;
+  --color-danger: #ef717e;
+  --color-success: #10af2e;
+  --color-warning: #f4912a;
+  --color-info: #6f95d1;
 }
 
 ul.reset,

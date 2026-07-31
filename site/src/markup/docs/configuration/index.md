@@ -250,10 +250,22 @@ $colors: (
   // brand color does not: `primary` is free to be a yellow that only ever sits
   // behind text, while this has to stay readable as text on `background`.
   // 8.6:1 here, 8:1 on the dark counterpart below.
-  link: #0f4eb3
+  link: #0f4eb3,
+  // Status roles. Every value is a grade that $palettes already generates —
+  // these name one, they do not add a hue, so a project that retunes `red`
+  // and re-picks `danger` from the new ladder stays in one palette.
+  // Picked for the same contrast floor as `link`: they are label and body
+  // text on `background`, not just a border on a tinted callout, so each
+  // clears 4.5:1 in its own mode. That is why the light set sits low on the
+  // ladder (a mid-tone amber cannot pass on white) and the dark set sits
+  // high — see the `dark` entry in $color-modes below.
+  danger: #e41328,   // red-500,    4.8:1
+  success: #0a691c,  // green-700,  6.9:1
+  warning: #925719,  // orange-700, 5.8:1
+  info: #0f4eb3      // blue-500,   7.6:1 — the `link` blue, wearing a second name
 );
 
-// src/core/_config.scss:126
+// src/core/_config.scss:138
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -272,12 +284,37 @@ $palettes: (
 Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 `.bg-*`), with `-500` being the base colour. See [Colours](../color/).
 
+### Colour aliases
+
+<!-- config: color-aliases -->
+
+```scss
+// src/core/_config.scss:174
+$color-aliases: (
+  danger: danger,
+  success: success,
+  warning: warning,
+  info: info
+);
+```
+
+An alias emits a second, unprefixed custom property for a colour that already
+exists — `--danger` alongside `--color-danger` — so a stylesheet that reaches
+for bare names can be fed without the colour being written twice. The left side
+is the property to emit, the right side the key it reads from, and that key can
+be a `$colors` name or a palette grade: `(brand: primary, edge: blue-500)`.
+
+Aliases are `var()` indirection on `:root`, not copies, so they resolve through
+`--color-{key}` and follow `$color-modes` into dark mode without being
+re-emitted per mode. Pointing one at a key that does not exist warns at build
+time. `()` emits nothing.
+
 ### Colour modes (dark mode)
 
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
-// src/core/_config.scss:140
+// src/core/_config.scss:181
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
@@ -287,7 +324,14 @@ $color-modes: (
       black: #1a1a1d,
       white: #fff,
       primary: #3f00ff,
-      link: #8ab4ff
+      link: #8ab4ff,
+      // Same roles, re-picked off the same ladders for the dark background:
+      // 4.5:1 on #1a1a1d instead of on #fff. `info` stops tracking `link`
+      // here — the dark link is a much lighter blue than blue-300.
+      danger: #ef717e,   // red-300,    6.1:1
+      success: #10af2e,  // green-500,  6.0:1
+      warning: #f4912a,  // orange-500, 7.4:1
+      info: #6f95d1      // blue-300,   5.7:1
     )
     // palettes: ( ... )
   )
@@ -303,23 +347,23 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:165
+// src/core/_config.scss:213
 $base-font-size: 16px;
 
-// src/core/_config.scss:167
+// src/core/_config.scss:215
 $heading-font:   'Roboto', sans-serif;
 $paragraph-font: 'Nunito', sans-serif;
 $mono-font:      monospace;
 
-// src/core/_config.scss:191
+// src/core/_config.scss:239
 $line-height:           map.get($line-heights, 'normal') or 1.6;
 $heading-line-height:   map.get($line-heights, 'tight') or 1.25;
 $paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
 
-// src/core/_config.scss:196
+// src/core/_config.scss:244
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:202
+// src/core/_config.scss:250
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 $line-heights: (
   1: 1,
@@ -352,7 +396,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:231
+// src/core/_config.scss:279
 $typography: (
   'h1, .h1': (
     desktop: (48px, null, $heading-line-height, bold),
@@ -391,7 +435,7 @@ defaults for markup you cannot put classes on. See [Prose](../prose/):
 <!-- config: prose-measure -->
 
 ```scss
-// src/core/_config.scss:260
+// src/core/_config.scss:308
 $prose-measure: 720px;
 ```
 
@@ -400,12 +444,12 @@ $prose-measure: 720px;
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:262
+// src/core/_config.scss:310
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:266
+// src/core/_config.scss:314
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -417,7 +461,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:272
+// src/core/_config.scss:320
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -437,7 +481,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:280
+// src/core/_config.scss:328
 $button: (
   height: 56px,
   padding-x: 32px,

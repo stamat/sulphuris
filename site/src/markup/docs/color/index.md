@@ -24,6 +24,10 @@ Every colour key becomes `--color-{name}` on `:root`.
 --color-white:      #ffffff;
 --color-primary:    #f6c026;
 --color-link:       #0f4eb3;
+--color-danger:     #e41328;
+--color-success:    #0a691c;
+--color-warning:    #925719;
+--color-info:       #0f4eb3;
 ```
 
 `link` is separate from `primary` because it carries a contrast floor a brand
@@ -31,6 +35,64 @@ colour does not: `primary` only ever sits behind text, `link` has to stay
 readable *as* text on `background` (8.6:1 light, 8:1 dark). It is what
 [`.prose`](../prose/) colours anchors with, and `.text-link` puts the same
 colour on a link the rest of the app owns.
+
+### Status colours
+
+`danger`, `success`, `warning` and `info` are roles, not hues. Every one of
+them is a grade `$palettes` already generates — `red-500`, `green-700`,
+`orange-700`, `blue-500` — so they name a step on an existing ladder rather
+than introducing a colour. Retune `red` and re-pick `danger` from the new
+ladder, and the whole system stays in one palette.
+
+They carry `link`'s contrast floor, not a border's: the assumption is that a
+status colour ends up as label and body text, not only as the edge of a tinted
+callout. Each clears 4.5:1 on `background` *in its own mode*, which is why the
+light set sits low on the ladder and the [dark set](#dark-mode) sits high — a mid-tone amber passes on `#1a1a1d` and fails on white:
+
+| Role | Light | on `#fff` | Dark | on `#1a1a1d` |
+|---|---|---|---|---|
+| `danger` | `#e41328` (`red-500`) | 4.8:1 | `#ef717e` (`red-300`) | 6.1:1 |
+| `success` | `#0a691c` (`green-700`) | 6.9:1 | `#10af2e` (`green-500`) | 6.0:1 |
+| `warning` | `#925719` (`orange-700`) | 5.8:1 | `#f4912a` (`orange-500`) | 7.4:1 |
+| `info` | `#0f4eb3` (`blue-500`) | 7.6:1 | `#6f95d1` (`blue-300`) | 5.7:1 |
+
+In light mode `info` is the `link` blue wearing a second name; in dark mode the
+two part ways, because the dark link is a much lighter blue than `blue-300`.
+
+For the tinted background that usually sits behind one of these, mix it down at
+use site rather than adding a token — `background: color-mix(in srgb, var(--color-danger) 8%, var(--color-background))`.
+
+## Aliases
+
+`$color-aliases` emits a second, unprefixed custom property for a colour that
+already exists. The status roles ship aliased, because the stylesheets most
+likely to want them are themes, and themes tend not to namespace:
+
+```css
+:root {
+  --danger:  var(--color-danger);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --info:    var(--color-info);
+}
+```
+
+The left side is the property to emit, the right side the key it reads from —
+and that key can be a `$colors` name or a palette grade:
+
+```scss
+$color-aliases: (
+  brand: primary,      // --brand: var(--color-primary)
+  error: danger,       // rename a role
+  edge:  blue-500      // or point at a palette grade
+);
+```
+
+They are `var()` indirection, not copies, and emitted only on `:root`. That is
+the whole trick: an alias resolves through `--color-{key}`, so it follows
+[dark mode](#dark-mode) without being re-emitted under every mode selector.
+Pointing one at a key that does not exist warns at build time; `()` emits
+nothing.
 
 **From `$palettes` (example: `blue`):**
 
@@ -151,6 +213,10 @@ The built-in `dark` mode re-emits `$colors` overrides under `[data-color-scheme=
   --color-white:      #ffffff;
   --color-primary:    #3F00FF;
   --color-link:       #8ab4ff;
+  --color-danger:     #ef717e;
+  --color-success:    #10af2e;
+  --color-warning:    #f4912a;
+  --color-info:       #6f95d1;
 }
 ```
 

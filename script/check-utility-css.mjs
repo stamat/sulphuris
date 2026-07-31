@@ -209,4 +209,26 @@ for (const [selector, decl] of Object.entries(aliasExpected)) {
 assert.ok(!aliased.has('.t-sm'), 'position offsets take no aliases')
 assert.equal(aliased.get('.m-auto'), 'margin: auto', 'keywords survive the alias merge')
 
+// `$color-aliases` emits a bare `--danger` pointing at `--color-danger`. The
+// indirection is the whole design: it is why one declaration on `:root` covers
+// every colour mode. Copy the value in instead and light mode's red silently
+// survives the switch to dark, so both halves are asserted — the pointer here,
+// and its absence from the mode block below.
+const customProps = (selector) => {
+  const found = new Map()
+  root.walkRules(selector, (rule) => rule.walkDecls(/^--/, (d) => found.set(d.prop, d.value)))
+  return found
+}
+
+const rootProps = customProps(':root')
+assert.equal(rootProps.get('--color-danger'), '#e41328', '--color-danger is the light-mode red')
+assert.equal(rootProps.get('--danger'), 'var(--color-danger)', '$color-aliases emits a pointer, not a copy')
+assert.equal(rootProps.get('--info'), 'var(--color-info)', 'every alias resolves through its --color-* source')
+
+// Regex, not the literal from $color-modes-selector: the quotes around `dark`
+// do not survive the compile.
+const darkProps = customProps(/data-color-scheme=["']?dark/)
+assert.equal(darkProps.get('--color-danger'), '#ef717e', 'dark mode re-picks the colour the alias points at')
+assert.ok(!darkProps.has('--danger'), 'aliases track a colour mode through var(), so they are never re-emitted per mode')
+
 console.log(`[check] utilities ok: ${Object.keys(expected).length} assertions, ${Object.keys(aliasExpected).length} alias assertions, ${transforms.length} transform selectors, ${queries.size} media queries`)
