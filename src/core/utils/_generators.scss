@@ -342,28 +342,66 @@ $breakpoints: config.$breakpoints;
   }
 }
 
-@function color-palette-generator($color-map, $color-name, $color-value, $mod: 10%) {
-  $grade: 500;
-  $combined-name: #{$color-name}-#{$grade};
-  $color-map: map.merge($color-map, ($combined-name: $color-value));
+/*
+ * The most chroma sRGB can hold at a given OkLCh lightness and hue.
+ * `to-gamut` already runs the chroma-reduction search, so 0.4 stands in for
+ * "more than any hue can take" and comes back sitting on the boundary.
+ */
+@function max-chroma($lightness, $hue) {
+  $boundary: color.to-gamut(oklch($lightness 0.4 $hue), $space: rgb, $method: local-minde);
 
-  @for $i from 1 through 4 {
-    $count: 5 + $i;
-    $grade: $count * 100;
-    $percentage: $i * $mod * 2;
-    $combined-name: #{$color-name}-#{$grade};
-    $color-lightened: color.mix(#000, $color-value, $percentage);
+  @return color.channel($boundary, 'chroma', $space: oklch);
+}
 
-    $color-map: map.merge($color-map, ($combined-name: $color-lightened));
+/*
+ * Whole sRGB channels, so a grade lands in the stylesheet as `rgb(13, 70,
+ * 161)` rather than twelve decimal places of oklch that every consumer —
+ * `color-mix()`, a devtools swatch, a designer reading the build — has to
+ * re-derive. The gamut fit is a no-op for anything already inside sRGB.
+ */
+@function to-srgb($color) {
+  $fitted: color.to-gamut($color, $space: rgb, $method: local-minde);
+
+  @return rgb(
+    math.round(color.channel($fitted, 'red', $space: rgb)),
+    math.round(color.channel($fitted, 'green', $space: rgb)),
+    math.round(color.channel($fitted, 'blue', $space: rgb))
+  );
+}
+
+/*
+ * A palette is a perceptual ladder, not a mix. Every `-600` in every palette
+ * lands on the same OkLCh lightness, which is the whole reason a grade means
+ * anything on its own: `blue-600` and `green-600` are interchangeable at a
+ * contrast target. Mixing the seed toward #fff / #000 in sRGB — what this used
+ * to do — cannot do that, because the result's lightness depends on where the
+ * seed already sat, so `yellow-500` came out 45 L* lighter than `indigo-500`
+ * and every status role had to hand-pick its own grade to clear 4.5:1.
+ *
+ * The seed contributes hue and *saturation*, not lightness. Saturation is
+ * carried as the fraction of the gamut the seed uses at its own lightness, so
+ * a muted seed stays muted and a vivid one stays vivid, and neither clips.
+ * The per-grade weight in $palette-grades is what keeps the ends off the gamut
+ * wall where sRGB happens to have room — cyan at 90% lightness has plenty, and
+ * without the weight `teal-200` comes out neon.
+ */
+@function color-palette-generator($color-map, $color-name, $color-value, $grades: config.$palette-grades) {
+  $hue: color.channel($color-value, 'hue', $space: oklch);
+  $seed-max: max-chroma(color.channel($color-value, 'lightness', $space: oklch), $hue);
+
+  // 0 for a grey seed, and for pure black or white, where no chroma is on
+  // offer at all and the division would not be defined. Both stay neutral.
+  $saturation: 0;
+  @if $seed-max > 0 {
+    $saturation: math.div(color.channel($color-value, 'chroma', $space: oklch), $seed-max);
   }
 
-  @for $i from 1 through 4 {
-    $grade: $i * 100;
-    $percentage: $i * $mod * 2;
+  @each $grade, $spec in $grades {
+    $lightness: list.nth($spec, 1);
+    $chroma: $saturation * list.nth($spec, 2) * max-chroma($lightness, $hue);
     $combined-name: #{$color-name}-#{$grade};
-    $color-lightened: color.mix($color-value, #fff, $percentage);
 
-    $color-map: map.merge($color-map, ($combined-name: $color-lightened));
+    $color-map: map.merge($color-map, ($combined-name: to-srgb(oklch($lightness $chroma $hue))));
   }
 
   @return $color-map;
@@ -373,13 +411,9 @@ $breakpoints: config.$breakpoints;
   @if $palette-map == null {
     @return $color-map;
   }
-  
+
   @each $name, $value in $palette-map {
-    @if meta.type-of($value) == 'color' {
-      $color-map: color-palette-generator($color-map, $name, $value);
-    } @else {
-      $color-map: color-palette-generator($color-map, $name, list.nth($value, 1), list.nth($value, 2));
-    }
+    $color-map: color-palette-generator($color-map, $name, $value);
   }
 
   @return $color-map;

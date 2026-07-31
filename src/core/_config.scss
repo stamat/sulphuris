@@ -124,17 +124,57 @@ $colors: (
   // Status roles. Every value is a grade that $palettes already generates —
   // these name one, they do not add a hue, so a project that retunes `red`
   // and re-picks `danger` from the new ladder stays in one palette.
-  // Picked for the same contrast floor as `link`: they are label and body
-  // text on `background`, not just a border on a tinted callout, so each
-  // clears 4.5:1 in its own mode. That is why the light set sits low on the
-  // ladder (a mid-tone amber cannot pass on white) and the dark set sits
-  // high — see the `dark` entry in $color-modes below.
-  danger: #e41328,   // red-500,    4.8:1
-  success: #0a691c,  // green-700,  6.9:1
-  warning: #925719,  // orange-700, 5.8:1
-  info: #0f4eb3      // blue-500,   7.6:1 — the `link` blue, wearing a second name
+  // They are label and body text on `background`, not just a border on a
+  // tinted callout, so each clears 4.5:1 in its own mode. Since $palette-grades
+  // pins every palette to the same lightness ladder, that is now one grade for
+  // all four rather than four hand-picked ones: 600 on white, and 400 on the
+  // dark background — see the `dark` entry in $color-modes below.
+  danger: #c40d20,   // red-600,    6.1:1
+  success: #077f1e,  // green-600,  5.2:1
+  warning: #98560e,  // orange-600, 5.7:1
+  info: #2563ca      // blue-600,   5.7:1
 ) !default;
 
+/*
+ * PALETTE GRADES - grade: (OkLCh lightness, chroma weight)
+ *
+ * The ladder every entry in $palettes is projected onto. Lightness is what
+ * makes a grade portable: `blue-600` and `green-600` sit at the same perceived
+ * lightness, so they land on the same contrast against `background` and a role
+ * can be defined once as "grade 600" instead of per hue.
+ *
+ * Steps are 10 points through the working range and tighter at the top, where
+ * a tint wants to stay subtle enough for a table stripe or a callout ground.
+ * The contrast these produce on white / on #1a1a1d, across all eleven shipped
+ * palettes: 700 → 8.0-9.7:1, 600 → 5.2-6.4:1, 500 → 3.4-4.1:1 (AA large, and
+ * the 3:1 UI floor), 400 → 6.3-7.6:1 dark, 300 → 9.5-10.7:1 dark.
+ *
+ * The weight is the fraction of the *available* chroma at that lightness the
+ * grade may use. It is not a cosmetic knob: sRGB has far more room at the pale
+ * end of some hues than others, so a flat weight makes `teal-200` neon while
+ * `blue-200` stays grey. Tapering it toward both ends is what makes a tint
+ * read as a tint in every hue. Peak sits at 500-600 where the solid fills live.
+ */
+$palette-grades: (
+  100: (96%, 0.5),
+  200: (90%, 0.7),
+  300: (82%, 0.85),
+  400: (72%, 0.95),
+  500: (62%, 1),
+  600: (52%, 1),
+  700: (42%, 0.95),
+  800: (32%, 0.85),
+  900: (22%, 0.7)
+) !default;
+
+/*
+ * Seeds, not swatches: a palette takes its hue and its saturation from the
+ * value here, and its lightness from $palette-grades. The lightness written
+ * below is only what makes the entry legible as "yellow" while reading the
+ * config — `yellow-500` is a darker mustard, because grade is lightness and
+ * the vivid yellow lives at 200-300. Saturation does carry: it is read as the
+ * fraction of the gamut the seed uses, so a muted seed gives a muted ladder.
+ */
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -188,13 +228,13 @@ $color-modes: (
       white: #fff,
       primary: #3f00ff,
       link: #8ab4ff,
-      // Same roles, re-picked off the same ladders for the dark background:
-      // 4.5:1 on #1a1a1d instead of on #fff. `info` stops tracking `link`
-      // here — the dark link is a much lighter blue than blue-300.
-      danger: #ef717e,   // red-300,    6.1:1
-      success: #10af2e,  // green-500,  6.0:1
-      warning: #f4912a,  // orange-500, 7.4:1
-      info: #6f95d1      // blue-300,   5.7:1
+      // Same roles, same ladders, mirrored across the ladder for the dark
+      // background: 4.5:1 on #1a1a1d instead of on #fff. One grade again,
+      // 400 to the light set's 600.
+      danger: #fd746c,   // red-400,    6.5:1
+      success: #2bc53f,  // green-400,  7.6:1
+      warning: #e78b30,  // orange-400, 6.7:1
+      info: #83a6df      // blue-400,   7.0:1
     )
     // palettes: ( ... )
   )

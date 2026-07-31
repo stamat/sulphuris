@@ -232,11 +232,14 @@ Change `$columns` and the whole `.col-*` / `.col-offset-*` set regenerates, alon
 
 ## Colours
 
-Two maps. `$colors` are the named, semantic colours emitted as CSS custom
+Three maps. `$colors` are the named, semantic colours emitted as CSS custom
 properties (`--color-primary`) and used by `.text-*` / `.bg-*`. `$palettes` are
-expanded into 100–900 tint/shade scales.
+seeds, each expanded into a 100–900 scale. `$palette-grades` is the ladder they
+are expanded onto — a perceived lightness and a chroma weight per grade, shared
+by every palette, which is what makes `blue-600` and `green-600` land on the
+same contrast. See [Colours](../color/#how-a-palette-is-generated).
 
-<!-- config: colors, palettes -->
+<!-- config: colors, palettes, palette-grades -->
 
 ```scss
 // src/core/_config.scss:113
@@ -254,18 +257,18 @@ $colors: (
   // Status roles. Every value is a grade that $palettes already generates —
   // these name one, they do not add a hue, so a project that retunes `red`
   // and re-picks `danger` from the new ladder stays in one palette.
-  // Picked for the same contrast floor as `link`: they are label and body
-  // text on `background`, not just a border on a tinted callout, so each
-  // clears 4.5:1 in its own mode. That is why the light set sits low on the
-  // ladder (a mid-tone amber cannot pass on white) and the dark set sits
-  // high — see the `dark` entry in $color-modes below.
-  danger: #e41328,   // red-500,    4.8:1
-  success: #0a691c,  // green-700,  6.9:1
-  warning: #925719,  // orange-700, 5.8:1
-  info: #0f4eb3      // blue-500,   7.6:1 — the `link` blue, wearing a second name
+  // They are label and body text on `background`, not just a border on a
+  // tinted callout, so each clears 4.5:1 in its own mode. Since $palette-grades
+  // pins every palette to the same lightness ladder, that is now one grade for
+  // all four rather than four hand-picked ones: 600 on white, and 400 on the
+  // dark background — see the `dark` entry in $color-modes below.
+  danger: #c40d20,   // red-600,    6.1:1
+  success: #077f1e,  // green-600,  5.2:1
+  warning: #98560e,  // orange-600, 5.7:1
+  info: #2563ca      // blue-600,   5.7:1
 );
 
-// src/core/_config.scss:138
+// src/core/_config.scss:178
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -279,6 +282,17 @@ $palettes: (
   green: #10af2e,
   lime: #a4c400,
 );
+$palette-grades: (
+  100: (96%, 0.5),
+  200: (90%, 0.7),
+  300: (82%, 0.85),
+  400: (72%, 0.95),
+  500: (62%, 1),
+  600: (52%, 1),
+  700: (42%, 0.95),
+  800: (32%, 0.85),
+  900: (22%, 0.7)
+);
 ```
 
 Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
@@ -289,7 +303,7 @@ Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 <!-- config: color-aliases -->
 
 ```scss
-// src/core/_config.scss:174
+// src/core/_config.scss:214
 $color-aliases: (
   danger: danger,
   success: success,
@@ -314,7 +328,7 @@ time. `()` emits nothing.
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
-// src/core/_config.scss:181
+// src/core/_config.scss:221
 $color-modes-selector: '[data-color-scheme="VALUE"]';
 $color-modes: (
   dark: (
@@ -325,13 +339,13 @@ $color-modes: (
       white: #fff,
       primary: #3f00ff,
       link: #8ab4ff,
-      // Same roles, re-picked off the same ladders for the dark background:
-      // 4.5:1 on #1a1a1d instead of on #fff. `info` stops tracking `link`
-      // here — the dark link is a much lighter blue than blue-300.
-      danger: #ef717e,   // red-300,    6.1:1
-      success: #10af2e,  // green-500,  6.0:1
-      warning: #f4912a,  // orange-500, 7.4:1
-      info: #6f95d1      // blue-300,   5.7:1
+      // Same roles, same ladders, mirrored across the ladder for the dark
+      // background: 4.5:1 on #1a1a1d instead of on #fff. One grade again,
+      // 400 to the light set's 600.
+      danger: #fd746c,   // red-400,    6.5:1
+      success: #2bc53f,  // green-400,  7.6:1
+      warning: #e78b30,  // orange-400, 6.7:1
+      info: #83a6df      // blue-400,   7.0:1
     )
     // palettes: ( ... )
   )
@@ -347,23 +361,23 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:213
+// src/core/_config.scss:253
 $base-font-size: 16px;
 
-// src/core/_config.scss:215
+// src/core/_config.scss:255
 $heading-font:   'Roboto', sans-serif;
 $paragraph-font: 'Nunito', sans-serif;
 $mono-font:      monospace;
 
-// src/core/_config.scss:239
+// src/core/_config.scss:279
 $line-height:           map.get($line-heights, 'normal') or 1.6;
 $heading-line-height:   map.get($line-heights, 'tight') or 1.25;
 $paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
 
-// src/core/_config.scss:244
+// src/core/_config.scss:284
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:250
+// src/core/_config.scss:290
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 $line-heights: (
   1: 1,
@@ -396,7 +410,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:279
+// src/core/_config.scss:319
 $typography: (
   'h1, .h1': (
     desktop: (48px, null, $heading-line-height, bold),
@@ -435,7 +449,7 @@ defaults for markup you cannot put classes on. See [Prose](../prose/):
 <!-- config: prose-measure -->
 
 ```scss
-// src/core/_config.scss:308
+// src/core/_config.scss:348
 $prose-measure: 720px;
 ```
 
@@ -444,12 +458,12 @@ $prose-measure: 720px;
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:310
+// src/core/_config.scss:350
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:314
+// src/core/_config.scss:354
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -461,7 +475,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:320
+// src/core/_config.scss:360
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -481,7 +495,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:328
+// src/core/_config.scss:368
 $button: (
   height: 56px,
   padding-x: 32px,

@@ -2,14 +2,14 @@
 layout: poops-docs-theme/docs
 title: Colours
 navTitle: Colours
-description: CSS custom property–backed text, background, and border colour utilities generated from a flat colour map and an 11-palette, 100–900 tint/shade scale.
+description: CSS custom property–backed text, background, and border colour utilities generated from a flat colour map and an 11-palette, 100–900 perceptual lightness ladder.
 order: 9
-keywords: ["color", "colour", "text-color", "background", "bg", "palette", "dark mode", "custom properties"]
+keywords: ["color", "colour", "text-color", "background", "bg", "palette", "dark mode", "custom properties", "oklch", "contrast"]
 ---
 
 # Colours
 
-Colour utilities are driven by two config maps: `$colors` (named single values) and `$palettes` (names expanded to a 100–900 scale). Both are emitted as CSS custom properties on `:root` and consumed by utility classes via `var()`.
+Colour utilities are driven by three config maps: `$colors` (named single values), `$palettes` (seed colours, each expanded to a 100–900 scale) and `$palette-grades` (the ladder they are expanded onto). The first two are emitted as CSS custom properties on `:root` and consumed by utility classes via `var()`.
 
 ## CSS custom properties
 
@@ -39,25 +39,28 @@ colour on a link the rest of the app owns.
 ### Status colours
 
 `danger`, `success`, `warning` and `info` are roles, not hues. Every one of
-them is a grade `$palettes` already generates — `red-500`, `green-700`,
-`orange-700`, `blue-500` — so they name a step on an existing ladder rather
-than introducing a colour. Retune `red` and re-pick `danger` from the new
-ladder, and the whole system stays in one palette.
+them is a grade `$palettes` already generates, so they name a step on an
+existing ladder rather than introducing a colour. Retune `red` and re-pick
+`danger` from the new ladder, and the whole system stays in one palette.
 
-They carry `link`'s contrast floor, not a border's: the assumption is that a
+They carry a text contrast floor, not a border's: the assumption is that a
 status colour ends up as label and body text, not only as the edge of a tinted
-callout. Each clears 4.5:1 on `background` *in its own mode*, which is why the
-light set sits low on the ladder and the [dark set](#dark-mode) sits high — a mid-tone amber passes on `#1a1a1d` and fails on white:
+callout. Each clears 4.5:1 on `background` *in its own mode*. Because
+[every palette shares one lightness ladder](#how-a-palette-is-generated), that
+is a single grade for all four rather than four hand-picked ones — **600** on
+white, **400** on the dark ground:
 
 | Role | Light | on `#fff` | Dark | on `#1a1a1d` |
 |---|---|---|---|---|
-| `danger` | `#e41328` (`red-500`) | 4.8:1 | `#ef717e` (`red-300`) | 6.1:1 |
-| `success` | `#0a691c` (`green-700`) | 6.9:1 | `#10af2e` (`green-500`) | 6.0:1 |
-| `warning` | `#925719` (`orange-700`) | 5.8:1 | `#f4912a` (`orange-500`) | 7.4:1 |
-| `info` | `#0f4eb3` (`blue-500`) | 7.6:1 | `#6f95d1` (`blue-300`) | 5.7:1 |
+| `danger` | `#c40d20` (`red-600`) | 6.1:1 | `#fd746c` (`red-400`) | 6.5:1 |
+| `success` | `#077f1e` (`green-600`) | 5.2:1 | `#2bc53f` (`green-400`) | 7.6:1 |
+| `warning` | `#98560e` (`orange-600`) | 5.7:1 | `#e78b30` (`orange-400`) | 6.7:1 |
+| `info` | `#2563ca` (`blue-600`) | 5.7:1 | `#83a6df` (`blue-400`) | 7.0:1 |
 
-In light mode `info` is the `link` blue wearing a second name; in dark mode the
-two part ways, because the dark link is a much lighter blue than `blue-300`.
+Swapping one for another hue is a one-word change and cannot quietly fail the
+floor: `violet-600` and `teal-600` clear it too, because the grade is what
+carries the contrast. `link` stays a flat `$colors` entry rather than a grade —
+it holds a higher floor than the roles do (8.6:1 light, 8:1 dark).
 
 For the tinted background that usually sits behind one of these, mix it down at
 use site rather than adding a token — `background: color-mix(in srgb, var(--color-danger) 8%, var(--color-background))`.
@@ -97,38 +100,86 @@ nothing.
 **From `$palettes` (example: `blue`):**
 
 ```css
---color-blue-100: …;  /* lightest — 80% tint toward white */
---color-blue-200: …;
---color-blue-300: …;
---color-blue-400: …;
---color-blue-500: #0F4EB3;  /* base */
---color-blue-600: …;
---color-blue-700: …;
---color-blue-800: …;
---color-blue-900: …;  /* darkest — 80% mix toward black */
+--color-blue-100: #eff2f7;  /* lightest */
+--color-blue-200: #d5dfee;
+--color-blue-300: #b1c5e6;
+--color-blue-400: #83a6df;
+--color-blue-500: #5485d8;
+--color-blue-600: #2563ca;
+--color-blue-700: #0d46a1;
+--color-blue-800: #042d71;
+--color-blue-900: #05183c;  /* darkest */
 ```
 
-Grade 500 is the unmodified base colour. Grades 600–900 mix increasing amounts of black (20 / 40 / 60 / 80 %). Grades 100–400 mix increasing amounts of white in the same steps, in reverse order (100 = 80 % white mix, 400 = 20 % white mix).
+## How a palette is generated
+
+A grade is a **lightness**, not a mix. All eleven palettes are projected onto
+the one ladder in `$palette-grades`, so `blue-600` and `green-600` sit at the
+same perceived lightness and therefore land on the same contrast against
+`background`. That is what lets a role be defined once as "grade 600" instead
+of hand-picked per hue.
+
+Three rules produce a grade, all in [OkLCh](https://bottosson.github.io/posts/oklab/) —
+a perceptual space, so equal steps look equal:
+
+1. **Lightness** comes from `$palette-grades`, never from the seed. Steps are
+   10 points through the working range and tighter at the pale end, where a
+   tint has to stay subtle enough to sit under body text.
+2. **Hue** comes from the seed, unchanged.
+3. **Chroma** is the fraction of gamut the seed uses at its own lightness,
+   scaled by the grade's weight. A muted seed gives a muted ladder and a vivid
+   one stays vivid — and the weight tapers toward both ends so a tint reads as
+   a tint in every hue. Anything still outside sRGB is gamut-mapped by chroma
+   reduction, which preserves hue instead of clipping it.
+
+Rule 1 is the one with teeth. Grade is lightness, so **the seed is not grade
+500** — `yellow-500` is a dark mustard, because a light yellow is `yellow-200`.
+The punchy version of a hue lives wherever that hue is punchy: around 200–300
+for yellow and lime, 500–600 for blue and purple. That is the sRGB gamut, not
+a bug, and it is the price of a grade meaning the same thing everywhere.
+
+### Contrast by grade
+
+Because lightness is shared, contrast is a property of the grade rather than of
+the palette. Across all eleven shipped palettes:
+
+| Grade | on `#fff` | on `#1a1a1d` | Use |
+|---|---|---|---|
+| `100` | 1.1:1 | 15.4–15.7:1 | tinted ground, table stripe |
+| `200` | 1.3–1.4:1 | 12.6–13.6:1 | hovered ground, subtle fill |
+| `300` | 1.6–1.8:1 | 9.5–10.7:1 | border; **AAA text on dark** |
+| `400` | 2.3–2.7:1 | 6.3–7.6:1 | strong border; **AA text on dark** |
+| `500` | 3.4–4.1:1 | 4.2–5.1:1 | solid fill, UI edge (3:1), AA large |
+| `600` | 5.2–6.4:1 | 2.7–3.4:1 | **AA text on light**, solid hover |
+| `700` | 8.0–9.7:1 | 1.8–2.2:1 | **AAA text on light** |
+| `800` | 12.2–13.6:1 | 1.3–1.4:1 | headings on light |
+| `900` | 17.1–17.7:1 | 1.0:1 | deepest |
+
+Read it as a mirror: 600/700 are the text grades on a light ground, 300/400 the
+text grades on a dark one, and `npm test` asserts both floors hold for every
+palette — retune a seed past them and the build fails.
 
 ## Palettes
 
-Default palettes in `$palettes`:
+Seeds in `$palettes`, and the ladder each one produces:
 
-| Name | Base |
-|---|---|
-| `gray` | `#8c8c8e` |
-| `yellow` | `#f6c026` |
-| `orange` | `#F4912A` |
-| `red` | `#E41328` |
-| `violet` | `#752A6F` |
-| `purple` | `#472573` |
-| `indigo` | `#3F00FF` |
-| `blue` | `#0F4EB3` |
-| `teal` | `#00A4A4` |
-| `green` | `#10AF2E` |
-| `lime` | `#A4C400` |
+| Palette | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 |
+|---|---|---|---|---|---|---|---|---|---|
+| `gray` | `#f2f2f2` | `#dedede` | `#c4c4c5` | `#a4a4a6` | `#868688` | `#69696b` | `#4d4d4f` | `#333334` | `#1a1a1b` |
+| `yellow` | `#fef1d2` | `#fcda8b` | `#eabe4f` | `#c99e2c` | `#a68015` | `#82640e` | `#604a0f` | `#3f310e` | `#211a09` |
+| `orange` | `#fcefe5` | `#f8d7bc` | `#f8b47a` | `#e78b30` | `#c06f19` | `#98560e` | `#703f0d` | `#4a2a0b` | `#271607` |
+| `red` | `#faefed` | `#f7d5d1` | `#f9aea7` | `#fd746c` | `#f6192d` | `#c40d20` | `#901119` | `#5f1213` | `#320b0a` |
+| `violet` | `#f9eef7` | `#f3d2ee` | `#efa9e6` | `#eb6adf` | `#c64ebc` | `#9c3b94` | `#732c6d` | `#4b1f47` | `#281125` |
+| `purple` | `#f2f0f7` | `#e1daef` | `#cabce8` | `#af94e1` | `#976adb` | `#7b45c2` | `#5a348e` | `#3b245d` | `#1f1331` |
+| `indigo` | `#eff1f9` | `#d6ddf6` | `#b3c1f8` | `#899cfd` | `#6272ff` | `#4639ff` | `#3404d9` | `#20138d` | `#0f0f4a` |
+| `blue` | `#eff2f7` | `#d5dfee` | `#b1c5e6` | `#83a6df` | `#5485d8` | `#2563ca` | `#0d46a1` | `#042d71` | `#05183c` |
+| `teal` | `#d0fcfb` | `#7ff4f4` | `#50dcdb` | `#24bbbb` | `#009a9a` | `#007979` | `#0a5958` | `#0e3a3a` | `#091f1e` |
+| `green` | `#e0fbdf` | `#9bf99c` | `#53e75f` | `#2bc53f` | `#0ea22a` | `#077f1e` | `#0e5e19` | `#0f3e13` | `#0a200b` |
+| `lime` | `#e7fdab` | `#d0ed74` | `#b5d447` | `#97b31f` | `#7a9200` | `#5f7300` | `#465407` | `#2e380b` | `#181d08` |
 
-Each palette produces nine keys: `{name}-100` through `{name}-900`.
+Each palette produces nine keys: `{name}-100` through `{name}-900`. `gray` is
+achromatic — its seed uses almost none of the gamut, so the whole ladder stays
+neutral without a special case.
 
 ## Text colour
 
@@ -272,6 +323,28 @@ Override `$colors` and `$palettes` in your own config before importing Sulphuris
     // keep built-ins by merging, or list only what you need
     gray:   #888888,
     brand:  #0057ff,       // custom palette → brand-100…brand-900
+  )
+);
+```
+
+A seed contributes hue and saturation; its lightness is replaced by the grade's,
+so `brand-500` is not `#0057ff`. Pick the seed for how *saturated* the family
+should be — `#0057ff` is near the edge of sRGB, so the ladder comes out vivid;
+a duller blue gives a duller ladder at the same lightnesses. If a specific hex
+has to survive verbatim, that is what a `$colors` entry is for.
+
+To shift the whole system rather than one palette, override `$palette-grades` —
+the ladder is shared, so every palette moves together and the contrast table
+above moves with it:
+
+```scss
+@use 'sulphuris/config' with (
+  // grade: (OkLCh lightness, chroma weight)
+  $palette-grades: (
+    100: (97%, 0.4),   // paler, calmer tints
+    200: (92%, 0.6),
+    // …
+    900: (18%, 0.7)    // deeper floor
   )
 );
 ```

@@ -53,6 +53,6 @@
     "build": "npx poops -b",
     "lint": "stylelint \"src/**/*.scss\"",
     "typecheck": "tsc --noEmit",
-    "test": "npm run typecheck && npm run build && node script/check-grid-css.mjs && node script/check-utility-css.mjs"
+    "test": "npm run typecheck && npm run build && node script/check-grid-css.mjs && node script/check-utility-css.mjs && node script/check-palette-css.mjs"
   }
 }

@@ -81,7 +81,7 @@ Pattern: `.border-{color}` / `.border-{color}-{grade}`
 .border-primary      → border-color: var(--color-primary)
 ```
 
-**Palette colours** (`$palettes`) — each colour generates grades 100–900 (500 = base):
+**Palette colours** (`$palettes`) — each seed generates grades 100–900 on a [shared lightness ladder](../color/#how-a-palette-is-generated); `300`/`400` are the border grades:
 
 ```
 .border-gray-500     → border-color: var(--color-gray-500)

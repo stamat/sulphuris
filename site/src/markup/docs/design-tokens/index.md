@@ -32,7 +32,7 @@ Everything a project needs to brand Sulphuris lives in a handful of maps:
 $sizes:        0, 4, 8, 16, 24, 32, 48, 64;     // spacing / sizing scale
 $breakpoints:  ('lg': 1024px, 'md': 768px, 'sm': 480px);
 $colors:       (foreground: #1a1a1d, background: #fff, primary: #824f2d);
-$palettes:     (blue: #0f4eb3, gray: #8c8c8e);  // each expands to 100–900
+$palettes:     (blue: #0f4eb3, gray: #8c8c8e);  // each seeds a 100–900 ladder
 $typography:   ( 'h1, .h1': (desktop: (96px, -1.5px, 1, bold)), … );
 $border-radiuses: 0, 4, 6, 8, 16, 24, 32;
 ```

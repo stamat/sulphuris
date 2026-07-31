@@ -221,14 +221,14 @@ const customProps = (selector) => {
 }
 
 const rootProps = customProps(':root')
-assert.equal(rootProps.get('--color-danger'), '#e41328', '--color-danger is the light-mode red')
+assert.equal(rootProps.get('--color-danger'), '#c40d20', '--color-danger is the light-mode red')
 assert.equal(rootProps.get('--danger'), 'var(--color-danger)', '$color-aliases emits a pointer, not a copy')
 assert.equal(rootProps.get('--info'), 'var(--color-info)', 'every alias resolves through its --color-* source')
 
 // Regex, not the literal from $color-modes-selector: the quotes around `dark`
 // do not survive the compile.
 const darkProps = customProps(/data-color-scheme=["']?dark/)
-assert.equal(darkProps.get('--color-danger'), '#ef717e', 'dark mode re-picks the colour the alias points at')
+assert.equal(darkProps.get('--color-danger'), '#fd746c', 'dark mode re-picks the colour the alias points at')
 assert.ok(!darkProps.has('--danger'), 'aliases track a colour mode through var(), so they are never re-emitted per mode')
 
 console.log(`[check] utilities ok: ${Object.keys(expected).length} assertions, ${Object.keys(aliasExpected).length} alias assertions, ${transforms.length} transform selectors, ${queries.size} media queries`)
