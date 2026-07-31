@@ -312,6 +312,14 @@
     border-bottom: 0;
   }
 }
+:root {
+  --radius: 0.25rem;
+}
+
+.rounded {
+  border-radius: var(--radius);
+}
+
 .round {
   border-radius: 50%;
 }

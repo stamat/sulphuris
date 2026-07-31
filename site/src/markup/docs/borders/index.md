@@ -111,6 +111,18 @@ Examples:
 .rounded-32      → border-radius: 2rem      (32px)
 ```
 
+**The radius token:**
+
+```
+.rounded         → border-radius: var(--radius)   (0.25rem by default)
+```
+
+Bare `.rounded` reads the `--radius` custom property — the component corner
+radius, seeded from [`$border-radius`](../configuration/), which is an alias
+into a step of `$border-radiuses`. Re-declare `--radius` under any scope to
+retheme every `.rounded` corner at runtime; see
+[Design Tokens](../design-tokens/).
+
 Radii convert under [`$rem-units`](../configuration/#feature-flags) — a curve is
 antialiased, so the pixel-snapping problem that keeps border *widths* in px does
 not apply, and a corner on a box whose padding and text grew should grow with

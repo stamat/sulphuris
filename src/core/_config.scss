@@ -66,6 +66,11 @@ $z-layers: (
 
 $border-sizes: 2,3,4,6,8 !default;
 $border-radiuses: 0,4,6,8,16,24,32 !default;
+// The component corner radius: emitted as the `--radius` custom property and
+// read by `.rounded`. An alias, not a new value — same rule as $size-aliases
+// and $color-aliases: point it at a step $border-radiuses already carries, or
+// the build warns. See style/_border.scss.
+$border-radius: 4 !default;
 
 /*
  * ORIENTATIONS - 'orientation label': (property)

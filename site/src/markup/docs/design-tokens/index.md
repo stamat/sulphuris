@@ -2,7 +2,7 @@
 layout: poops-docs-theme/docs
 title: Design Tokens
 navTitle: Design Tokens
-description: How Sulphuris expresses design tokens — the config maps are your compile-time tokens, and colours are additionally emitted as runtime CSS custom properties you can consume anywhere.
+description: How Sulphuris expresses design tokens — the config maps are your compile-time tokens, and colours, fonts, shadows, transitions and the radius are additionally emitted as runtime CSS custom properties you can consume anywhere.
 order: 16
 keywords: ["design tokens", "tokens", "css variables", "custom properties", "config", "style dictionary", "figma", "poops"]
 ---
@@ -17,12 +17,16 @@ them.
 
 There are two flavours of token in Sulphuris, and the distinction matters:
 
-- **Compile-time tokens** — sizes, spacing, breakpoints, typography, borders.
+- **Compile-time tokens** — sizes, spacing, breakpoints, type scale, borders.
   These are baked into the generated class values at build time. `.p-16` ships
   as `padding: 16px`, not `padding: var(--space-16)`.
-- **Runtime tokens** — colours. Every colour key is *also* emitted as a
-  `--color-*` CSS custom property on `:root`, so it can be re-themed live (dark
-  mode, per-section overrides) without recompiling. See [[color]].
+- **Runtime tokens** — the themeable layer. Colours (`--color-*`, see
+  [[color]]), font stacks (`--font-heading`, `--font-paragraph`,
+  `--font-mono`), shadows (`--shadow-*`), transitions
+  (`--transition-duration`, `--transition-easing`) and the component radius
+  (`--radius`) are *also* emitted as CSS custom properties on `:root`, so they
+  can be re-themed live (dark mode, per-section overrides) without
+  recompiling.
 
 ## The config maps are the tokens
 
@@ -56,9 +60,8 @@ your tokens — see [Getting Started](../getting-started/) and
 
 ## Runtime colour tokens
 
-Colours are the one token family exposed as live CSS custom properties. Each
-key in `$colors` and each generated palette grade becomes a `--color-*` variable
-on `:root`:
+Colours are the biggest runtime family. Each key in `$colors` and each
+generated palette grade becomes a `--color-*` variable on `:root`:
 
 ```css
 :root {
@@ -90,10 +93,39 @@ re-emits the `--color-*` set (see [[color]]):
 .brand-section         { --color-primary: #ff3366; }
 ```
 
+## The other runtime tokens
+
+Beyond colour, the themeable single-value tokens ship as custom properties on
+`:root` too, and the utilities that carry them read through `var()`:
+
+```css
+:root {
+  --font-heading:        Roboto, sans-serif;   /* headings, .font-heading  */
+  --font-paragraph:      Nunito, sans-serif;   /* body, .font-paragraph    */
+  --font-mono:           monospace;            /* .font-mono, prose code   */
+  --transition-duration: 250ms;                /* .transition*, transition() defaults */
+  --transition-easing:   cubic-bezier(0.86, 0, 0.07, 1);
+  --shadow-sm:           0 1px 2px rgb(0 0 0 / 5%);  /* …one per $shadows key, .shadow-* */
+  --radius:              0.25rem;              /* .rounded — see below */
+}
+```
+
+`--radius` is the component corner radius. Its Sass side, `$border-radius`, is
+an alias into `$border-radiuses` — it points at a step the `.rounded-*` ladder
+already carries (the build warns otherwise), so the token can't drift off the
+scale. Re-declare any of these under a scope to retheme it, exactly like a
+colour:
+
+```css
+.marketing-hero { --font-heading: 'Archivo Black', sans-serif; }
+.compact-ui     { --radius: 0; --transition-duration: 100ms; }
+```
+
 > [!NOTE]
-> Only colours are runtime tokens today. Spacing, sizing, typography and
-> breakpoints are compile-time — if you need those as live CSS variables, emit
-> your own `--space-*` set alongside Sulphuris (see below).
+> Spacing, sizing, the type *scale* and breakpoints remain compile-time — the
+> value is the class name (`.p-16` is 16px by definition), so a live variable
+> would have nothing honest to vary. If you need spacing as live CSS
+> variables, emit your own `--space-*` set alongside Sulphuris (see below).
 
 ## Consuming tokens in your SCSS
 
@@ -168,10 +200,10 @@ Prefer a single map to spread? Set `"tokenOutput": "map"` in the poops options
 and read it with `map.get(c.$color, primary)`.
 
 **Supplement** — emit token families Sulphuris bakes in at compile time
-(spacing, sizing, typography) as live custom properties *alongside* the
-`--color-*` set, straight from the same JSON. This is the poops-driven way to
-get the `--space-*` / `--font-*` variables the
-[note above](#runtime-colour-tokens) says Sulphuris does not emit itself:
+(spacing, sizing, the type scale) as live custom properties *alongside* the
+built-in `--color-*` / `--font-*` / `--shadow-*` set, straight from the same
+JSON. This is the poops-driven way to get the `--space-*` variables the
+[note above](#the-other-runtime-tokens) says Sulphuris does not emit itself:
 
 ```scss
 @use "token:spacing" as s;

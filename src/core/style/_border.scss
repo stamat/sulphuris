@@ -1,6 +1,8 @@
 @use '../config';
 @use '../utils/generators';
 
+@use 'sass:list';
+
 // Utility classes intentionally @extend the concrete `.border` class and reset
 // individual sides with `none`, so the sass-guidelines defaults don't apply here.
 // stylelint-disable scss/at-extend-no-missing-placeholder, declaration-property-value-disallowed-list
@@ -59,6 +61,22 @@
 @include generators.utility-class-generator('border', 'border-width', config.$border-sizes, 'px', '', $rem: false);
 @include generators.utility-class-generator('border', 'border-style', ('solid', 'dashed', 'dotted'), '', '', false, false);
 @include generators.utility-class-generator('border-', 'border', (0), '', '', config.$orientations);
+
+// The radius token. `--radius` is the runtime knob, `.rounded` the utility
+// that reads it. $border-radius is an alias into $border-radiuses — a step of
+// the same ladder `.rounded-*` is generated from — so the token can't drift
+// off the scale. Converts to rem with the rest of the radii below.
+@if not list.index(config.$border-radiuses, config.$border-radius) {
+  @warn '🜍 `$border-radius` points at `#{config.$border-radius}`, which is not a step of `$border-radiuses`! Please check your `_config.scss`.';
+}
+
+:root {
+  --radius: #{generators.utility-value(config.$border-radius, 'px')};
+}
+
+.rounded {
+  border-radius: var(--radius);
+}
 
 .round {
   border-radius: 50%;
