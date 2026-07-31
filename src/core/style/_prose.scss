@@ -123,7 +123,7 @@ $muted: color-mix(in srgb, #{helpers.color('foreground')} 65%, transparent);
   }
 
   :is(pre, code, kbd, samp) {
-    font-family: config.$mono-font;
+    font-family: var(--font-mono);
   }
 
   // Inline code only. A `code` inside `pre` is the block's own text, and would

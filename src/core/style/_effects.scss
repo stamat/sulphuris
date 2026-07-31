@@ -1,12 +1,23 @@
 @use '../config';
 @use '../utils/generators';
 
-// Box shadow. `.shadow-md` => box-shadow: 0 4px 6px -1px rgb(0 0 0 / 10%)
+// Runtime-tunable effect tokens, same pattern as `--color-*` and `--font-*`.
+// The easing is emitted resolved: a $custom-easings key is a Sass-side name,
+// so `--transition-easing` carries the cubic-bezier itself.
+:root {
+  --transition-duration: #{config.$default-transition-duration};
+  --transition-easing: #{generators.get-transition-fn(config.$default-transition-easing)};
+
+  @include generators.css-variable-generator('shadow', config.$shadows);
+}
+
+// Box shadow. `.shadow-md` => box-shadow: var(--shadow-md)
 @include generators.utility-class-generator((
   prefix: 'shadow',
   property: 'box-shadow',
   values: config.$shadows,
-  responsive: false
+  responsive: false,
+  variable: 'shadow'
 ));
 
 // Opacity. `.opacity-50` => opacity: 0.5

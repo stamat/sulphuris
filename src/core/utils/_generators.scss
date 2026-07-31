@@ -683,7 +683,10 @@ $breakpoints: config.$breakpoints;
   @return $easing;
 }
 
-@function generate-transition($properties, $durations: config.$default-transition-duration, $easings: config.$default-transition-easing) {
+// Defaults read the `--transition-*` custom properties emitted by
+// style/_effects.scss, so a bare `transition(...)` call is
+// runtime-tunable. Explicit durations/easings behave as before.
+@function generate-transition($properties, $durations: var(--transition-duration), $easings: var(--transition-easing)) {
   $transition: '';
 
   @if meta.type-of($properties) == 'list' {
@@ -718,6 +721,6 @@ $breakpoints: config.$breakpoints;
   @return string.unquote($transition);
 }
 
-@mixin transition($properties, $durations: config.$default-transition-duration, $easings: config.$default-transition-easing) {
+@mixin transition($properties, $durations: var(--transition-duration), $easings: var(--transition-easing)) {
   transition: generate-transition($properties, $durations, $easings);
 }

@@ -7,6 +7,15 @@
 
 //stylelint-disable color-named
 
+// The runtime-tunable typography tokens. Same deal as `--color-*` in
+// style/_color.scss: the Sass variable stays the compile-time knob, the custom
+// property is the theme's. Everything below reads through these.
+:root {
+  --font-heading: #{config.$heading-font};
+  --font-paragraph: #{config.$paragraph-font};
+  --font-mono: #{config.$mono-font};
+}
+
 // No absolute root font-size. An author `font-size` on `html` overrides the
 // reader's browser default-size setting, which would pin every rem in the
 // stylesheet — including everything `$rem-units` emits — back to a fixed px and
@@ -27,7 +36,7 @@ html {
 
 body {
   color: helpers.color('foreground');
-  font-family: config.$paragraph-font;
+  font-family: var(--font-paragraph);
   background-color: helpers.color('background');
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -41,19 +50,19 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: config.$heading-font;
+  font-family: var(--font-heading);
 }
 
 .font-paragraph {
-  font-family: config.$paragraph-font !important;
+  font-family: var(--font-paragraph) !important;
 }
 
 .font-heading {
-  font-family: config.$heading-font !important;
+  font-family: var(--font-heading) !important;
 }
 
 .font-mono {
-  font-family: config.$mono-font !important;
+  font-family: var(--font-mono) !important;
 }
 
 // Weight lives under `font-`, matching the CSS property. The `.text-*` aliases

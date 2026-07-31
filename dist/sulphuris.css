@@ -415,7 +415,7 @@ button.reset,
 
 @media screen and (prefers-reduced-motion: no-preference) {
   .btn {
-    transition:  color 250ms cubic-bezier(0.86, 0, 0.07, 1), background 250ms cubic-bezier(0.86, 0, 0.07, 1);
+    transition:  color var(--transition-duration) var(--transition-easing), background var(--transition-duration) var(--transition-easing);
   }
 }
 .btn-inverted {
@@ -1909,13 +1909,19 @@ ol.reset {
   text-indent: 0;
 }
 
+:root {
+  --font-heading: Roboto, sans-serif;
+  --font-paragraph: Nunito, sans-serif;
+  --font-mono: monospace;
+}
+
 html {
   line-height: 1.6;
 }
 
 body {
   color: var(--color-foreground);
-  font-family: "Nunito", sans-serif;
+  font-family: var(--font-paragraph);
   background-color: var(--color-background);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2024,19 +2030,19 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto", sans-serif;
+  font-family: var(--font-heading);
 }
 
 .font-paragraph {
-  font-family: "Nunito", sans-serif !important;
+  font-family: var(--font-paragraph) !important;
 }
 
 .font-heading {
-  font-family: "Roboto", sans-serif !important;
+  font-family: var(--font-heading) !important;
 }
 
 .font-mono {
-  font-family: monospace !important;
+  font-family: var(--font-mono) !important;
 }
 
 .font-thin {
@@ -3209,24 +3215,34 @@ h6 {
     rotate: 180deg;
   }
 }
+:root {
+  --transition-duration: 250ms;
+  --transition-easing: cubic-bezier(0.86, 0, 0.07, 1);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-none: none;
+}
+
 .shadow-sm {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .shadow-md {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .shadow-xl {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xl);
 }
 
 .shadow-none {
-  box-shadow: none;
+  box-shadow: var(--shadow-none);
 }
 
 .opacity-0 {
@@ -3299,16 +3315,16 @@ h6 {
 
 @media (prefers-reduced-motion: no-preference) {
   .transition {
-    transition: all 250ms cubic-bezier(0.86, 0, 0.07, 1);
+    transition: all var(--transition-duration) var(--transition-easing);
   }
   .transition-colors {
-    transition:  color 250ms cubic-bezier(0.86, 0, 0.07, 1), background-color 250ms cubic-bezier(0.86, 0, 0.07, 1), border-color 250ms cubic-bezier(0.86, 0, 0.07, 1);
+    transition:  color var(--transition-duration) var(--transition-easing), background-color var(--transition-duration) var(--transition-easing), border-color var(--transition-duration) var(--transition-easing);
   }
   .transition-transform {
-    transition: transform 250ms cubic-bezier(0.86, 0, 0.07, 1);
+    transition: transform var(--transition-duration) var(--transition-easing);
   }
   .transition-opacity {
-    transition: opacity 250ms cubic-bezier(0.86, 0, 0.07, 1);
+    transition: opacity var(--transition-duration) var(--transition-easing);
   }
 }
 .transition-none {
@@ -3375,7 +3391,7 @@ h6 {
     background-color: color-mix(in srgb, var(--color-foreground) 5%, transparent);
   }
   .prose :is(pre, code, kbd, samp) {
-    font-family: monospace;
+    font-family: var(--font-mono);
   }
   .prose :not(pre) > code {
     padding: 0.15em 0.4em;
