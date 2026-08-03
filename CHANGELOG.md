@@ -42,18 +42,30 @@ or it ships a second look, and Sulphuris answered `--danger` but not `--bg`,
 `--fg` or `--border` — so a component landed half-themed, on a background it
 had guessed. Dark mode missed it entirely: Sulphuris keys off
 `[data-color-scheme]`, most everything else off `[data-theme]`, and a page
-toggling one left anything watching the other in light mode.
+toggling one left anything watching the other in light mode. The colour that
+should have answered `--accent` was called `link`, which is one of its uses and
+not the role.
 
 ### Added
 
 - Five more entries in the default `$color-aliases`: `bg`, `fg`, `fg-muted`,
   `border` and `accent`, alongside the four status roles. `fg-muted` and
   `border` point at `gray-600` and `gray-300` rather than at seeds of their own,
-  so `$palette-grades` carries them into dark mode unaided; `accent` points at
-  `link`, not `primary`, because a focus ring has a contrast floor a brand
-  colour does not.
+  so `$palette-grades` carries them into dark mode unaided.
 
 ### Changed
+
+- **The `$colors` key `link` is now `accent`**, in `$colors` and in the `dark`
+  entry of `$color-modes`. Same hexes, same contrast floor — the old name
+  described a hyperlink while the colour is what every focus ring and active
+  control takes, which left `primary` looking like the accent it cannot be.
+  `.prose a` follows it.
+
+  Nothing breaks yet: `--color-link` is emitted as `var(--color-accent)` and
+  `.text-link`, `.bg-link` and `.border-link` still resolve through it, so a
+  `$color-modes` override of `accent` moves both. **Rename your uses to
+  `accent` — the `link` spellings go in the next major.** A project that set
+  its own `$colors` without an `accent` key loses `--color-link` along with it.
 
 - `$color-modes-selector` takes a list, and defaults to
   `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now

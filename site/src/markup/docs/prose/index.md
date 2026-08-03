@@ -24,7 +24,7 @@ Everything is scoped under the class, so a tag rule can never reach the rest of 
 | Target | Rules |
 |---|---|
 | `.prose` | `max-width: 45rem` (`$prose-measure`, 720px), `overflow-wrap: break-word` |
-| `a` | `link` colour, `underline` — dropped on hover |
+| `a` | `accent` colour, `underline` — dropped on hover |
 | `p, ul, ol, dl, pre, table, figure, blockquote` | `margin: 0 0 1em` |
 | `h1`–`h6` | `margin-top: 1.25em` |
 | `li` | `margin: 0.25em 0`, nested lists lose the bottom gap |
@@ -134,12 +134,12 @@ Inside the layer, ordinary specificity still applies — which is how `.prose pr
 
 Admonitions, syntax highlighting colors, copy buttons and heading anchors are not here. Each needs markup or JavaScript shipped alongside it, which is a docs theme's job — see [poops-docs-theme](https://github.com/stamat/poops-docs-theme) for those. `.prose` covers what a plain markdown renderer already emits.
 
-Anchors outside `.prose` are left alone. Sulphuris sets no global `a` rule — underlining every link in an app's nav is not a default a utility library gets to pick — so the link treatment below stops at the block's edge. `.text-link` puts the same colour anywhere else.
+Anchors outside `.prose` are left alone. Sulphuris sets no global `a` rule — underlining every link in an app's nav is not a default a utility library gets to pick — so the link treatment below stops at the block's edge. `.text-accent` puts the same colour anywhere else.
 
 ## Links and inline code
 
 ```scss
-a           { color: var(--color-link); text-decoration: underline; }
+a           { color: var(--color-accent); text-decoration: underline; }
 a:hover     { text-decoration: none; }
 ```
 

@@ -67,11 +67,20 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
 ));
 
 // `link` is what `accent` was called before 4.1. A pointer rather than a second
-// seed in $colors, so the two cannot drift and a $color-modes override of
-// `accent` moves both — the mode loop below emits `--color-accent` per mode and
-// never sees this. Emitted unconditionally, so a project that renamed `accent`
-// away in its own $colors gets `--color-link` resolving to nothing; that is the
-// same breakage as renaming any other key, and the alternative is guessing.
+// seed in $colors, so the two cannot drift: the mode loop below emits
+// `--color-accent` per mode and never sees this, and on `:root` — where a mode
+// selector normally lands — that resolves to the mode's value.
+//
+// It does not follow a mode applied to a nested element, because the pointer is
+// substituted where it is declared: `--color-accent` is overridden inside the
+// subtree, `--color-link` was already computed on `:root` and inherits the
+// outer value down. `.text-link` shows the outer accent there and `.text-accent`
+// the inner one. That gap is the deprecation, not a bug to route around — the
+// fix is renaming the use.
+//
+// Emitted unconditionally, so a project that renamed `accent` away in its own
+// $colors gets `--color-link` resolving to nothing; that is the same breakage as
+// renaming any other key, and the alternative is guessing.
 :root {
   --color-link: var(--color-accent);
 }

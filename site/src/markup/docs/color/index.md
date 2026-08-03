@@ -367,7 +367,7 @@ mirror: grade 600 is the AA text grade against `background` on either ground,
 **The cost is that a grade is no longer an absolute colour.** Reach for
 `bg-gray-900` wanting near-black and dark mode hands you near-white. If a
 colour has to stay put across themes, that is what a flat `$colors` entry is
-for — which is why `link` is one. Drop the `grades` key to keep the light
+for — which is why `accent` is one. Drop the `grades` key to keep the light
 ladder in both modes, and re-pick every grade per mode by hand instead.
 
 A `palettes` key may sit alongside to re-seed the hues as well; omitted, the
