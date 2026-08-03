@@ -34,7 +34,7 @@ $muted: color-mix(in srgb, #{helpers.color('foreground')} 65%, transparent);
   // cue for anything distinguished by hue. Dropping the underline on hover is
   // the feedback, so the cue is never absent while the link is at rest.
   a {
-    color: helpers.color('link');
+    color: helpers.color('accent');
     text-decoration: underline;
   }
 

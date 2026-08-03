@@ -35,4 +35,29 @@ On `script/publish`, `script/changelog` cuts this section into a released entry
 in the same commit as the version bump, and the entry becomes the body of the
 GitHub release verbatim.
 
-## [Unreleased]
+## [Unreleased] — a dropped-in component picks up the palette
+
+An embedded element has no palette of its own. It reads bare names off the page
+or it ships a second look, and Sulphuris answered `--danger` but not `--bg`,
+`--fg` or `--border` — so a component landed half-themed, on a background it
+had guessed. Dark mode missed it entirely: Sulphuris keys off
+`[data-color-scheme]`, most everything else off `[data-theme]`, and a page
+toggling one left anything watching the other in light mode.
+
+### Added
+
+- Five more entries in the default `$color-aliases`: `bg`, `fg`, `fg-muted`,
+  `border` and `accent`, alongside the four status roles. `fg-muted` and
+  `border` point at `gray-600` and `gray-300` rather than at seeds of their own,
+  so `$palette-grades` carries them into dark mode unaided; `accent` points at
+  `link`, not `primary`, because a focus ring has a contrast floor a brand
+  colour does not.
+
+### Changed
+
+- `$color-modes-selector` takes a list, and defaults to
+  `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now
+  emits under both names. A bare string still works and still emits one
+  selector, so a project that set its own is untouched. **Rules under
+  `$color-modes` gain a second selector**: if you match on the emitted CSS,
+  match on the list.

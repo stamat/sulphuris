@@ -257,11 +257,15 @@ $colors: (
   black: #1a1a1d,
   white: #fff,
   primary: #f6c026,
-  // Its own token rather than `primary`, because a link has a contrast floor a
-  // brand color does not: `primary` is free to be a yellow that only ever sits
-  // behind text, while this has to stay readable as text on `background`.
-  // 8.6:1 here, 8:1 on the dark counterpart below.
-  link: #0f4eb3,
+  // Its own token rather than `primary`, because everything that reads it —
+  // links, focus rings, an active control — is foreground and has a contrast
+  // floor a brand color does not: `primary` is free to be a yellow that only
+  // ever sits behind text, while this has to stay readable as text on
+  // `background`. 8.6:1 here, 8:1 on the dark counterpart below.
+  // Called `link` before 4.1, which named one of those uses and read as wrong
+  // for the others; `--color-link` and `.text-link` still resolve, see
+  // style/_color.scss.
+  accent: #0f4eb3,
   // Status roles. Every value is a grade that $palettes already generates —
   // these name one, they do not add a hue, so a project that retunes `red`
   // and re-picks `danger` from the new ladder stays in one palette.
@@ -276,7 +280,7 @@ $colors: (
   info: #2563ca      // blue-600,   5.7:1
 );
 
-// src/core/_config.scss:183
+// src/core/_config.scss:187
 $palettes: (
   gray: #8c8c8e,
   yellow: #f6c026,
@@ -311,12 +315,28 @@ Each palette entry generates `.text-gray-100` … `.text-gray-900` (and matching
 <!-- config: color-aliases -->
 
 ```scss
-// src/core/_config.scss:219
+// src/core/_config.scss:223
 $color-aliases: (
   danger: danger,
   success: success,
   warning: warning,
-  info: info
+  info: info,
+  // The layout half of the same bargain. The status roles were aliased because
+  // a theme reaches for `--danger`; a theme that paints anything at all also
+  // reaches for `--bg` and `--fg`, and an embedded component more so — it has
+  // no palette of its own and has to read the page's or ship a second look.
+  bg: background,
+  fg: foreground,
+  // Grades, not $colors names, because there is no `muted` or `border` seed and
+  // neither needs one: $palette-grades flips the ladder per mode, so `gray-300`
+  // is a faint border on white and a faint border on #1a1a1d without this
+  // stating both. A seed would have to.
+  fg-muted: gray-600,
+  border: gray-300,
+  // Not `primary`. What reads `--accent` is a focus ring or an active control —
+  // foreground, with a contrast floor that a brand colour free to be a yellow
+  // does not carry.
+  accent: accent
 );
 ```
 
@@ -336,8 +356,8 @@ time. `()` emits nothing.
 <!-- config: color-modes-selector, color-modes -->
 
 ```scss
-// src/core/_config.scss:226
-$color-modes-selector: '[data-color-scheme="VALUE"]';
+// src/core/_config.scss:259
+$color-modes-selector: ('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]');
 $color-modes: (
   dark: (
     colors: (
@@ -346,7 +366,7 @@ $color-modes: (
       black: #1a1a1d,
       white: #fff,
       primary: #3f00ff,
-      link: #8ab4ff,
+      accent: #8ab4ff,
       // Same roles, same seeds, same grade — 600 here as on white. The hexes
       // differ because `grades` below flips the ladder, so `red-600` resolves
       // against this ground instead of against #fff. Contrast on #1a1a1d:
@@ -392,26 +412,26 @@ palette. `VALUE` in `$color-modes-selector` is replaced with the mode name.
 <!-- config: base-font-size, heading-font, paragraph-font, mono-font, tab-size, line-height, heading-line-height, paragraph-line-height, line-clamps, font-sizes, line-heights -->
 
 ```scss
-// src/core/_config.scss:281
+// src/core/_config.scss:314
 $base-font-size: 16px;
 
-// src/core/_config.scss:283
+// src/core/_config.scss:316
 $heading-font:   'Roboto', sans-serif;
 $paragraph-font: 'Nunito', sans-serif;
 $mono-font:      monospace;
 
-// src/core/_config.scss:290
+// src/core/_config.scss:323
 $tab-size: 2;
 
-// src/core/_config.scss:312
+// src/core/_config.scss:345
 $line-height:           map.get($line-heights, 'normal') or 1.6;
 $heading-line-height:   map.get($line-heights, 'tight') or 1.25;
 $paragraph-line-height: map.get($line-heights, 'normal') or 1.6;
 
-// src/core/_config.scss:317
+// src/core/_config.scss:350
 $line-clamps: 1,2,3,4,5,6;
 
-// src/core/_config.scss:323
+// src/core/_config.scss:356
 $font-sizes: 12,14,16,20,24,32,48,64,96;
 $line-heights: (
   1: 1,
@@ -444,7 +464,7 @@ headings may carry separate `desktop` / `mobile` values that switch at
 <!-- config: typography -->
 
 ```scss
-// src/core/_config.scss:352
+// src/core/_config.scss:385
 $typography: (
   'h1, .h1': (
     desktop: (48px, null, $heading-line-height, bold),
@@ -483,7 +503,7 @@ defaults for markup you cannot put classes on. See [Prose](../prose/):
 <!-- config: prose-measure -->
 
 ```scss
-// src/core/_config.scss:381
+// src/core/_config.scss:414
 $prose-measure: 720px;
 ```
 
@@ -492,12 +512,12 @@ $prose-measure: 720px;
 <!-- config: custom-easings, default-transition-duration, default-transition-easing -->
 
 ```scss
-// src/core/_config.scss:383
+// src/core/_config.scss:416
 $custom-easings: (
   'ease-in-out-quint': cubic-bezier(0.86, 0, 0.07, 1)
 );
 
-// src/core/_config.scss:387
+// src/core/_config.scss:420
 $default-transition-duration: 250ms;
 $default-transition-easing:   'ease-in-out-quint';
 ```
@@ -509,7 +529,7 @@ Used by the `transition()` mixin. See [Effects](../effects/).
 <!-- config: shadows -->
 
 ```scss
-// src/core/_config.scss:393
+// src/core/_config.scss:426
 $shadows: (
   'sm': 0 1px 2px rgb(0 0 0 / 5%),
   'md': 0 4px 6px -1px rgb(0 0 0 / 10%),
@@ -529,7 +549,7 @@ The single button primitive (`.btn`) is sized from this map:
 <!-- config: button -->
 
 ```scss
-// src/core/_config.scss:401
+// src/core/_config.scss:434
 $button: (
   height: 56px,
   padding-x: 32px,

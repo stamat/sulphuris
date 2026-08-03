@@ -23,18 +23,23 @@ Every colour key becomes `--color-{name}` on `:root`.
 --color-black:      #1a1a1d;
 --color-white:      #ffffff;
 --color-primary:    #f6c026;
---color-link:       #0f4eb3;
+--color-accent:     #0f4eb3;
 --color-danger:     #e41328;
 --color-success:    #0a691c;
 --color-warning:    #925719;
 --color-info:       #0f4eb3;
 ```
 
-`link` is separate from `primary` because it carries a contrast floor a brand
-colour does not: `primary` only ever sits behind text, `link` has to stay
+`accent` is separate from `primary` because it carries a contrast floor a brand
+colour does not: `primary` only ever sits behind text, `accent` has to stay
 readable *as* text on `background` (8.6:1 light, 8:1 dark). It is what
-[`.prose`](../prose/) colours anchors with, and `.text-link` puts the same
-colour on a link the rest of the app owns.
+[`.prose`](../prose/) colours anchors with, what a focus ring or an active
+control takes, and what `--accent` [aliases to](#aliases).
+
+It was called `link` before 4.1. That named one of its uses and read as wrong
+for the rest, so the key is `accent` now; `--color-link`, `.text-link`,
+`.bg-link` and `.border-link` still resolve, as pointers at `accent` rather than
+as a colour of their own. They will go in the next major.
 
 ### Status colours
 
@@ -59,7 +64,7 @@ white, **400** on the dark ground:
 
 Swapping one for another hue is a one-word change and cannot quietly fail the
 floor: `violet-600` and `teal-600` clear it too, because the grade is what
-carries the contrast. `link` stays a flat `$colors` entry rather than a grade —
+carries the contrast. `accent` stays a flat `$colors` entry rather than a grade —
 it holds a higher floor than the roles do (8.6:1 light, 8:1 dark).
 
 For the tinted background that usually sits behind one of these, mix it down at
@@ -68,8 +73,10 @@ use site rather than adding a token — `background: color-mix(in srgb, var(--co
 ## Aliases
 
 `$color-aliases` emits a second, unprefixed custom property for a colour that
-already exists. The status roles ship aliased, because the stylesheets most
-likely to want them are themes, and themes tend not to namespace:
+already exists. Nine ship aliased, because the stylesheets most likely to want
+them are themes and embedded components, and neither namespaces — a component
+dropped onto the page has no palette of its own, so it reads the page's or
+ships a second look:
 
 ```css
 :root {
@@ -77,8 +84,22 @@ likely to want them are themes, and themes tend not to namespace:
   --success: var(--color-success);
   --warning: var(--color-warning);
   --info:    var(--color-info);
+
+  --bg:       var(--color-background);
+  --fg:       var(--color-foreground);
+  --fg-muted: var(--color-gray-600);
+  --border:   var(--color-gray-300);
+  --accent:   var(--color-accent);
 }
 ```
+
+`fg-muted` and `border` point at grades rather than at seeds of their own,
+which is what makes them work in both modes: [`$palette-grades`](#grades) flips
+the ladder, so `gray-300` is a faint border on white and a faint border on
+`#1a1a1d` without either being written down. `accent` points at `accent` and not
+at `primary` because what reads it is a focus ring or an active control —
+foreground, with a contrast floor. `primary` is free to be a yellow that only
+sits behind text; a ring is not.
 
 The left side is the property to emit, the right side the key it reads from —
 and that key can be a `$colors` name or a palette grade:
@@ -271,18 +292,25 @@ Colours that change with the viewport are rare; colours that change with a theme
 
 ## Dark mode
 
-`$color-modes` defines colour overrides keyed by mode name. The selector template is `$color-modes-selector: '[data-color-scheme="VALUE"]'` — `VALUE` is replaced with the mode key.
+`$color-modes` defines colour overrides keyed by mode name. The selector template is `$color-modes-selector`, where `VALUE` is replaced with the mode key. It ships as a list of two:
 
-The built-in `dark` mode re-emits `$colors` overrides under `[data-color-scheme="dark"]`:
+```scss
+$color-modes-selector: ('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]');
+```
+
+`[data-color-scheme]` is the name Sulphuris uses, and the better one — it echoes the CSS `color-scheme` property. `[data-theme]` is the name most of the rest of the world uses. A page that toggles one while the stylesheet watches the other stays light in half its parts, so both are answered rather than one being picked: an embedded component brings its own convention and cannot be asked to drop it. Set a bare string to answer only one.
+
+The built-in `dark` mode re-emits `$colors` overrides under both:
 
 ```css
-[data-color-scheme="dark"] {
+[data-color-scheme="dark"],
+[data-theme="dark"] {
   --color-foreground: #ffffff;
   --color-background: #1a1a1d;
   --color-black:      #1a1a1d;
   --color-white:      #ffffff;
   --color-primary:    #3f00ff;
-  --color-link:       #8ab4ff;
+  --color-accent:     #8ab4ff;
   --color-danger:     #fd746c;
   --color-success:    #2bc53f;
   --color-warning:    #e78b30;

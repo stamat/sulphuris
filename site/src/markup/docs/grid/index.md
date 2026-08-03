@@ -89,9 +89,10 @@ The base `.col-N` (no breakpoint) applies at all widths. Layer responsive classe
 <div class="col-12 col-md-6 col-lg-4">…</div>
 ```
 
-Full responsive example:
+Full responsive example — the twelve columns are drawn behind it, so press the width
+buttons and watch each card land on twelve, six and four of them:
 
-<!-- demo 1024 -->
+<!-- demo 1024 grid -->
 
 ```html
 <div class="grid grid-gutter container">
@@ -114,7 +115,7 @@ Pushes a column right by adding `margin-left` as a percentage of the parent. Ran
 
 Responsive variants follow the same pattern: `.col-offset-{bp}-N`.
 
-<!-- demo -->
+<!-- demo grid -->
 
 ```html
 <div class="grid grid-gutter">
@@ -128,7 +129,7 @@ Add `.grid-reverse` to a `.grid` row to set `flex-direction: row-reverse`. When 
 
 Flex-only — `flex-direction` does nothing on a `.d-grid` container. Native grid reverses with `direction: rtl` or explicit line placement.
 
-<!-- demo -->
+<!-- demo grid -->
 
 ```html
 <div class="grid grid-gutter grid-reverse">

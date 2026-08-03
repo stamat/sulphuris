@@ -121,11 +121,15 @@ $colors: (
   black: #1a1a1d,
   white: #fff,
   primary: #f6c026,
-  // Its own token rather than `primary`, because a link has a contrast floor a
-  // brand color does not: `primary` is free to be a yellow that only ever sits
-  // behind text, while this has to stay readable as text on `background`.
-  // 8.6:1 here, 8:1 on the dark counterpart below.
-  link: #0f4eb3,
+  // Its own token rather than `primary`, because everything that reads it —
+  // links, focus rings, an active control — is foreground and has a contrast
+  // floor a brand color does not: `primary` is free to be a yellow that only
+  // ever sits behind text, while this has to stay readable as text on
+  // `background`. 8.6:1 here, 8:1 on the dark counterpart below.
+  // Called `link` before 4.1, which named one of those uses and read as wrong
+  // for the others; `--color-link` and `.text-link` still resolve, see
+  // style/_color.scss.
+  accent: #0f4eb3,
   // Status roles. Every value is a grade that $palettes already generates —
   // these name one, they do not add a hue, so a project that retunes `red`
   // and re-picks `danger` from the new ladder stays in one palette.
@@ -220,10 +224,39 @@ $color-aliases: (
   danger: danger,
   success: success,
   warning: warning,
-  info: info
+  info: info,
+  // The layout half of the same bargain. The status roles were aliased because
+  // a theme reaches for `--danger`; a theme that paints anything at all also
+  // reaches for `--bg` and `--fg`, and an embedded component more so — it has
+  // no palette of its own and has to read the page's or ship a second look.
+  bg: background,
+  fg: foreground,
+  // Grades, not $colors names, because there is no `muted` or `border` seed and
+  // neither needs one: $palette-grades flips the ladder per mode, so `gray-300`
+  // is a faint border on white and a faint border on #1a1a1d without this
+  // stating both. A seed would have to.
+  fg-muted: gray-600,
+  border: gray-300,
+  // Not `primary`. What reads `--accent` is a focus ring or an active control —
+  // foreground, with a contrast floor that a brand colour free to be a yellow
+  // does not carry.
+  accent: accent
 ) !default;
 
-$color-modes-selector: '[data-color-scheme="VALUE"]' !default;
+/*
+ * COLOR MODES SELECTOR - one selector, or a list of them
+ *
+ * `[data-color-scheme]` is the name Sulphuris uses and the better one — it
+ * echoes the CSS `color-scheme` property. `[data-theme]` is the name most of
+ * the rest of the world uses, poops-docs-theme and code-preview-element
+ * included. A page toggling one while the stylesheet watches the other stays
+ * light in half its parts, which is why both are answered rather than one
+ * being picked: an embedded component brings its own convention and cannot be
+ * asked to drop it.
+ *
+ * A bare string still works — this is a list only so the default can carry two.
+ */
+$color-modes-selector: ('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]') !default;
 $color-modes: (
   dark: (
     colors: (
@@ -232,7 +265,7 @@ $color-modes: (
       black: #1a1a1d,
       white: #fff,
       primary: #3f00ff,
-      link: #8ab4ff,
+      accent: #8ab4ff,
       // Same roles, same seeds, same grade — 600 here as on white. The hexes
       // differ because `grades` below flips the ladder, so `red-600` resolves
       // against this ground instead of against #fff. Contrast on #1a1a1d:

@@ -66,9 +66,36 @@ $colors: generators.generate-color-palettes(config.$colors, config.$palettes);
   variable: 'color'
 ));
 
+// `link` is what `accent` was called before 4.1. A pointer rather than a second
+// seed in $colors, so the two cannot drift and a $color-modes override of
+// `accent` moves both — the mode loop below emits `--color-accent` per mode and
+// never sees this. Emitted unconditionally, so a project that renamed `accent`
+// away in its own $colors gets `--color-link` resolving to nothing; that is the
+// same breakage as renaming any other key, and the alternative is guessing.
+:root {
+  --color-link: var(--color-accent);
+}
+
+.text-link { color: var(--color-link); }
+.bg-link { background-color: var(--color-link); }
+.border-link { border-color: var(--color-link); }
+
 @if config.$color-modes and list.length(config.$color-modes) > 0 {
   @each $key, $mode in config.$color-modes {
-    $selector: helpers.str-replace(config.$color-modes-selector, 'VALUE', $key);
+    // A list, so one mode can answer to more than one attribute name — see
+    // $color-modes-selector. A bare string iterates once here, which is what
+    // keeps a project that set its own selector working untouched.
+    $selector: '';
+    @each $pattern in config.$color-modes-selector {
+      $one: helpers.str-replace($pattern, 'VALUE', $key);
+
+      @if $selector == '' {
+        $selector: $one;
+      } @else {
+        $selector: '#{$selector}, #{$one}';
+      }
+    }
+
     $mode-colors: map.get($mode, 'colors');
 
     // A mode may re-seed the palettes, re-ladder them, or both. `grades` alone
