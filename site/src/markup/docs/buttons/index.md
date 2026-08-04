@@ -94,12 +94,19 @@ Hover fills with `foreground` and flips `color` to `background`.
 
 ### Combined: `.btn-outline.btn-inverted`
 
-Border and text use `background` color (white on dark surfaces). Hover fills with `background` and sets `color` to `foreground`.
+Border and text use `background` color. Hover fills with `background` and sets `color` to `foreground`.
+
+This one **only works on a dark surface** — it paints itself in the page's own
+background colour, so on the page background it is invisible rather than subtle.
+Put it on `foreground`, on a photograph, or on any fill dark enough to carry it;
+the sample gives it `.bg-foreground` for that reason.
 
 <!-- demo -->
 
 ```html
-<a href="#" class="btn btn-outline btn-inverted">Outline inverted</a>
+<div class="bg-foreground p-16">
+  <a href="#" class="btn btn-outline btn-inverted">Outline inverted</a>
+</div>
 ```
 
 ## Composing with utilities
