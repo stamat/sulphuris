@@ -21,7 +21,7 @@ Resets `<button>` appearance, then applies:
 | `padding` | `16px 32px` | `1rem 2rem` |
 | `border-radius` | `4px` | `0.25rem` |
 | `background-color` | `primary` (`#f6c026` light / `#3F00FF` dark) |
-| `color` | `background` (`#ffffff` light / `#1a1a1d` dark) |
+| `color` | `foreground` (`#1a1a1d` light / `#ffffff` dark) |
 | `display` | `inline-flex` |
 | `justify-content` | `center` |
 | `align-items` | `center` |
@@ -30,7 +30,14 @@ Resets `<button>` appearance, then applies:
 
 ```
 background-color → foreground (#1a1a1d light / #ffffff dark)
+color            → background (#ffffff light / #1a1a1d dark)
 ```
+
+The label is restated on hover because the two surfaces want opposite text.
+`primary` carries no contrast floor — it is a brand colour, free to be a yellow
+— so the only label guaranteed to be readable on it is `foreground`, while
+`foreground` as a fill wants `background`. Both pairs clear WCAG AA: 10.3:1 and
+17.4:1 light, 7.9:1 and 17.4:1 dark.
 
 **Motion** — `color` and `background-color` transitions are added when `prefers-reduced-motion: no-preference` is true. No transition is applied when the user has requested reduced motion.
 
@@ -51,10 +58,12 @@ background-color → foreground (#1a1a1d light / #ffffff dark)
 
 ## Modifier: `.btn-inverted`
 
-Swaps fill to `foreground` with hover reverting to `primary`.
+Swaps fill to `foreground` with hover reverting to `primary`. The label swaps
+with it, for the same reason `.btn`'s does.
 
 ```
 background-color: foreground  →  hover: primary
+color:            background   →  hover: foreground
 ```
 
 <!-- demo -->

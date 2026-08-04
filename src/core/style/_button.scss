@@ -23,10 +23,16 @@ button.reset,
 // reader-scaled label is the crowding `$rem-units` exists to prevent. The border
 // width is the exception the rest of the library makes (px, see style/_border.scss),
 // which leaves `.btn-outline` a sub-pixel off `.btn` at a non-default root.
+// The label tracks the surface under it, and every hover restates it, because the two
+// surfaces a button has want opposite text: `primary` carries no contrast floor by design
+// (see `accent` in _config.scss — a brand colour is free to be a yellow), so the only
+// colour guaranteed to be readable on it is `foreground`, while `foreground` as a surface
+// wants `background`. Left implicit, a hover that swaps the surface and not the label lands
+// white on #f6c026 — 1.68:1, and 2.2:1 on the dark counterpart.
 .btn {
   background-color: helpers.color(primary);
   border-radius: helpers.emit-length(map.get(config.$button, border-radius));
-  color: helpers.color('background');
+  color: helpers.color('foreground');
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -36,6 +42,7 @@ button.reset,
   @include generators.breakpoint(config.$container-breakpoint) {
     &:hover {
       background-color: helpers.color('foreground');
+      color: helpers.color('background');
     }
   }
 }
@@ -48,10 +55,12 @@ button.reset,
 
 .btn-inverted {
   background-color: helpers.color('foreground');
+  color: helpers.color('background');
 
   @include generators.breakpoint(config.$container-breakpoint) {
     &:hover {
       background-color: helpers.color(primary);
+      color: helpers.color('foreground');
     }
   }
 }

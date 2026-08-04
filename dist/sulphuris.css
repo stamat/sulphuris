@@ -408,7 +408,7 @@ button.reset,
 .btn {
   background-color: var(--color-primary);
   border-radius: 0.25rem;
-  color: var(--color-background);
+  color: var(--color-foreground);
   cursor: pointer;
   display: inline-flex;
   justify-content: center;
@@ -418,6 +418,7 @@ button.reset,
 @media only screen and (min-width: 64rem) {
   .btn:hover {
     background-color: var(--color-foreground);
+    color: var(--color-background);
   }
 }
 
@@ -428,10 +429,12 @@ button.reset,
 }
 .btn-inverted {
   background-color: var(--color-foreground);
+  color: var(--color-background);
 }
 @media only screen and (min-width: 64rem) {
   .btn-inverted:hover {
     background-color: var(--color-primary);
+    color: var(--color-foreground);
   }
 }
 

@@ -122,3 +122,23 @@ cannot see the percentage that baseline writes onto `html`.
 
 - `.prose` code and `pre` radii convert with every other radius, instead of
   being the two hardcoded px corners in the file.
+
+- **The button's label is readable on its fill.** `.btn` set `color: background`
+  over `background-color: primary` — white on `#f6c026`, **1.68:1**, and
+  `#1a1a1d` on `#3f00ff` in dark mode, **2.2:1**. Both are below the 4.5:1 WCAG
+  AA floor for body text, so the library's one component primitive shipped
+  unreadable by default. `.btn-inverted:hover` reverts the fill to `primary` and
+  had the same pair.
+
+  `primary` is why, and it is not a bug in the colour: a brand colour carries no
+  contrast floor by design — that is what `accent` exists for — so nothing but
+  `foreground` is guaranteed to read on it. **`.btn` now takes
+  `color: foreground`, and every rule that changes the fill restates the label
+  with it**: `.btn:hover` and `.btn-inverted` take `color: background` over the
+  `foreground` fill, `.btn-inverted:hover` takes `color: foreground` over
+  `primary`. 10.3:1 and 17.4:1 light, 7.9:1 and 17.4:1 dark.
+
+  **A filled button's text colour flips**, dark on the brand fill where it was
+  white. If you were relying on the old pair, set `color` yourself — `.btn`
+  writes it directly, so a utility class or your own rule overrides it without
+  `!important`.
