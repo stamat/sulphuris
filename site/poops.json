@@ -34,7 +34,10 @@
         "author": "Stamat",
         "logo": "sulphuris-logo.svg",
         "repo": "https://github.com/stamat/sulphuris",
-        "branch": "main"
+        "branch": "main",
+        "iconLinks": [
+          { "title": "npm", "url": "https://www.npmjs.com/package/sulphuris", "icon": "npm" }
+        ]
       },
       "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
       "data": ["../../../package.json"],

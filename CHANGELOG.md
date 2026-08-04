@@ -76,7 +76,10 @@ not the role.
   specifier and the docs build runs from `site/`, where poops' default bare
   `node_modules` resolves to nothing. The `.prose code-preview > :is(pre,
   .code-wrap)` reset dropped out of [site/src/scss/docs.scss](site/src/scss/docs.scss);
-  2.0.0 ships it, so keeping a copy here was two places to keep in step.
+  2.0.0 ships it, so keeping a copy here was two places to keep in step. The
+  docs topbar gained an **npm button** beside the GitHub one, through 2.0.0's
+  new `site.iconLinks` — the landing page had linked the package since forever
+  and the docs had no way to.
 
 - `$color-modes-selector` takes a list, and defaults to
   `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now
