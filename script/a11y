@@ -1,0 +1,178 @@
+#!/usr/bin/env node
+// Runs axe-core over every live demo in the built docs site, in a real browser.
+//
+// The three `check-*.mjs` scripts read the emitted CSS and assert it says what the config
+// asked for - including the palette's contrast floors, which `check-palette-css.mjs`
+// computes from the values themselves. What none of them can see is a class landing on
+// markup: `.bg-primary` under the default text colour is a pair of values neither check
+// puts together, and a sample is where the library is finally rendered.
+//
+// Only the `<code-preview>` iframes are audited, not the pages around them. A preview is
+// the sample alone with `dist/sulphuris.css` on it, so a violation inside one belongs to
+// this library. The docs page around it is poops-docs-theme's markup and tokens - auditing
+// it would report the theme's chrome as Sulphuris' failures.
+//
+// Both colour modes, in full. Dark is not a second set of classes but a second set of
+// values behind the same ones, so a pair that clears 4.5:1 light and fails dark is a pass
+// here and a bug in someone's site - and only a run that switched can tell them apart.
+//
+// Deliberately not covered:
+// - states a pointer or a key would reach. Nothing in these samples opens, and a drive
+//   loop matching nothing is a loop to maintain for nothing; the day a demo grows a
+//   disclosure, the loop is worth writing then.
+// - the docs pages themselves, per above.
+// - every viewport width a preview offers. It is audited at the width it opens at, which
+//   is the one the page chose to show; the others are a preview control, not a state.
+import { readdirSync, readFileSync } from 'node:fs';
+import { createServer } from 'node:http';
+import { fileURLToPath } from 'node:url';
+import { join, sep } from 'node:path';
+import { chromium } from 'playwright-core';
+// poops' own static handler rather than a hand-rolled one: it already resolves directory
+// indexes and extensionless urls the way the deployed site does. An internal path, which
+// is a coupling this repo accepts - poops is a devDependency here and ships no exports map.
+import { createStaticHandler } from 'poops/lib/server.js';
+
+const SITE = 'site/dist';
+const AXE = fileURLToPath(import.meta.resolve('axe-core/axe.min.js'));
+
+// WCAG only. axe's best-practice tag adds `region` and the landmark rules, which every
+// fragment fails by definition - a sample is not a page and has no business having a main.
+const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
+
+// The same argument one level down: these are document-level rules, and the document here
+// is a srcdoc wrapper this project does not ship. Everything else stays on.
+const OFF = ['html-has-lang', 'html-lang-valid', 'html-xml-lang-mismatch', 'document-title', 'bypass'];
+
+// Written to the host page's `[data-theme]`, which is the attribute a preview watches.
+// Light first because that is the state a page loads in.
+const THEMES = ['light', 'dark'];
+
+const options = { runOnly: TAGS, rules: Object.fromEntries(OFF.map((id) => [id, { enabled: false }])) };
+
+/** Every built page carrying at least one live preview. */
+function demoPages() {
+  return readdirSync(SITE, { recursive: true })
+    .filter((f) => f.endsWith('.html'))
+    .filter((f) => readFileSync(join(SITE, f), 'utf8').includes('<code-preview'))
+    .map((f) => f.split(sep).join('/'))
+    .sort();
+}
+
+/**
+ * Puts the page in a colour mode and waits for the previews to be in it too.
+ *
+ * The docs theme's mode lives on `[data-theme]`; Sulphuris' lives on `[data-color-scheme]`,
+ * and a preview copies the first into its frame under the second - the name its own
+ * `theme-attribute` gives. Read off each preview rather than assumed, and waited on rather
+ * than hoped for: a dark pass that never reached the frames is a light pass counted twice,
+ * and it would report as coverage.
+ */
+async function setTheme(page, theme) {
+  await page.evaluate((t) => { document.documentElement.dataset.theme = t; }, theme);
+  await page.waitForFunction((t) => [...document.querySelectorAll('code-preview')].every((preview) => {
+    const name = preview.getAttribute('theme-attribute') || 'data-theme';
+    return preview.querySelector('iframe')?.contentDocument?.documentElement.getAttribute(name) === t;
+  }), theme, { timeout: 5000 });
+}
+
+/** The site on an ephemeral port, so a running `script/server` is not in the way. */
+function serve() {
+  return new Promise((resolve) => {
+    const server = createServer(createStaticHandler(SITE));
+    server.listen(0, '127.0.0.1', () => resolve({ server, port: server.address().port }));
+  });
+}
+
+async function runAxe(frame) {
+  // Once per frame: a frame is audited in both modes, and axe is half a megabyte to parse.
+  if (!await frame.evaluate(() => 'axe' in window)) await frame.addScriptTag({ path: AXE });
+  return frame.evaluate((opts) => window.axe.run(document, opts), options);
+}
+
+/**
+ * Stylesheets the frame asked for and did not get. The audit is worth nothing without this:
+ * a preview whose `css=` path missed is unstyled markup, and unstyled markup is black on
+ * white - it passes every contrast check there is, while the library it was meant to be
+ * showing never loaded. The paths are written per page, relative to the page's own depth,
+ * which is exactly the kind of thing that breaks quietly.
+ */
+function deadStylesheets(frame) {
+  return frame.evaluate(() => [...document.querySelectorAll('link[rel="stylesheet"]')]
+    .filter((link) => !link.sheet)
+    .map((link) => link.getAttribute('href')));
+}
+
+/** Every violation, one line of heading and one line per failing node, capped. */
+function print(page, frameIndex, state, violations) {
+  for (const v of violations) {
+    console.log(`\n  ✗ ${v.id} (${v.impact}) — ${page} › preview ${frameIndex} › ${state}`);
+    console.log(`    ${v.help}`);
+    for (const node of v.nodes.slice(0, 5)) {
+      console.log(`    ${node.target.join(' ')}`);
+      console.log(`      ${node.failureSummary.replace(/\n/g, '\n      ')}`);
+    }
+    if (v.nodes.length > 5) console.log(`    …and ${v.nodes.length - 5} more nodes`);
+    console.log(`    ${v.helpUrl}`);
+  }
+}
+
+const pages = demoPages();
+if (!pages.length) {
+  console.error(`No previews in ${SITE}/. Run script/build first.`);
+  process.exit(1);
+}
+
+const { server, port } = await serve();
+const browser = await chromium.launch();
+// Sulphuris switches its motion off under `reduce`, which is what makes a colour stable
+// enough to measure: sampled mid-transition, one reads as whatever the fade is currently on.
+const page = await browser.newPage({ reducedMotion: 'reduce' });
+const report = { violations: 0, previews: 0, audits: 0, dead: [], review: new Map() };
+
+for (const path of pages) {
+  for (const theme of THEMES) {
+    await page.goto(`http://127.0.0.1:${port}/${path}`, { waitUntil: 'load' });
+    // The previews write their srcdoc from `connectedCallback`, so the frames exist before
+    // the page's load event but their documents do not - wait for the content, not the count.
+    await page.waitForFunction(
+      () => [...document.querySelectorAll('code-preview iframe')].every(
+        (f) => f.contentDocument?.readyState === 'complete' && f.contentDocument.body?.children.length
+      ),
+      null,
+      { timeout: 15000 }
+    );
+    await setTheme(page, theme);
+
+    const frames = page.frames().filter((f) => f !== page.mainFrame());
+    for (const [i, frame] of frames.entries()) {
+      // On the first mode only: the second pass is the same previews again, not more of them.
+      if (theme === THEMES[0]) report.previews++;
+      report.dead.push(...await deadStylesheets(frame));
+      const result = await runAxe(frame);
+      report.audits++;
+      report.violations += result.violations.length;
+      // Counted by rule and named, never as a bare total: "needing review" is a checked
+      // element axe could not decide about - a colour over a gradient, say - and a number
+      // with no rule beside it is a number nobody can act on.
+      for (const r of result.incomplete) report.review.set(r.id, (report.review.get(r.id) ?? 0) + r.nodes.length);
+      print(path, i + 1, theme, result.violations);
+    }
+  }
+}
+
+await browser.close();
+server.close();
+
+console.log(
+  `\naxe: ${report.audits} audits over ${report.previews} previews on ${pages.length} pages,` +
+  ` ${THEMES.join(' and ')} — ${report.violations} violations`
+);
+if (report.review.size) {
+  const byRule = [...report.review].map(([id, n]) => `${id} ×${n}`).join(', ');
+  console.log(`needing review, decided by hand rather than here: ${byRule}`);
+}
+if (report.dead.length) {
+  console.log(`\n✗ stylesheets a preview asked for and did not get: ${[...new Set(report.dead)].join(', ')}`);
+}
+process.exit(report.violations || report.dead.length ? 1 : 0);

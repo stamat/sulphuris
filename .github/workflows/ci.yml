@@ -62,3 +62,36 @@ jobs:
             echo "generated docs are stale — run script/build and commit the result" >&2
             exit 1
           }
+
+  # A job of its own rather than a step in the matrix: it needs a browser, and
+  # downloading one twice to run the same audit on two versions of Node buys
+  # nothing — the audit runs in Chromium, not in Node.
+  a11y:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # playwright-core ships no browser, which is why it is the dependency: a
+      # download on every `npm ci` in the other jobs is the cost of the package
+      # that bundles one.
+      - name: Install Chromium
+        run: npx playwright-core install --with-deps chromium
+
+      # The library CSS, then the site — the audit reads the built previews, and
+      # a preview links dist/sulphuris.css.
+      - name: Build the library and the site
+        run: script/server -b
+
+      - name: Audit the demos with axe
+        run: npm run a11y

@@ -22,6 +22,7 @@ script/server    # dev server for the docs site, with live reload
 script/build     # compiles dist/sulphuris.css and regenerates the docs it feeds
 script/lint      # stylelint over src/
 script/test      # typecheck, build, and the CSS checks
+script/a11y      # axe over the built demos, in Chromium — build the site first
 ```
 
 `script/test` is not a unit suite: it compiles the library and runs
@@ -47,6 +48,15 @@ the SCSS source or the built CSS; the two take different paths.
   written by `script/gen-*.mjs` on every build; review that diff rather than
   editing the generated pages.
 - **Run `script/lint`.** stylelint is the authority, and CI runs it.
+- **Run `script/a11y`** when you touch a colour, a component or a demo. It
+  builds nothing itself — `script/server -b` first — then opens every live
+  preview in Chromium and runs axe inside it, once light and once dark. It is
+  the only check that sees a class rendered rather than emitted:
+  `check-palette-css.mjs` proves a grade clears its contrast floor, this proves
+  the pair a sample puts on screen does. It audits the previews and not the
+  pages around them, so a violation it prints is Sulphuris' and not the docs
+  theme's, and a rule it cannot decide is listed as needing review rather than
+  failing the run.
 - **Add a changelog entry** under `## [Unreleased]` in
   [CHANGELOG.md](CHANGELOG.md) — that file explains the format, including which
   changes count as breaking here.

@@ -10,12 +10,20 @@ script/server    # dev server for the docs site with live reload
 script/build     # compiles dist/sulphuris.css, then regenerates the docs it feeds
 npm run lint     # stylelint over src/**/*.scss (the authority; CI runs it)
 npm test         # typecheck, build, then the three CSS checks below
+script/a11y      # axe over the built demos in Chromium, both colour modes
 ```
 
 `npm test` is not a unit test suite: it compiles the library and runs
 `script/check-grid-css.mjs`, `check-utility-css.mjs` and `check-palette-css.mjs`
 over the output. They assert that what Sass emitted matches what the config
 asked for, which is the only place a generator bug shows up.
+
+`script/a11y` is the one check that reads rendered pixels rather than emitted
+CSS. It drives every `<code-preview>` in the built site and runs axe inside it,
+light and dark, so a class landing on markup is measured — `check-palette-css`
+proves a grade clears its floor, and this proves the pair a sample actually puts
+on screen does. Build first (`script/server -b`); it reads `site/dist`, and only
+the previews, since the page around them is the docs theme's markup and tokens.
 
 ## Layout
 

@@ -39,7 +39,9 @@
   "homepage": "https://stamat.info/sulphuris",
   "private": false,
   "devDependencies": {
+    "axe-core": "^4.12.1",
     "code-preview-element": "3.0.0",
+    "playwright-core": "^1.62.1",
     "poops": "^2.0.0",
     "poops-docs-theme": "^2.0.0",
     "postcss": "^8.5.23",
@@ -52,6 +54,7 @@
     "dev": "npx poops",
     "build": "npx poops -b",
     "lint": "stylelint \"src/**/*.scss\"",
+    "a11y": "node script/a11y",
     "typecheck": "tsc --noEmit",
     "test": "npm run typecheck && npm run build && node script/check-grid-css.mjs && node script/check-utility-css.mjs && node script/check-palette-css.mjs"
   }
