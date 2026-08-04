@@ -1,4 +1,5 @@
 {
+  "includePaths": ["../node_modules"],
   "styles": [
     {
       "in": "src/scss/docs.scss",

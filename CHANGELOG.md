@@ -67,6 +67,17 @@ not the role.
   `accent` — the `link` spellings go in the next major.** A project that set
   its own `$colors` without an `accent` key loses `--color-link` along with it.
 
+- The docs site is on **poops-docs-theme 2.0.0**, whose topbar, theme switch and
+  sidebar drawer are now [book-of-elementals](https://github.com/stamat/book-of-elementals)
+  custom elements. Nothing shipped in the package changes — `dist/` and `src/`
+  are untouched — but the site build gained
+  `includePaths: ["../node_modules"]` in [site/poops.json](site/poops.json),
+  because the theme's own sheets reach for `book-of-elementals/…` as a bare
+  specifier and the docs build runs from `site/`, where poops' default bare
+  `node_modules` resolves to nothing. The `.prose code-preview > :is(pre,
+  .code-wrap)` reset dropped out of [site/src/scss/docs.scss](site/src/scss/docs.scss);
+  2.0.0 ships it, so keeping a copy here was two places to keep in step.
+
 - `$color-modes-selector` takes a list, and defaults to
   `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now
   emits under both names. A bare string still works and still emits one

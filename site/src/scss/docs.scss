@@ -1,9 +1,10 @@
 // Sulphuris docs — the shared Poops docs theme, sulphur-gold accent.
 // Everything else (tokens, shell, chrome, prose) comes from the package.
-// Relative, not a bare specifier: node_modules is at the repo root and the
-// docs build runs from site/, so a sass load path would have to be
-// "../node_modules" — which poops also folds into the markup excludes.
-@use "../../../node_modules/poops-docs-theme/scss/docs";
+// Bare specifier, resolved through the `includePaths` in site/poops.json: the
+// theme's own sheets reach for `book-of-elementals/...` the same way, so the
+// load path has to be there regardless and a relative path here would only be
+// a second way of saying it.
+@use "poops-docs-theme/scss/docs";
 
 :root,
 :root[data-theme="light"] {
@@ -21,14 +22,3 @@
 // bundled here: the package's own stylesheet reaches for --border, --radius, --bg,
 // --accent, --fg-muted and --font-mono with fallbacks, so the docs theme's tokens
 // above are what it ends up wearing.
-//
-// This one rule is the exception, and it is a specificity fight the package cannot
-// win from outside. The theme spaces code blocks with `.prose :is(figure,
-// .code-wrap)` — two classes — while the package can only say `code-preview >
-// :is(pre, .code-wrap)`, one class and one type. So the theme's 1.75rem survives
-// inside the element: a gap above the sample, and a doubled margin below it once
-// docs.ts has wrapped the `pre` for its copy button. `code-preview` owns the outer
-// spacing; the block inside it gets none.
-.prose code-preview > :is(pre, .code-wrap) {
-  margin: 0;
-}

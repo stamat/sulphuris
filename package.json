@@ -41,7 +41,7 @@
   "devDependencies": {
     "code-preview-element": "3.0.0",
     "poops": "^2.0.0",
-    "poops-docs-theme": "^1.1.2",
+    "poops-docs-theme": "^2.0.0",
     "postcss": "^8.5.23",
     "sass": "^1.102.0",
     "stylelint": "^16.10.0",
