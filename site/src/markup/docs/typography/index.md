@@ -11,7 +11,9 @@ keywords: ["typography", "heading", "font", "text", "h1", "paragraph", "rem", "t
 
 ## Foundations
 
-`html` is set to `font-size: 16px` (`$base-font-size`). All font sizes in this system output in **rem**, relative to that 16 px root. Letter-spacing values defined in px are also converted to rem via `toRem()`.
+All font sizes output in **rem**, converted from px against `$base-font-size` (16px). No root `font-size` is written to `html` for the default 16px — an author `font-size` there would override the reader's browser default-size setting and pin every rem in the stylesheet, which is the one thing rem output exists to avoid. Set `$base-font-size` to something else and the baseline moves as a **percentage**, which still tracks that setting. See [Configuration](../configuration/#typography).
+
+Letter-spacing is the exception: px values convert to **em**, against that rule's own `font-size` rather than the root. Tracking corrects a size, so it has to move when the size does — `.supertitle` is 2px at 14px, and it stays that ratio under `.fs-32` instead of staying 2px.
 
 Default fonts:
 
@@ -41,7 +43,7 @@ All three read out of the `$line-heights` map rather than carrying their own num
 
 `h1`–`h3` have two size sets: **mobile** (default, no media query) and **desktop** (`min-width: 1024px`, the `lg` breakpoint). `h4`–`h6` have one — at 20px and below there is nothing to give back on a small screen. The semantic tag and its class equivalent share identical rules — `.h1` gives heading styling without the `<h1>` element.
 
-Each heading entry: `(font-size, letter-spacing, line-height, font-weight)`. All sizes output as rem.
+Each heading entry: `(font-size, letter-spacing, line-height, font-weight)`. Sizes output as rem, letter-spacing as em.
 
 | Selector | Desktop size | Mobile size | line-height | font-weight |
 |---|---|---|---|---|
@@ -78,7 +80,7 @@ Example — same visual output, different semantics:
 
 ### Paragraph and body text
 
-Non-heading entries use a single size set (no responsive switch). `letter-spacing` values in px are converted to rem.
+Non-heading entries use a single size set (no responsive switch). `letter-spacing` values in px are converted to em against the same entry's `font-size`.
 
 | Selector | font-size | letter-spacing | line-height |
 |---|---|---|---|
@@ -87,7 +89,7 @@ Non-heading entries use a single size set (no responsive switch). `letter-spacin
 | `p` | 1rem (16px) | — | 1.6 |
 | `.p3, figcaption` | 0.875rem (14px) | — | 1.6 |
 | `.p4, small` | 0.75rem (12px) | — | 1.6 |
-| `.supertitle` | 0.875rem (14px) | 0.125rem (2px) | 1.6 |
+| `.supertitle` | 0.875rem (14px) | 0.1428571429em (2px at its own 14px) | 1.6 |
 
 `.supertitle` additionally sets `font-weight: 500` and `text-transform: uppercase`.
 

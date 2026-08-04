@@ -1,0 +1,8 @@
+// A non-default `$base-font-size` is where the two rem references come apart,
+// so script/check-utility-css.mjs compiles this to hold them together. The
+// document root gets a percentage; a media query never sees it. Sized against
+// 20px, the container and the breakpoint it lines up with must still land on the
+// same 1680px.
+@use '../../src/core/config' with ($base-font-size: 20px);
+@use '../../src/core/layout/container';
+@use '../../src/core/style/typography';

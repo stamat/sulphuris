@@ -34,12 +34,41 @@ font-size: helpers.toRem(24px); // → 1.5rem
 margin:    helpers.toRem(0);    // → 0
 ```
 
-### `toEm($value, $unit: 'em')`
+### `toEm($value, $unit: 'em', $base: config.$base-font-size)`
 
-Same conversion but returns `em` by default. `toRem` delegates to this internally with `$unit: 'rem'`.
+Same conversion but returns `em` by default. `toRem` delegates to this internally with `$unit: 'rem'`. `$base` is what one unit is worth — override it when the reference is not the document baseline, as the two functions below do.
 
 ```scss
-padding: helpers.toEm(8px); // → 0.5em
+padding: helpers.toEm(8px);                // → 0.5em
+padding: helpers.toEm(8px, 'em', 32px);    // → 0.25em
+```
+
+### `emit-length($value)`
+
+A px length as it should be written into the document: converted under [`$rem-units`](../configuration/#feature-flags), passed straight through when it is off. This is what the generators call, and what your own overrides should call — keep sources in px and convert once at the point of emission, because gutter halves and offset arithmetic have to happen in one unit and mixing px with a relative unit is a hard Sass error.
+
+```scss
+padding: helpers.emit-length(32px); // → 2rem, or 32px with $rem-units off
+```
+
+### `query-width($value)`
+
+Converts a `px` width for use **inside a media query**, dividing by a literal 16px rather than `$base-font-size`. Returns the value unchanged when [`$rem-units`](../configuration/#feature-flags) is off.
+
+A media query resolves `rem` against the browser's font-size setting and never sees the percentage `$base-font-size` writes onto `html`, so the two references have to be kept apart — otherwise a non-default baseline fires the breakpoint at a different width than the layout it switches. Use this for anything that lands in a `@media` condition, and `emit-length()` for anything that lands in the document.
+
+```scss
+// _config.scss: $base-font-size: 20px
+@media (min-width: helpers.query-width(1024px)) { … }  // → 64rem, still 1024px
+max-width: helpers.emit-length(1024px);                // → 51.2rem, still 1024px
+```
+
+### `tracking($value, $font-size)`
+
+Converts a `px` letter-spacing to `em` against the font-size it sits on, not the root — tracking corrects a size, so it has to move when the size does. Both arguments must be px; anything else passes through, since a relative unit is already a ratio the author chose.
+
+```scss
+letter-spacing: helpers.tracking(2px, 14px); // → 0.1428571429em
 ```
 
 ---

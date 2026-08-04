@@ -11,8 +11,14 @@ $logical-properties: false !default;
 // browser font-size setting the way zoom already does (WCAG 1.4.4). Class names
 // do not move — `.pt-32` stays `.pt-32` and still renders 32px at the default
 // root size, the number is a token label. Breakpoints are still *written* in px
-// below and converted on the way into the media query. Border widths (fuzzy at
-// fractional sizes) and radii stay px regardless. `false` reverts the lot.
+// below and converted on the way into the media query. Border widths stay px
+// regardless, being fuzzy at fractional sizes.
+//
+// `false` reverts the layout families to px. It does not reach type: the
+// `$typography` scale, `.fs-*` and `$prose-measure` are rem either way, because
+// text that cannot answer the reader's font-size setting is the accessibility
+// failure the flag exists to avoid — there is no version of this library that
+// ships a px font-size.
 $rem-units: true !default;
 
 /*

@@ -85,6 +85,23 @@ for (const [selector, decl] of Object.entries(expected)) {
   assert.equal(rules.get(selector), decl, `${selector} should be \`${decl}\``)
 }
 
+// Tracking is the one typographic length that scales against the element's own
+// font-size rather than the root: `.supertitle` is 2px at 14px, and a `.fs-32`
+// on top of it has to keep the ratio, not the 2px. rem here would be a silent
+// wrong value under a right-looking selector.
+const supertitle = []
+root.walkRules('.supertitle', (rule) => rule.walkDecls('letter-spacing', (d) => supertitle.push(d.value)))
+assert.deepStrictEqual(supertitle, ['0.1428571429em'], '.supertitle letter-spacing is em, 2px over its own 14px')
+
+// The button is the library's one component primitive, and the only place a
+// length is read straight off a config map instead of a size family — the box
+// has to convert with the label inside it, which is already rem.
+const btn = new Map()
+root.walkRules('.btn', (rule) => rule.walkDecls((d) => btn.set(d.prop, d.value)))
+assert.equal(btn.get('min-height'), '3.5rem', '.btn min-height converts (56px)')
+assert.equal(btn.get('padding'), '1rem 2rem', '.btn padding converts (16px 32px)')
+assert.equal(btn.get('border-radius'), '0.25rem', '.btn radius converts, like every other radius')
+
 // `.text-nowrap` is `white-space`; a `text-wrap: nowrap` class one character
 // away from it would be indistinguishable in markup.
 assert.equal(rules.get('.text-nowrap'), 'white-space: nowrap', '.text-nowrap must stay the white-space one')
@@ -155,6 +172,25 @@ assert.ok(queries.has('onlyscreenand(min-width:26.25rem)'), 'sm must emit `min-w
 
 const pxQueries = [...queries].filter((q) => /width:[\d.]+px/.test(q))
 assert.deepStrictEqual(pxQueries, [], 'media queries must not emit px widths under $rem-units')
+
+// A query divides by a literal 16px, everything in the document by
+// `$base-font-size`, and the two only look like the same conversion while that
+// is 16. `$base-font-size: 20px` writes `font-size: 125%` onto `html`, which a
+// media query cannot see: divide the breakpoint by 20 as well and `lg` fires at
+// 819px while the container it was sized against is still 1024px wide.
+const scaled = postcss.parse(compile(path.join(import.meta.dirname, 'fixtures/base-font-size.scss')).css)
+
+const scaledQueries = new Set()
+scaled.walkAtRules('media', (at) => scaledQueries.add(at.params.replace(/\s+/g, '')))
+assert.ok(scaledQueries.has('onlyscreenand(min-width:64rem)'), 'breakpoints divide by 16px, not $base-font-size — lg stays 64rem (1024px) at a 20px baseline')
+
+const scaledRoot = []
+scaled.walkRules(/^html$/, (rule) => rule.walkDecls('font-size', (d) => scaledRoot.push(d.value)))
+assert.deepStrictEqual(scaledRoot, ['125%'], '$base-font-size reaches the document as a percentage, so it still tracks the reader')
+
+const scaledContainer = []
+scaled.walkRules('.container', (rule) => rule.walkDecls('max-width', (d) => scaledContainer.push(d.value)))
+assert.deepStrictEqual(scaledContainer, ['84rem'], '.container divides by $base-font-size — 84rem against a 125% root is the same 1680px the query means')
 
 // `$container-max-width` and the `xxl` breakpoint are the same 1680px. They have
 // to stay the same width as the root font-size moves, or the container stops

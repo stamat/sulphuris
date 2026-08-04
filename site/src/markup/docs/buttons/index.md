@@ -15,11 +15,11 @@ keywords: ["button", "btn", "component"]
 
 Resets `<button>` appearance, then applies:
 
-| Property | Value (from `$button`) |
-|---|---|
-| `min-height` | `56px` |
-| `padding` | `16px 32px` |
-| `border-radius` | `4px` |
+| Property | Value (from `$button`) | Emitted |
+|---|---|---|
+| `min-height` | `56px` | `3.5rem` |
+| `padding` | `16px 32px` | `1rem 2rem` |
+| `border-radius` | `4px` | `0.25rem` |
 | `background-color` | `primary` (`#f6c026` light / `#3F00FF` dark) |
 | `color` | `background` (`#ffffff` light / `#1a1a1d` dark) |
 | `display` | `inline-flex` |
@@ -66,6 +66,8 @@ background-color: foreground  →  hover: primary
 ## Modifier: `.btn-outline`
 
 Transparent background with a `2px` solid border. The padding is reduced by the border width so the button stays the same overall height as `.btn`.
+
+Exactly so at the default root. The padding converts under [`$rem-units`](../configuration/#feature-flags) and the border width does not — border widths stay px everywhere, being fuzzy at fractional sizes — so at a reader font-size other than 16px the two variants differ by under a pixel.
 
 | Property | Value |
 |---|---|
@@ -135,3 +137,5 @@ Override any key in the `$button` map before importing Sulphuris:
 | `padding-y` | `16px` | vertical padding |
 | `border-width` | `2px` | border on `.btn-outline`, inset padding compensation |
 | `border-radius` | `4px` | `border-radius` on `.btn` |
+
+Written in px, emitted in rem under [`$rem-units`](../configuration/#feature-flags) — `border-width` excepted, with every other border width. The label is already rem, so the box has to convert with it or a reader at a larger font-size gets scaled text in a fixed 56px frame.

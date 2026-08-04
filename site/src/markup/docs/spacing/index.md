@@ -16,7 +16,7 @@ Margin and padding utilities are generated from the `$sizes` scale. Both support
 <!-- config: sizes -->
 
 ```scss
-// src/core/_config.scss:21
+// src/core/_config.scss:27
 $sizes: 0,1,2,3,4,6,8,12,14,16,24,32,40,48,56,64,80,96,128,256;
 ```
 
@@ -62,7 +62,7 @@ Per-side variants also accept `auto`: `.mt-auto`, `.mx-auto`, etc.
 <!-- config: negative-sizes -->
 
 ```scss
-// src/core/_config.scss:22
+// src/core/_config.scss:28
 $negative-sizes: -1,-2,-3,-4,-8,-12,-14,-16,-24,-32,-40,-48,-56,-64;
 ```
 

@@ -87,3 +87,38 @@ not the role.
   selector, so a project that set its own is untouched. **Rules under
   `$color-modes` gain a second selector**: if you match on the emitted CSS,
   match on the list.
+
+### Fixed
+
+Three places the reader's font-size setting stopped being answered. `$rem-units`
+converts every size family, so a reader who runs their browser at 20px gets a
+layout that grew with them — except at the button, which was the one component
+reading raw px off a config map, and it kept a 56px frame around a label that
+had already grown. Tracking converted the wrong way round, to rem, which pins it
+to the root instead of to the text it is correcting. And a `$base-font-size`
+other than 16px pulled the breakpoints away from the widths they were sized
+against, because a media query resolves `rem` against the browser setting and
+cannot see the percentage that baseline writes onto `html`.
+
+- **`.btn` converts under `$rem-units`.** `min-height` is `3.5rem` where it was
+  `56px`, `padding` `1rem 2rem`, `border-radius` `0.25rem`; `.btn-outline`
+  padding follows. Same rendered button at a 16px root. `border-width` stays px
+  with every other border width, which leaves the two variants a sub-pixel apart
+  at other roots — the alternative was a fuzzy hairline.
+
+- **Letter-spacing is emitted in `em`, against its own rule's `font-size`.**
+  `.supertitle` is `0.1428571429em` where it was `0.125rem` — the same 2px at
+  14px, and now still 2px-worth under `.fs-32` instead of frozen. Only
+  `.supertitle` carries tracking in the default `$typography`; a project that
+  set its own in px will see every one of them move.
+
+- **Breakpoints divide by a literal 16px, not `$base-font-size`.** At the
+  default 16px nothing moves. At `$base-font-size: 20px` the `xxl` query was
+  firing at 1344px against a container still 1680px wide; it now emits `105rem`
+  against the container's `84rem`, both landing on 1680px, both still scaling
+  with the reader. New `helpers.query-width()` does the media-query conversion,
+  `helpers.emit-length()` keeps the document one, and `helpers.toEm()` takes an
+  optional third argument for the reference to divide by.
+
+- `.prose` code and `pre` radii convert with every other radius, instead of
+  being the two hardcoded px corners in the file.

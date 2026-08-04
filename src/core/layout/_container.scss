@@ -2,10 +2,17 @@
 @use '../utils/generators';
 @use '../utils/helpers';
 
-// The max-width converts alongside the breakpoints (see helpers.emit-length):
-// `$container-max-width` and the `xxl` breakpoint are the same 1680px, and they
-// have to stay the same width as the root font-size changes or the container
-// stops lining up with the breakpoint it was sized against.
+// The max-width converts alongside the breakpoints: `$container-max-width` and
+// the `xxl` breakpoint are the same 1680px, and they have to stay the same width
+// as the root font-size changes or the container stops lining up with the
+// breakpoint it was sized against.
+//
+// The two divide by different references and still land together, which is the
+// part worth knowing: this one is `emit-length()` against `$base-font-size`
+// because it resolves against the document root, the query is `query-width()`
+// against a literal 16px because it does not. At `$base-font-size: 20px` that is
+// 84rem here and 105rem there, both 1680px, because the root carries the 125%
+// the query never sees.
 .container {
   margin-left: auto;
   margin-right: auto;

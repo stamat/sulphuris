@@ -28,10 +28,12 @@ $breakpoints: config.$breakpoints;
  * @media. Used by `breakpoint` mixin.
  * @see utils/_config.scss $breakpoints. $breakpoints is a globally defined var.
  *
- * Widths go through `helpers.emit-length()`, so under `$rem-units` the layout
+ * Widths go through `helpers.query-width()`, so under `$rem-units` the layout
  * switch moves with the reader's browser font-size setting instead of firing at
  * a fixed viewport width — in a media query `rem` resolves against that setting,
- * not against the document's own `font-size`, which is the whole point. The
+ * not against the document's own `font-size`, which is the whole point, and also
+ * why this is not `helpers.emit-length()`: the query cannot see the percentage
+ * `$base-font-size` writes onto `html`, so it divides by a literal 16px. The
  * `$breakpoints` map itself stays px: the `- 1` range math in
  * `helpers.breakpoints()` is unit-naive (`26.25em - 1` is a 16px hole, not 1px).
  *
@@ -46,12 +48,12 @@ $breakpoints: config.$breakpoints;
 
   @if $breakpoint != null {
     @if list.nth($breakpoint, 1) {
-      $query: '#{$query} and (min-width: #{helpers.emit-length(list.nth($breakpoint, 1))})';
+      $query: '#{$query} and (min-width: #{helpers.query-width(list.nth($breakpoint, 1))})';
     }
 
     @if $explicit {
       @if list.nth($breakpoint, 2) {
-        $query: '#{$query} and (max-width: #{helpers.emit-length(list.nth($breakpoint, 2))})';
+        $query: '#{$query} and (max-width: #{helpers.query-width(list.nth($breakpoint, 2))})';
       }
     }
   }
@@ -624,7 +626,7 @@ $breakpoints: config.$breakpoints;
   }
 
   @if $letter-spacing {
-    letter-spacing: helpers.toRem($letter-spacing);
+    letter-spacing: helpers.tracking($letter-spacing, $font-size);
   }
 
   @if $line-height {

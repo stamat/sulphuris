@@ -14,17 +14,20 @@
  * @see utils/_config.scss for $base-font-size
  *
  * @param $value (string): e.g. `16px`
+ * @param $unit (string): the unit to emit
+ * @param $base (string): what 1 unit is worth — override it for a reference
+ *   that is not the document baseline, as `tracking()` and `query-width()` do
  * @return (string): e.g. `1em`
  */
 // stylelint-disable-next-line scss/at-function-pattern -- public API, camelCase is intentional
-@function toEm($value, $unit: 'em') {
+@function toEm($value, $unit: 'em', $base: config.$base-font-size) {
   $rm-unit-value: rm-unit($value);
 
   @if $rm-unit-value == 0 {
     @return 0;
   }
 
-  @return #{math.div($rm-unit-value, rm-unit(config.$base-font-size))}#{$unit};
+  @return #{math.div($rm-unit-value, rm-unit($base))}#{$unit};
 }
 
 /*
@@ -60,6 +63,50 @@
   }
 
   @return $value;
+}
+
+/*
+ * A px length as it should be emitted *into a media query*. Divides by a literal
+ * 16px, not `$base-font-size`, and that is the whole reason this is not
+ * `emit-length()`: a media query resolves `rem` against the browser's initial
+ * font-size and never sees the percentage `$base-font-size` writes onto `html`.
+ * Divide by 20 for a 20px baseline and the query fires 20% early while the
+ * container it was sized against does not move — 1680px of container against a
+ * breakpoint at 1344px. Both divisors land on the same rendered width, because
+ * the document root carries the percentage the query is missing.
+ *
+ * @param $value (string): e.g. `1024px`
+ * @return (string): e.g. `64rem`
+ */
+@function query-width($value) {
+  @if config.$rem-units {
+    @return toEm($value, 'rem', 16px);
+  }
+
+  @return $value;
+}
+
+/*
+ * Tracking as a ratio of the text it sits on. Letter-spacing is the one
+ * typographic length that must scale with the element's own `font-size` rather
+ * than the root — a `.supertitle` bumped to `.fs-32` needs its 2px at 14px to
+ * become the same proportion at 32px, not to stay 2px. So: `em`, divided by
+ * that rule's own size. Tailwind's `tracking-*` scale is em for the same reason.
+ *
+ * Passes through untouched unless both values are px: a relative unit is the
+ * author's own ratio and already correct, and a font-size that is not px gives
+ * nothing to divide by.
+ *
+ * @param $value (string): e.g. `2px`
+ * @param $font-size (string): the same rule's font-size, e.g. `14px`
+ * @return (string): e.g. `0.1428571429em`
+ */
+@function tracking($value, $font-size) {
+  @if not ($font-size and ends-with($value + '', 'px') and ends-with($font-size + '', 'px')) {
+    @return $value;
+  }
+
+  @return toEm($value, 'em', $font-size);
 }
 
 /*
