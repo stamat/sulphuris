@@ -208,6 +208,20 @@
   @return $string;
 }
 
+// An inline SVG as a data URI, so the source stays SVG instead of a percent-escaped blob
+// nobody can read. `#` would otherwise start a fragment identifier and `<`/`>` are not URL
+// characters. `%` is replaced before the rest, or the escapes they introduce get escaped
+// in turn. Sass cannot read a file, so this takes the markup, never a path.
+@function svg-uri($svg) {
+  $svg: str-replace($svg, '%', '%25');
+  $svg: str-replace($svg, '<', '%3C');
+  $svg: str-replace($svg, '>', '%3E');
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '"', '%22');
+
+  @return url('data:image/svg+xml,#{$svg}');
+}
+
 // Split a string on a separator into a list. `str-split('a.b.c', '.')` → 'a' 'b' 'c'
 @function str-split($string, $separator) {
   $result: ();

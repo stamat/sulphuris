@@ -4,7 +4,7 @@ title: Functions & Mixins
 navTitle: Functions & Mixins
 description: SCSS functions and mixins for unit conversion, color lookups, breakpoints, transitions, and utility-class generation.
 order: 15
-keywords: ["functions", "mixins", "scss", "toRem", "color", "breakpoint", "transition", "api"]
+keywords: ["functions", "mixins", "scss", "toRem", "color", "breakpoint", "transition", "svg", "data uri", "api"]
 ---
 
 # Functions & Mixins
@@ -213,6 +213,24 @@ Fetches a nested map value by a path of keys.
 ```scss
 helpers.map-deep-get((a: (b: 42)), a, b); // → 42
 ```
+
+### `svg-uri($svg)`
+
+Wraps an inline SVG in a `url()` data URI, percent-encoding it on the way. Write the icon as SVG and read it back as SVG — the escaped form is the same bytes either way, and only one of the two says what the icon is.
+
+`%`, `<`, `>`, `#` and `"` are encoded; everything else survives a quoted `url()` intact, and encoding more only makes the declaration longer. `#` is not optional — a hash colour left raw ends the URL and starts a fragment identifier.
+
+```scss
+.icon-check {
+  background: currentcolor;
+  mask: helpers.svg-uri("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L1.72 9.28a.75.75 0 1 1 1.06-1.06L6 11.44l6.72-6.72a.75.75 0 0 1 1.06 0Z'/></svg>") center / contain no-repeat;
+}
+// → mask: url("data:image/svg+xml,%3Csvg xmlns='http://…'%3E%3Cpath d='M13.78…'/%3E%3C/svg%3E") center / contain no-repeat;
+```
+
+Single quotes inside the SVG, double quotes around it — the other way round works too, since `"` is encoded, but it costs six characters per attribute. Masked rather than painted is the usual reason to want this at all: a `mask` takes the element's own `color`, so one icon follows a colour mode instead of needing a second copy in another fill.
+
+Markup only, never a path: Sass has no way to read a file, so an icon on disk needs a build step and this is not one.
 
 ---
 

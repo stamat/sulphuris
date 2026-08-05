@@ -53,6 +53,13 @@ not the role.
   `border` point at `gray-600` and `gray-300` rather than at seeds of their own,
   so `$palette-grades` carries them into dark mode unaided.
 
+- `helpers.svg-uri($svg)` — an inline SVG wrapped in a `url()` data URI, with
+  `%`, `<`, `>`, `#` and `"` percent-encoded on the way, so an icon in your own
+  stylesheet stays readable as SVG instead of being pasted in pre-escaped. Emits
+  nothing on its own; `dist/` is unchanged. Markup only, never a file path —
+  Sass cannot read a file. See
+  [Functions & Mixins](https://stamat.github.io/sulphuris/docs/functions/).
+
 ### Changed
 
 - **The `$colors` key `link` is now `accent`**, in `$colors` and in the `dark`
