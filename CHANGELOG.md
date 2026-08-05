@@ -74,8 +74,9 @@ not the role.
   `accent` — the `link` spellings go in the next major.** A project that set
   its own `$colors` without an `accent` key loses `--color-link` along with it.
 
-- The docs site is on **poops-docs-theme 2.0.0**, whose topbar, theme switch and
-  sidebar drawer are now [book-of-elementals](https://github.com/stamat/book-of-elementals)
+- The docs site is on **poops-docs-theme 3.0.0**, whose topbar, theme switch,
+  sidebar drawer and code-block copy button are now
+  [book-of-elementals](https://github.com/stamat/book-of-elementals)
   custom elements. Nothing shipped in the package changes — `dist/` and `src/`
   are untouched — but the site build gained
   `includePaths: ["../node_modules"]` in [site/poops.json](site/poops.json),
@@ -86,7 +87,13 @@ not the role.
   2.0.0 ships it, so keeping a copy here was two places to keep in step. The
   docs topbar gained an **npm button** beside the GitHub one, through 2.0.0's
   new `site.iconLinks` — the landing page had linked the package since forever
-  and the docs had no way to.
+  and the docs had no way to. 3.0.0 then took the copy button's own click
+  handler out of the theme and gave it to `<copy-elemental>`, so a copy that
+  lands or fails now says which through a live region rather than only swapping
+  an icon, and the button removes itself where `navigator.clipboard` is not
+  there to be asked; it also stops a code block or a search field from being
+  under the 16px iOS Safari zooms below, and gives `<kbd>` a key cap.
+  `script/a11y` reads 0 violations across 40 audits either way.
 
 - `$color-modes-selector` takes a list, and defaults to
   `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now
