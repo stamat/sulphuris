@@ -74,8 +74,8 @@ not the role.
   `accent` — the `link` spellings go in the next major.** A project that set
   its own `$colors` without an `accent` key loses `--color-link` along with it.
 
-- The docs site is on **poops-docs-theme 3.0.0**, whose topbar, theme switch,
-  sidebar drawer and code-block copy button are now
+- The docs site is on **poops-docs-theme 4.0.0**, whose topbar, theme switch,
+  sidebar drawer, code-block copy button and search field are now
   [book-of-elementals](https://github.com/stamat/book-of-elementals)
   custom elements. Nothing shipped in the package changes — `dist/` and `src/`
   are untouched — but the site build gained
@@ -92,8 +92,29 @@ not the role.
   lands or fails now says which through a live region rather than only swapping
   an icon, and the button removes itself where `navigator.clipboard` is not
   there to be asked; it also stops a code block or a search field from being
-  under the 16px iOS Safari zooms below, and gives `<kbd>` a key cap.
-  `script/a11y` reads 0 violations across 40 audits either way.
+  under the 16px iOS Safari zooms below, and gives `<kbd>` a key cap. 3.1 put a
+  skip link ahead of the topbar, gave `pre` and wide tables `tabindex="0"` so a
+  keyboard can scroll what a pointer could, and darkened the light syntax
+  colours to clear 4.5:1.
+
+  4.0.0 then rebuilt the search field as `<search-elemental>` and
+  `<suggest-elemental>`. The results were a list only a pointer could reach:
+  no roles, no arrow keys, nothing announced. They are an `aria-activedescendant`
+  listbox now — arrows walk it, Home and End jump to the ends, Enter follows,
+  Escape empties the field, and `/` or ⌘K/Ctrl+K puts the caret in it from
+  anywhere on the page. A search that matches nothing, or cannot fetch its
+  index, says which in a box under the field instead of returning the same
+  silence for both; the index is fetched on the first keystroke rather than on
+  every page load, so a visit that never searches never pays for it. Each row
+  is built as nodes with `textContent` and its url resolved and checked for
+  `http:`/`https:`, because every field in `search-index.json` is a page's front
+  matter verbatim — Sulphuris' own is not hostile, but a title is markup's way
+  in and the check belongs where the row is made, not where the docs happen to
+  be trustworthy.
+
+  `script/a11y` reads 0 violations across 40 audits at each step. That is the
+  previews it drives, though, not the topbar the search field sits in — the
+  shell is the theme's markup and the theme's own axe pass.
 
 - `$color-modes-selector` takes a list, and defaults to
   `('[data-color-scheme="VALUE"]', '[data-theme="VALUE"]')` — every mode now
