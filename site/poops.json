@@ -37,6 +37,9 @@
         "branch": "main",
         "iconLinks": [
           { "title": "npm", "url": "https://www.npmjs.com/package/sulphuris", "icon": "npm" }
+        ],
+        "builtWith": [
+          { "title": "code-preview-element", "url": "https://github.com/stamat/code-preview-element" }
         ]
       },
       "//data": "poops' built-in `package` global reads cwd/package.json and cwd is site/. Load the repo root one as data instead; key = basename, so it still lands as `package`. Resolved from markup.in.",
