@@ -40,10 +40,10 @@
   "private": false,
   "devDependencies": {
     "axe-core": "^4.12.1",
-    "code-preview-element": "3.0.3",
+    "code-preview-element": "3.0.4",
     "playwright-core": "^1.62.1",
-    "poops": "^2.0.0",
-    "poops-docs-theme": "^4.6.0",
+    "poops": "^3.0.0",
+    "poops-docs-theme": "^5.2.0",
     "postcss": "^8.5.23",
     "sass": "^1.102.0",
     "stylelint": "^17.14.1",
